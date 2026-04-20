@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>El canto del ave no miente</title>
+  <title>el canto del ave no miente</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
@@ -13,107 +18,211 @@
 
     body {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #050505;
-      color: #d8ffd8;
-      font-family: Georgia, serif;
-      padding: 24px;
+      background:
+        radial-gradient(circle at top, rgba(80, 255, 140, 0.08), transparent 30%),
+        linear-gradient(180deg, #040404 0%, #0a0d0a 100%);
+      color: #caffd7;
+      font-family: 'Share Tech Mono', monospace;
       overflow: hidden;
-    }
-
-    .portada {
-      text-align: center;
-      max-width: 900px;
-      cursor: pointer;
       position: relative;
-      z-index: 2;
     }
 
-    h1 {
-      font-size: clamp(2rem, 6vw, 4.5rem);
-      font-weight: normal;
-      line-height: 1.15;
-      letter-spacing: 0.02em;
-      text-transform: lowercase;
-    }
-
-    .entrar {
-      margin-top: 24px;
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-
-    .cielo {
+    /* líneas de monitor */
+    body::before {
+      content: "";
       position: fixed;
       inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.035) 0px,
+        rgba(255,255,255,0.035) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      opacity: 0.12;
       pointer-events: none;
-      overflow: hidden;
       z-index: 1;
     }
 
-    .ave {
-      position: absolute;
-      color: rgba(216, 255, 216, 0.75);
-      font-size: 24px;
-      animation: volar 3s linear forwards;
-      white-space: pre;
+    .ruido {
+      position: fixed;
+      inset: 0;
+      opacity: 0.05;
+      background-image:
+        radial-gradient(rgba(255,255,255,0.4) 0.6px, transparent 0.8px);
+      background-size: 8px 8px;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    @keyframes volar {
-      0% {
-        transform: translateX(-10vw) translateY(0);
-        opacity: 0;
+    .marco {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .panel {
+      width: 100%;
+      max-width: 980px;
+      border: 1px solid rgba(115, 255, 151, 0.45);
+      background: rgba(0, 0, 0, 0.72);
+      box-shadow:
+        0 0 16px rgba(115, 255, 151, 0.12),
+        inset 0 0 24px rgba(115, 255, 151, 0.06);
+      padding: 38px 28px;
+      position: relative;
+    }
+
+    .meta {
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      color: rgba(180, 255, 198, 0.8);
+      margin-bottom: 34px;
+      line-height: 1.7;
+      text-transform: uppercase;
+    }
+
+    .meta span {
+      display: block;
+    }
+
+    .frase {
+      display: inline-block;
+      text-decoration: none;
+      color: #e9ffee;
+      cursor: pointer;
+      transition: transform 0.25s ease, text-shadow 0.25s ease, opacity 0.25s ease;
+    }
+
+    .frase:hover {
+      transform: scale(1.01);
+      text-shadow: 0 0 10px rgba(115, 255, 151, 0.28);
+      opacity: 0.95;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.8rem, 4.8vw, 4.4rem);
+      line-height: 1.15;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      font-weight: 700;
+    }
+
+    .instruccion {
+      margin-top: 26px;
+      font-size: 0.95rem;
+      color: rgba(202, 255, 215, 0.68);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .codigo {
+      margin-top: 34px;
+      font-size: 0.8rem;
+      color: rgba(161, 227, 175, 0.55);
+      line-height: 1.7;
+      word-break: break-word;
+    }
+
+    .parpadeo {
+      display: inline-block;
+      width: 12px;
+      height: 1em;
+      background: #caffd7;
+      margin-left: 8px;
+      vertical-align: -2px;
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .esquinas::before,
+    .esquinas::after,
+    .panel::before,
+    .panel::after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-color: rgba(115,255,151,0.8);
+      z-index: 3;
+    }
+
+    .panel::before {
+      top: 10px;
+      left: 10px;
+      border-top: 1px solid;
+      border-left: 1px solid;
+    }
+
+    .panel::after {
+      top: 10px;
+      right: 10px;
+      border-top: 1px solid;
+      border-right: 1px solid;
+    }
+
+    .esquinas::before {
+      bottom: 10px;
+      left: 10px;
+      border-bottom: 1px solid;
+      border-left: 1px solid;
+    }
+
+    .esquinas::after {
+      bottom: 10px;
+      right: 10px;
+      border-bottom: 1px solid;
+      border-right: 1px solid;
+    }
+
+    @media (max-width: 640px) {
+      .panel {
+        padding: 28px 20px;
       }
-      10% {
-        opacity: 1;
+
+      .meta {
+        font-size: 0.75rem;
       }
-      100% {
-        transform: translateX(110vw) translateY(-40px);
-        opacity: 0;
+
+      .instruccion {
+        font-size: 0.86rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="cielo" id="cielo"></div>
+  <div class="ruido"></div>
 
-  <main class="portada" id="portada">
-    <h1>el canto del ave no miente si se escucha por todo el valle</h1>
-    <div class="entrar">toca para entrar al archivo</div>
+  <main class="marco">
+    <section class="panel">
+      <div class="esquinas"></div>
+
+      <div class="meta">
+        <span>archivo: protocolo de escucha</span>
+        <span>estado: señal parcial</span>
+        <span>clasificación: acceso permitido</span>
+      </div>
+
+      <a href="cartas.html" class="frase">
+        <h1>el canto del ave no miente si se escucha por todo el valle<span class="parpadeo"></span></h1>
+      </a>
+
+      <div class="instruccion">
+        da click en la frase para abrir el archivo
+      </div>
+
+      <div class="codigo">
+        001101 / valle / escucha / transmisión / ave / señal / archivo / decodificación
+      </div>
+    </section>
   </main>
-
-  <script>
-    const portada = document.getElementById("portada");
-    const cielo = document.getElementById("cielo");
-
-    const caracteres = ["v", "~", "^", "𓅭", "𓅯", "𓅪"];
-
-    function crearAve() {
-      const ave = document.createElement("div");
-      ave.className = "ave";
-      ave.textContent = caracteres[Math.floor(Math.random() * caracteres.length)];
-      ave.style.top = Math.random() * 80 + "%";
-      ave.style.left = "-10vw";
-      ave.style.fontSize = (18 + Math.random() * 20) + "px";
-      ave.style.animationDuration = (1.8 + Math.random() * 1.8) + "s";
-      cielo.appendChild(ave);
-
-      setTimeout(() => {
-        ave.remove();
-      }, 3200);
-    }
-
-    portada.addEventListener("click", () => {
-      for (let i = 0; i < 24; i++) {
-        setTimeout(crearAve, i * 70);
-      }
-
-      setTimeout(() => {
-        window.location.href = "cartas.html";
-      }, 2200);
-    });
-  </script>
 </body>
 </html>
