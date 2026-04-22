@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>el canto del ave no miente</title>
+  <title>archivo de escucha</title>
 
-  <!-- TIPOGRAFÍA CONSOLA -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -17,17 +16,25 @@
       padding: 0;
     }
 
+    :root {
+      --bg1: #020302;
+      --bg2: #070a07;
+      --fg: #eaffee;
+      --glow: rgba(117, 255, 157, 0.22);
+      --noise: rgba(255,255,255,0.04);
+    }
+
     body {
       min-height: 100vh;
       background:
         radial-gradient(circle at top, rgba(120, 255, 170, 0.06), transparent 30%),
-        linear-gradient(180deg, #020302 0%, #070a07 100%);
-      color: #eaffee;
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      color: var(--fg);
       overflow: hidden;
       font-family: 'Share Tech Mono', monospace;
+      position: relative;
     }
 
-    /* textura de pantalla */
     body::before {
       content: "";
       position: fixed;
@@ -41,9 +48,10 @@
       );
       opacity: 0.12;
       pointer-events: none;
+      z-index: 1;
+      animation: flicker 4s infinite;
     }
 
-    /* ruido */
     .noise {
       position: fixed;
       inset: 0;
@@ -51,6 +59,7 @@
       background-size: 8px 8px;
       opacity: 0.04;
       pointer-events: none;
+      z-index: 1;
     }
 
     .wrap {
@@ -59,11 +68,16 @@
       align-items: center;
       justify-content: center;
       padding: 30px;
+      position: relative;
+      z-index: 3;
     }
 
     .title-wrap {
       cursor: pointer;
       user-select: none;
+      text-align: left;
+      position: relative;
+      z-index: 4;
     }
 
     .title {
@@ -71,8 +85,13 @@
       line-height: 1.05;
       letter-spacing: 0.04em;
       white-space: pre-line;
-      text-shadow: 0 0 6px rgba(117,255,157,0.2);
+      text-shadow: 0 0 6px var(--glow);
       min-height: 6em;
+      transition: opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    .title.idle {
+      animation: breathe 2.8s ease-in-out infinite;
     }
 
     .cursor {
@@ -81,16 +100,36 @@
       animation: blink 0.9s steps(1) infinite;
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
+    .loader {
+      margin-top: 22px;
+      font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      min-height: 1.5em;
+      text-shadow: 0 0 6px var(--glow);
     }
 
-    /* cielo de aves */
+    .loader.visible {
+      opacity: 1;
+    }
+
+    .loader-line {
+      display: inline-block;
+      min-width: 18ch;
+    }
+
+    .loader-bar {
+      display: inline-block;
+      margin-left: 12px;
+      min-width: 18ch;
+    }
+
     .sky {
       position: fixed;
       inset: 0;
       pointer-events: none;
       overflow: hidden;
+      z-index: 2;
     }
 
     .bird {
@@ -101,15 +140,75 @@
       text-shadow: 0 0 8px rgba(117,255,157,0.25);
     }
 
+    .flash {
+      position: fixed;
+      inset: 0;
+      background: rgba(210, 255, 223, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .flash.on {
+      animation: flashPulse 0.35s ease;
+    }
+
+    .fadeout {
+      animation: fadeToBlack 0.45s ease forwards;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    @keyframes breathe {
+      0%, 100% { text-shadow: 0 0 6px rgba(117,255,157,0.18); }
+      50% { text-shadow: 0 0 12px rgba(117,255,157,0.30); }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0.11; }
+      48% { opacity: 0.12; }
+      49% { opacity: 0.08; }
+      50% { opacity: 0.13; }
+      51% { opacity: 0.10; }
+      52% { opacity: 0.12; }
+    }
+
     @keyframes fly {
       0% {
-        transform: translateX(-25vw) translateY(0) scale(0.8);
+        transform: translateX(-25vw) translateY(0) scale(0.8) rotate(0deg);
         opacity: 0;
       }
       10% { opacity: 1; }
       100% {
-        transform: translateX(120vw) translateY(-60px) scale(1.1);
+        transform: translateX(120vw) translateY(-60px) scale(1.1) rotate(5deg);
         opacity: 0;
+      }
+    }
+
+    @keyframes flashPulse {
+      0% { opacity: 0; }
+      30% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes fadeToBlack {
+      to {
+        opacity: 0;
+        filter: blur(3px);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .title {
+        min-height: 7em;
+      }
+
+      .loader-bar {
+        display: block;
+        margin-left: 0;
+        margin-top: 8px;
       }
     }
   </style>
@@ -118,10 +217,15 @@
 <body>
   <div class="noise"></div>
   <div class="sky" id="sky"></div>
+  <div class="flash" id="flash"></div>
 
   <main class="wrap">
-    <div class="title-wrap" id="titleWrap">
+    <div class="title-wrap" id="titleWrap" aria-label="Abrir archivo">
       <div class="title" id="title"></div>
+      <div class="loader" id="loader">
+        <span class="loader-line" id="loaderText"></span>
+        <span class="loader-bar" id="loaderBar"></span>
+      </div>
     </div>
   </main>
 
@@ -135,25 +239,35 @@
     ];
 
     const fullText = finalLines.join("\n");
-
     const title = document.getElementById("title");
     const sky = document.getElementById("sky");
     const titleWrap = document.getElementById("titleWrap");
+    const loader = document.getElementById("loader");
+    const loaderText = document.getElementById("loaderText");
+    const loaderBar = document.getElementById("loaderBar");
+    const flash = document.getElementById("flash");
 
     let i = 0;
     let locked = false;
+    let typingDone = false;
 
     function render(text) {
       title.innerHTML = text.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
+    }
+
+    function setFinalText() {
+      title.innerHTML = fullText.replace(/\n/g, "<br>");
+      title.classList.add("idle");
+      typingDone = true;
     }
 
     function typeText() {
       if (i < fullText.length) {
         render(fullText.slice(0, i + 1));
         i++;
-        setTimeout(typeText, 55);
+        setTimeout(typeText, 58);
       } else {
-        title.innerHTML = fullText.replace(/\n/g, "<br>");
+        setFinalText();
       }
     }
 
@@ -177,39 +291,85 @@
         "v","V","^","~",
         "𓅭","𓅯","𓅪","𓅬","𓅫",
         "vv","^^","v~v","~v~",
-        "𓅭𓅯","𓅪𓅪","v v v"
+        "𓅭𓅯","𓅪𓅪","v v v","^~^","𓅭 v 𓅯"
       ];
 
       bird.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-
-      bird.style.top = (Math.random() * 90) + "%";
+      bird.style.top = (Math.random() * 95) + "%";
       bird.style.left = "-25vw";
-      bird.style.fontSize = (14 + Math.random() * 36) + "px";
-      bird.style.animationDuration = (1.2 + Math.random() * 2.2) + "s";
+      bird.style.fontSize = (12 + Math.random() * 38) + "px";
+      bird.style.animationDuration = (1.2 + Math.random() * 2.4) + "s";
 
       sky.appendChild(bird);
-
-      setTimeout(() => bird.remove(), 4000);
+      setTimeout(() => bird.remove(), 4200);
     }
 
-    titleWrap.addEventListener("click", () => {
-      if (locked) return;
-      locked = true;
+    function updateLoader(percent) {
+      loaderText.textContent = `cargando archivo ${String(percent).padStart(3, "0")}%`;
+
+      const totalBars = 14;
+      const filled = Math.round((percent / 100) * totalBars);
+      const bar = "[" + "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
+      loaderBar.textContent = bar;
+    }
+
+    function startLoadingSequence() {
+      loader.classList.add("visible");
+      title.classList.remove("idle");
+
+      let percent = 0;
+
+      function step() {
+        updateLoader(percent);
+
+        if (percent < 89) {
+          percent += Math.floor(Math.random() * 8) + 4;
+          if (percent > 89) percent = 89;
+          setTimeout(step, 45);
+          return;
+        }
+
+        if (percent < 100) {
+          percent += 1;
+          setTimeout(step, percent < 95 ? 180 : 320);
+          return;
+        }
+
+        finishSequence();
+      }
+
+      step();
+    }
+
+    function finishSequence() {
+      flash.classList.remove("on");
+      void flash.offsetWidth;
+      flash.classList.add("on");
 
       let count = 0;
       const interval = setInterval(() => {
         scramble();
         count++;
-        if (count > 20) clearInterval(interval);
-      }, 60);
+        if (count > 24) clearInterval(interval);
+      }, 55);
 
-      for (let i = 0; i < 150; i++) {
-        setTimeout(createBird, i * 15);
+      for (let j = 0; j < 180; j++) {
+        setTimeout(createBird, j * 12);
       }
 
       setTimeout(() => {
+        document.querySelector(".wrap").classList.add("fadeout");
+      }, 900);
+
+      setTimeout(() => {
         window.location.href = "cartas.html";
-      }, 2000);
+      }, 1450);
+    }
+
+    titleWrap.addEventListener("click", () => {
+      if (locked || !typingDone) return;
+      locked = true;
+      startLoadingSequence();
     });
 
     typeText();
