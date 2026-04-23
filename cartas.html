@@ -19,8 +19,6 @@
     :root {
       --bg: #d6ef43;
       --fg: #0b0b0b;
-      --line: rgba(0, 0, 0, 0.9);
-      --line-soft: rgba(0, 0, 0, 0.22);
     }
 
     body {
@@ -93,10 +91,6 @@
       white-space: nowrap;
     }
 
-    .status-line span {
-      display: inline;
-    }
-
     .status-cursor {
       animation: blink 0.9s steps(1) infinite;
     }
@@ -104,7 +98,7 @@
     .page {
       position: relative;
       width: 100%;
-      min-height: 2600px;
+      min-height: 1900px;
       padding-top: 120px;
       padding-bottom: 120px;
     }
@@ -114,29 +108,26 @@
       left: 6%;
       top: 130px;
       width: 54%;
-      height: 2250px;
+      height: 1450px;
       z-index: 2;
       animation: clusterPulse 4.2s ease-in-out infinite;
       transform-origin: center center;
     }
 
-    svg.network {
+    .snake {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
       z-index: 1;
       pointer-events: none;
-      overflow: visible;
     }
 
-    .link {
-      stroke: var(--fg);
-      stroke-width: 2.2;
-      fill: none;
-      stroke-dasharray: 7 8;
-      stroke-linecap: round;
-      animation: snakePulse 2.6s linear infinite;
+    .snake-dot {
+      position: absolute;
+      font-size: 22px;
+      color: rgba(0,0,0,0.85);
+      transform: translate(-50%, -50%);
+      animation: dotPulse 2.4s infinite ease-in-out;
+      line-height: 1;
     }
 
     .node {
@@ -187,12 +178,14 @@
       }
     }
 
-    @keyframes snakePulse {
-      0% {
-        stroke-dashoffset: 0;
+    @keyframes dotPulse {
+      0%, 100% {
+        opacity: 0.4;
+        transform: translate(-50%, -50%) scale(1);
       }
-      100% {
-        stroke-dashoffset: -30;
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.3);
       }
     }
 
@@ -233,14 +226,14 @@
       }
 
       .page {
-        min-height: 3000px;
+        min-height: 2100px;
         padding-top: 140px;
       }
 
       .cluster {
         left: 2%;
         width: 94%;
-        height: 2500px;
+        height: 1650px;
       }
 
       .node {
@@ -255,6 +248,10 @@
       .node-id {
         min-width: 46px;
         font-size: 1.15rem;
+      }
+
+      .snake-dot {
+        font-size: 18px;
       }
     }
   </style>
@@ -273,59 +270,49 @@
 
   <main class="page">
     <div class="cluster">
-      <svg class="network" viewBox="0 0 1000 2250" preserveAspectRatio="none" aria-hidden="true">
-        <!-- línea-serpiente punteada secuencial -->
-        <path class="link" d="M 270 120 C 300 170, 320 220, 350 300" />
-        <path class="link" d="M 350 300 C 320 380, 300 450, 285 540" />
-        <path class="link" d="M 285 540 C 310 620, 335 700, 360 790" />
-        <path class="link" d="M 360 790 C 325 890, 295 980, 270 1080" />
-        <path class="link" d="M 270 1080 C 300 1170, 330 1260, 365 1350" />
-        <path class="link" d="M 365 1350 C 330 1450, 300 1540, 280 1635" />
-        <path class="link" d="M 280 1635 C 310 1720, 340 1810, 370 1900" />
-        <path class="link" d="M 370 1900 C 330 2000, 295 2080, 270 2170" />
-      </svg>
+      <div class="snake" id="snake"></div>
 
-      <a class="node" href="carta1.html" style="top: 90px; left: 18%;">
+      <a class="node" href="carta1.html" style="top: 80px; left: 16%;">
         <span class="node-id">01</span>
         <span class="node-label">la noche del tsuru blanco.xic</span>
       </a>
 
-      <a class="node" href="carta2.html" style="top: 270px; left: 27%;">
+      <a class="node" href="carta2.html" style="top: 210px; left: 24%;">
         <span class="node-id">02</span>
         <span class="node-label">explosión de planta agroquímica atc.xic</span>
       </a>
 
-      <a class="node" href="carta3.html" style="top: 520px; left: 14%;">
+      <a class="node" href="carta3.html" style="top: 360px; left: 14%;">
         <span class="node-id">03</span>
         <span class="node-label">construcción de la refinería miguel hidalgo.xic</span>
       </a>
 
-      <a class="node" href="carta4.html" style="top: 770px; left: 29%;">
+      <a class="node" href="carta4.html" style="top: 510px; left: 26%;">
         <span class="node-id">04</span>
         <span class="node-label">archivos de la misión gusano rojo.xic</span>
       </a>
 
-      <a class="node" href="carta5.html" style="top: 1060px; left: 10%;">
+      <a class="node" href="carta5.html" style="top: 660px; left: 10%;">
         <span class="node-id">05</span>
         <span class="node-label">experimento biotecnológico territorial.xic</span>
       </a>
 
-      <a class="node" href="carta6.html" style="top: 1330px; left: 30%;">
+      <a class="node" href="carta6.html" style="top: 810px; left: 28%;">
         <span class="node-id">06</span>
         <span class="node-label">plaga patronal.xic</span>
       </a>
 
-      <a class="node" href="carta7.html" style="top: 1615px; left: 15%;">
+      <a class="node" href="carta7.html" style="top: 960px; left: 16%;">
         <span class="node-id">07</span>
         <span class="node-label">culebra tormenta.xic</span>
       </a>
 
-      <a class="node" href="carta8.html" style="top: 1885px; left: 29%;">
+      <a class="node" href="carta8.html" style="top: 1110px; left: 26%;">
         <span class="node-id">08</span>
         <span class="node-label">diablito robot.xic</span>
       </a>
 
-      <a class="node" href="carta9.html" style="top: 2155px; left: 11%;">
+      <a class="node" href="carta9.html" style="top: 1260px; left: 12%;">
         <span class="node-id">09</span>
         <span class="node-label">canto de las aves.xic</span>
       </a>
@@ -350,6 +337,49 @@
     }
 
     setInterval(cycleStatus, 2200);
+
+    function createSnake() {
+      const snake = document.getElementById("snake");
+      const ids = document.querySelectorAll(".node-id");
+      snake.innerHTML = "";
+
+      for (let i = 0; i < ids.length - 1; i++) {
+        const a = ids[i].getBoundingClientRect();
+        const b = ids[i + 1].getBoundingClientRect();
+        const snakeBox = snake.getBoundingClientRect();
+
+        const startX = a.left - snakeBox.left + a.width / 2;
+        const startY = a.top - snakeBox.top + a.height / 2;
+
+        const endX = b.left - snakeBox.left + b.width / 2;
+        const endY = b.top - snakeBox.top + b.height / 2;
+
+        const steps = 12;
+
+        for (let s = 0; s <= steps; s++) {
+          const t = s / steps;
+          const x = startX + (endX - startX) * t;
+          const y = startY + (endY - startY) * t;
+
+          const dot = document.createElement("div");
+          dot.className = "snake-dot";
+          dot.textContent = "●";
+          dot.style.left = x + "px";
+          dot.style.top = y + "px";
+          dot.style.animationDelay = (s * 0.08) + "s";
+
+          snake.appendChild(dot);
+        }
+      }
+    }
+
+    window.addEventListener("load", () => {
+      setTimeout(createSnake, 200);
+    });
+
+    window.addEventListener("resize", () => {
+      createSnake();
+    });
   </script>
 </body>
 </html>
