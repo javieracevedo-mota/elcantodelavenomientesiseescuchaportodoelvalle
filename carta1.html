@@ -15,7 +15,42 @@
       background:#d6ef43;
       color:#0b0b0b;
       font-family:'VT323', monospace;
-      padding:14px 18px;
+      padding:14px 18px 90px 18px;
+      min-height:100vh;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0,0,0,0.04) 0px,
+          rgba(0,0,0,0.04) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+      pointer-events:none;
+      opacity:0.18;
+      z-index:10;
+    }
+
+    .noise {
+      position:fixed;
+      inset:0;
+      background-image: radial-gradient(rgba(0,0,0,0.09) 0.7px, transparent 0.8px);
+      background-size:8px 8px;
+      opacity:0.08;
+      pointer-events:none;
+      z-index:9;
+    }
+
+    .page {
+      position:relative;
+      z-index:2;
     }
 
     .header, .loader, .text {
@@ -24,7 +59,9 @@
       line-height:1.05;
     }
 
-    .loader { margin:12px 0; }
+    .loader {
+      margin:12px 0 18px 0;
+    }
 
     .cursor {
       animation: blink 0.9s steps(1) infinite;
@@ -40,7 +77,9 @@
       text-align:right;
     }
 
-    .next.show { display:block; }
+    .next.show {
+      display:block;
+    }
 
     .next a {
       border:2px solid #000;
@@ -48,29 +87,82 @@
       text-decoration:none;
       color:#000;
       font-size:2rem;
+      background:rgba(0,0,0,0.03);
     }
 
+    .next a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+
+    .back {
+      position:fixed;
+      bottom:20px;
+      left:20px;
+      z-index:20;
+    }
+
+    .back a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+
+    .back a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+
+    @media (max-width:640px){
+      body {
+        padding:10px 12px 90px 12px;
+      }
+
+      .header, .loader, .text {
+        font-size:1.28rem;
+      }
+
+      .back {
+        left:10px;
+        bottom:10px;
+      }
+
+      .next a,
+      .back a {
+        font-size:1.6rem;
+        padding:5px 10px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<div id="header" class="header"></div>
-<div id="loader" class="loader"></div>
-<div id="text" class="text"></div>
+<div class="noise"></div>
 
-<div id="next" class="next">
-  <a href="carta2.html">→</a>
+<div class="page">
+  <div id="header" class="header"></div>
+  <div id="loader" class="loader"></div>
+  <div id="text" class="text"></div>
+
+  <div id="next" class="next">
+    <a href="carta2.html">→</a>
+  </div>
+</div>
+
+<div id="back" class="back">
+  <a href="cartas.html">←</a>
 </div>
 <script>
 const headerTemplate = [
-'╔═══════════════════════════╗',
+'╔══════════════════════════════════════════════════════╗',
 ' ARCHIVO INTERCEPTADO',
 ' registro: 01',
 ' asunto: la noche del tsuru blanco',
 ' fecha de emisión: 19.07.2019',
 ' ubicación aproximada: {{COORDS}}',
 ' estado de señal: estable',
-'╚═══════════════════════════╝'
+'╚══════════════════════════════════════════════════════╝'
 ];
 
 const finalCoords = '20° 08´30.06´´N / 99°17´10.74´´O';
@@ -78,15 +170,23 @@ const finalCoords = '20° 08´30.06´´N / 99°17´10.74´´O';
 const message = `[INICIO DEL MENSAJE]
 
 Me dijiste que pienso mucho en el futuro.
-En varias ocasiones me pediste que dejara de pensar en eso.
+En varias ocasiones 
+me pediste que dejara 
+de pensar en eso.
 
 Posiblemente alguno de los dos no llegará al final.
 
 
-Vivimos en un lugar donde la nostalgia de los errores
-cometidos en el pasado
+Vivimos en un lugar 
+donde la nostalgia 
+de los errores
+cometidos 
+en el pasado
+
 borra todo rastro de curiosidad
-por cambiar el rumbo de las cosas.
+por cambiar 
+el rumbo de 
+las cosas.
 
 Pero a mí me intriga
 lo que nos deparará.
@@ -96,15 +196,20 @@ y espero algún día dártelas
 en persona.
 
 
-Descifré el mensaje que estaba en el coche
-en las milpas cerca del Xicuco, ¿recuerdas?
+Descifré el mensaje 
+que estaba en el coche
+en las milpas cerca del Xicuco, 
+¿recuerdas?
 
-Aquella noche que escuchamos la explosión
-mientras mirábamos el cielo anaranjado
+Aquella noche que escuchamos 
+la explosión
+mientras mirábamos 
+el cielo anaranjado
 iluminado por la llama constante
 de la refinería de Tula.
 
-Estábamos sobre el cofre de tu camioneta.
+Estábamos sobre el cofre 
+de tu camioneta.
 Nos vestimos más rápido
 que cuando nos desvestimos
 
@@ -115,41 +220,72 @@ Pero nos topamos con el Tsuru blanco.
 
 
 Aunque no querías que bajara de tu camioneta
-la luz azul me hipnotizó como a un mosquito.
+la luz azul me hipnotizó 
+como 
+a 
+un 
+mosquito.
 
-eran unas coordenadas 
-indicaban un cerro en Huichapan
+eran unas coordenadas
+indicaban un cerro 
+en 
+
+Huichapan
 
 Decidí buscarlo.
 
-Quiero ver si existe tal cosa
+Quiero ver si existe 
+tal cosa
 y saber por qué
-a nosotros se nos apareció.
+a nosotros 
+se nos apareció.
 
 
-Sabes que el presente no está bien.
+Sabes que el presente 
+no está bien.
 
-Debemos escondernos en la oscuridad para poder estar juntos.
+Debemos escondernos 
+en 
+la oscuridad 
+para poder 
+estar 
+juntos.
 
 De noche,
 como vampiros.
 
-Donde aprendimos a mirar el valle
-sin que nadie nos viera.
+Donde aprendimos a mirar 
+el valle
+sin que nadie 
+nos viera.
 
 
 Las balaceras que están ocurriendo
-entre bandas huachicoleras
+entre bandas 
+huachicoleras
 refuerzan el rumor
-de que se están disputando el territorio por la gasolina.
+de que se están disputando 
+el territorio 
+por la gasolina.
 
-Pero sabes que también es por el agua.
-Incluso por el agua negra.
-Por eso quiero ir a buscar el garambullo.
+Pero sabes 
+que también 
+es por el agua.
+Incluso por el 
+agua negra.
+
+Por eso 
+quiero 
+ir a buscar 
+el garambullo.
 
 Tal vez sea un mensaje del futuro.
 
-Tal vez me ayude a descubrir otro lugar donde podamos estar felices.
+Tal vez me ayude a descubrir 
+otro lugar 
+donde podamos 
+estar 
+felices.
 
 
 o tal vez pueda detener
@@ -157,14 +293,16 @@ los problemas que se aproximan.
 
 
 ¿Qué haremos si vuelve a explotar
-una fábrica del parque industrial de Atitalaquia
+una fábrica del parque industrial 
+de Atitalaquia
 y nos cubren sus venenos?
 
 ¿Qué haremos sin agua?
 
 ¿Dónde nadaremos?
 
-Si el control por la gasolina genera más balas
+Si el control por la gasolina 
+genera más balas
 ¿a dónde escaparemos?
 
 
@@ -185,16 +323,25 @@ con nosotros.
 ¿Será el diablo?
 
 ¿Será dios?
-A veces siento que no pertenezco aquí.
 
-Nunca encajé del todo en lo que esperan de un hombre en este valle.
-Amar a otro hombre hace que automáticamente seas inservible.
+
+
+A veces siento 
+que no pertenezco aquí.
+
+Nunca encajé del todo 
+en lo que esperan 
+de un hombre en este lugar.
+Amar a otro hombre 
+hace que automáticamente 
+seas inservible.
 
 
 Y no sólo eso.
 
 
-Hay algo en mí que todavía no sé explicar bien.
+Hay algo en mí que todavía 
+no sé explicar bien.
 Algo que no cabe
 en las palabras
 que aprendimos.
@@ -205,43 +352,63 @@ Pero a ti
 te cuesta más aceptarlo.
 
 
-Lo veo en la forma en que bajas la voz cuando alguien se acerca.
-En la manera en que nuestro amor solo puede existir cuando cae la noche.
+Lo veo en la forma en que bajas 
+la voz cuando 
+alguien se acerca.
+En la manera en que 
+nuestro amor solo 
+puede existir cuando 
+cae la noche.
 
-A veces pienso que yo podría ser un error para ti.
+A veces pienso 
+que 
+yo 
+podría 
+ser un error 
+para 
+ti.
 Algo que algún día quieras borrar
 para que tu vida
-sea más sencilla.
-
-Lo entiendo.
+sea más 
+sencilla.
 
 Este valle enseña a tener miedo.
-
 
 
 Quiero encontrar respuestas
 al encuentro fortuito
 que tuvimos
-en nuestro lugar nocturno.
-No te pude decir adiós.
+en nuestro 
+lugar nocturno.
 
+No te pude 
+decir 
+adiós.
 
-Pero trataré de comunicarme.
+Pero trataré 
+de comunicarme.
 
-
-
-Para que cada vez que salga la luna
-y se escuchen las ranas
+Para que cada vez 
+que salga 
+la luna
+y se 
+escuchen 
+las ranas
 
 sea un indicio
+de que 
+encontré 
+nuevas pistas
 
-de que encontré nuevas pistas
+para 
+descifrar
 
-para descifrar
+por qué 
+nos quieren 
+quitar
 
-por qué nos quieren quitar
-
-la esperanza.
+la 
+esperanza.
 
 
 
@@ -258,47 +425,59 @@ const textEl = document.getElementById("text");
 const nextEl = document.getElementById("next");
 
 function randChar(){
-  const c="0123456789NSEO°´/";
-  return c[Math.floor(Math.random()*c.length)];
+  const c = "0123456789NSEO°´/ .";
+  return c[Math.floor(Math.random() * c.length)];
 }
 
-function scramble(){
-  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+function scrambleCoords(){
+  return finalCoords
+    .split('')
+    .map(x => x === " " ? " " : randChar())
+    .join('');
 }
 
 function drawHeader(coords){
   headerEl.textContent = headerTemplate
-    .map(l=>l.replace("{{COORDS}}",coords))
+    .map(l => l.replace("{{COORDS}}", coords))
     .join("\n");
 }
 
-let s=0;
+let scrambleCount = 0;
+
 function animateHeader(){
-  drawHeader(scramble());
-  s++;
-  if(s<20) setTimeout(animateHeader,80);
-  else startLoad();
-}
+  drawHeader(scrambleCoords());
+  scrambleCount++;
 
-function startLoad(p=0){
-  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
-  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
-
-  if(p<100){
-    setTimeout(()=>startLoad(p+5),40);
-  }else{
-    drawHeader(finalCoords);
-    loaderEl.textContent="";
-    setTimeout(typeText,300);
+  if(scrambleCount < 20){
+    setTimeout(animateHeader, 80);
+  } else {
+    startLoad();
   }
 }
 
-function typeText(i=0){
-  if(i<message.length){
-    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
-    setTimeout(()=>typeText(i+1),18);
-  }else{
-    textEl.innerHTML=message + '<span class="cursor">_</span>';
+function startLoad(p = 0){
+  const filled = Math.floor(p / 5);
+  const empty = 20 - filled;
+  const bar = "[" + "■".repeat(filled) + "·".repeat(empty) + "]";
+  loaderEl.textContent = `[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p < 100){
+    setTimeout(() => startLoad(p + 5), 40);
+  } else {
+    drawHeader(finalCoords);
+    setTimeout(() => {
+      loaderEl.textContent = "";
+      typeText();
+    }, 300);
+  }
+}
+
+function typeText(i = 0){
+  if(i < message.length){
+    textEl.innerHTML = message.slice(0, i + 1) + '<span class="cursor">_</span>';
+    setTimeout(() => typeText(i + 1), 18);
+  } else {
+    textEl.innerHTML = message + '<span class="cursor">_</span>';
     nextEl.classList.add("show");
   }
 }
