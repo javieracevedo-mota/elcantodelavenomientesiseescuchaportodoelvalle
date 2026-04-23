@@ -17,8 +17,7 @@
     }
 
     :root {
-      --bg1: #020302;
-      --bg2: #071008;
+      --bg: #000000;
       --fg: #dfffe7;
       --green: #39ff88;
       --green-soft: rgba(57, 255, 136, 0.22);
@@ -26,9 +25,7 @@
 
     body {
       min-height: 100vh;
-      background:
-        radial-gradient(circle at center, rgba(57,255,136,0.08), transparent 34%),
-        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      background: var(--bg);
       color: var(--fg);
       overflow: hidden;
       font-family: 'Share Tech Mono', monospace;
@@ -42,12 +39,12 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,0.03) 0px,
-          rgba(255,255,255,0.03) 1px,
+          rgba(255,255,255,0.028) 0px,
+          rgba(255,255,255,0.028) 1px,
           transparent 2px,
           transparent 4px
         );
-      opacity: 0.13;
+      opacity: 0.12;
       pointer-events: none;
       z-index: 1;
       animation: flicker 4s infinite;
@@ -59,18 +56,6 @@
       background-image: radial-gradient(rgba(255,255,255,0.12) 0.7px, transparent 0.8px);
       background-size: 8px 8px;
       opacity: 0.04;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .grid {
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(57,255,136,0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(57,255,136,0.08) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.22;
       pointer-events: none;
       z-index: 1;
     }
@@ -153,14 +138,17 @@
 
     .column {
       position: absolute;
-      top: -120px;
+      top: -140px;
       color: rgba(57,255,136,0.95);
-      text-shadow: 0 0 8px rgba(57,255,136,0.28);
+      text-shadow:
+        0 0 8px rgba(57,255,136,0.28),
+        0 0 18px rgba(57,255,136,0.12);
       white-space: pre;
-      line-height: 0.9;
+      line-height: 0.82;
       animation: codefall linear forwards;
       writing-mode: vertical-rl;
       text-orientation: mixed;
+      filter: blur(0.1px);
     }
 
     .access-box {
@@ -225,14 +213,14 @@
 
     @keyframes codefall {
       0% {
-        transform: translateY(-20vh);
+        transform: translateY(-25vh) rotate(0.5deg);
         opacity: 0;
       }
-      10% {
+      8% {
         opacity: 1;
       }
       100% {
-        transform: translateY(130vh);
+        transform: translateY(140vh) rotate(-0.5deg);
         opacity: 0;
       }
     }
@@ -282,10 +270,9 @@
 
 <body>
   <div class="noise"></div>
-  <div class="grid"></div>
   <div class="rain" id="rain"></div>
   <div class="flash" id="flash"></div>
-  <div class="access-box" id="accessBox">acceso concedido</div>
+  <div class="access-box" id="accessBox">acceso decodificado</div>
 
   <main class="wrap">
     <div class="title-wrap" id="titleWrap" aria-label="Abrir archivo">
@@ -348,7 +335,8 @@
     }
 
     function scramble() {
-      const scrambled = [...finalLines, "_"].join("\n").split("\n").map(line =>
+      const base = [...finalLines, "_"].join("\n").split("\n");
+      const scrambled = base.map(line =>
         line.split("").map(c => c === " " ? " " : randomChar()).join("")
       );
       title.innerHTML = scrambled.join("<br>");
@@ -366,22 +354,41 @@
       const col = document.createElement("div");
       col.className = "column";
 
-      const glyphs = ["v","^","~","𓅭","𓅯","𓅪","𓅬","𓅫","𓆏","𓆙","𓆌","/","\\","|","_","=","+","*"];
-      let content = "";
+      const glyphs = [
+        "v","^","~","𓅭","𓅯","𓅪","𓅬","𓅫",
+        "𓆏","𓆙","𓆌","𓆉",
+        "/","\\","|","_","=","+","*","?","%","@","#","&","0","1"
+      ];
 
-      const length = Math.floor(Math.random() * 20) + 12;
+      let content = "";
+      const length = Math.floor(Math.random() * 28) + 18;
+
       for (let n = 0; n < length; n++) {
-        content += glyphs[Math.floor(Math.random() * glyphs.length)];
+        const roll = Math.random();
+
+        if (roll < 0.12) {
+          content += "\n";
+        } else if (roll < 0.25) {
+          content += glyphs[Math.floor(Math.random() * glyphs.length)] + glyphs[Math.floor(Math.random() * glyphs.length)];
+        } else {
+          content += glyphs[Math.floor(Math.random() * glyphs.length)];
+        }
       }
 
       col.textContent = content;
       col.style.left = Math.random() * 100 + "vw";
-      col.style.fontSize = (14 + Math.random() * 18) + "px";
-      col.style.animationDuration = (1.6 + Math.random() * 2.2) + "s";
-      col.style.opacity = (0.45 + Math.random() * 0.5).toFixed(2);
+      col.style.fontSize = (12 + Math.random() * 22) + "px";
+      col.style.animationDuration = (2.4 + Math.random() * 3.4) + "s";
+      col.style.opacity = (0.55 + Math.random() * 0.45).toFixed(2);
 
       rain.appendChild(col);
-      setTimeout(() => col.remove(), 4500);
+      setTimeout(() => col.remove(), 7000);
+    }
+
+    function spawnRainBurst(total, intervalMs) {
+      for (let j = 0; j < total; j++) {
+        setTimeout(createColumn, j * intervalMs);
+      }
     }
 
     function startLoadingSequence() {
@@ -418,31 +425,35 @@
       void flash.offsetWidth;
       flash.classList.add("on");
 
-      let count = 0;
-      const interval = setInterval(() => {
-        scramble();
-        count++;
-        if (count > 24) clearInterval(interval);
-      }, 55);
-
       rain.classList.add("visible");
 
-      for (let j = 0; j < 160; j++) {
-        setTimeout(createColumn, j * 18);
-      }
+      let scrambleCount = 0;
+      const scrambleInterval = setInterval(() => {
+        scramble();
+        scrambleCount++;
+        if (scrambleCount > 52) {
+          clearInterval(scrambleInterval);
+        }
+      }, 70);
+
+      spawnRainBurst(280, 16);
+
+      setTimeout(() => {
+        spawnRainBurst(140, 22);
+      }, 1200);
 
       setTimeout(() => {
         accessBox.classList.add("show");
-      }, 950);
+      }, 2300);
 
       setTimeout(() => {
         document.querySelector(".wrap").classList.add("fadeout");
         loader.classList.add("fadeout");
-      }, 1900);
+      }, 3400);
 
       setTimeout(() => {
         window.location.href = `${REPO_BASE}/cartas.html`;
-      }, 2600);
+      }, 4300);
     }
 
     titleWrap.addEventListener("click", () => {
