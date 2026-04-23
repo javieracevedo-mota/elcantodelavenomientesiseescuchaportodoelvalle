@@ -19,9 +19,7 @@
     :root {
       --bg: #d6ef43;
       --fg: #0b0b0b;
-      --line: rgba(0, 0, 0, 0.8);
-      --line-soft: rgba(0, 0, 0, 0.2);
-      --panel: #c7e63b;
+      --line: rgba(0, 0, 0, 0.9);
     }
 
     body {
@@ -93,16 +91,28 @@
     .page {
       position: relative;
       width: 100%;
-      min-height: 3200px;
+      min-height: 3400px;
       padding-top: 120px;
       padding-bottom: 120px;
+    }
+
+    /* contenedor del racimo */
+    .cluster {
+      position: absolute;
+      left: 8%;
+      top: 120px;
+      width: 78%;
+      height: 3000px;
+      z-index: 2;
+      animation: clusterPulse 4.2s ease-in-out infinite;
+      transform-origin: center center;
     }
 
     svg.network {
       position: absolute;
       inset: 0;
       width: 100%;
-      height: 3200px;
+      height: 100%;
       z-index: 1;
       pointer-events: none;
       overflow: visible;
@@ -152,24 +162,24 @@
       white-space: nowrap;
     }
 
-    .legend {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 40px;
-      z-index: 3;
-      font-size: clamp(1.5rem, 2vw, 2rem);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    @keyframes clusterPulse {
+      0%, 100% {
+        transform: scale(1) translateY(0px);
+      }
+      50% {
+        transform: scale(1.012) translateY(-4px);
+      }
     }
 
     @media (max-width: 900px) {
       .page {
-        min-height: 3600px;
+        min-height: 3800px;
       }
 
-      svg.network {
-        height: 3600px;
+      .cluster {
+        left: 4%;
+        width: 88%;
+        height: 3350px;
       }
 
       .node-label {
@@ -185,20 +195,15 @@
         padding: 5px 9px;
       }
 
-      .legend {
-        top: 72px;
-        font-size: 1.3rem;
-        text-align: center;
-        width: 90%;
-      }
-
       .page {
-        min-height: 3800px;
+        min-height: 4100px;
         padding-top: 140px;
       }
 
-      svg.network {
-        height: 3800px;
+      .cluster {
+        left: 2%;
+        width: 94%;
+        height: 3600px;
       }
 
       .node {
@@ -224,78 +229,65 @@
   <div class="clock" id="clock">--:--:--</div>
 
   <main class="page">
-    <div class="legend">archivos interceptado</div>
+    <div class="cluster">
+      <svg class="network" viewBox="0 0 1000 3000" preserveAspectRatio="none" aria-hidden="true">
+        <!-- conexiones secuenciales -->
+        <line class="link" x1="380" y1="140"  x2="520" y2="420" />
+        <line class="link" x1="520" y1="420"  x2="320" y2="760" />
+        <line class="link" x1="320" y1="760"  x2="560" y2="1080" />
+        <line class="link" x1="560" y1="1080" x2="260" y2="1420" />
+        <line class="link" x1="260" y1="1420" x2="600" y2="1750" />
+        <line class="link" x1="600" y1="1750" x2="360" y2="2080" />
+        <line class="link" x1="360" y1="2080" x2="560" y2="2410" />
+        <line class="link" x1="560" y1="2410" x2="300" y2="2740" />
+      </svg>
 
-    <svg class="network" viewBox="0 0 1000 3200" preserveAspectRatio="none" aria-hidden="true">
-      <!-- conexiones -->
-      <line class="link" x1="520" y1="170" x2="610" y2="360" />
-      <line class="link" x1="610" y1="360" x2="430" y2="610" />
-      <line class="link" x1="430" y1="610" x2="640" y2="860" />
-      <line class="link" x1="640" y1="860" x2="350" y2="1120" />
-      <line class="link" x1="350" y1="1120" x2="710" y2="1390" />
-      <line class="link" x1="710" y1="1390" x2="470" y2="1680" />
-      <line class="link" x1="470" y1="1680" x2="640" y2="1970" />
-      <line class="link" x1="640" y1="1970" x2="400" y2="2280" />
-      <line class="link" x1="400" y1="2280" x2="590" y2="2580" />
-      <line class="link" x1="590" y1="2580" x2="480" y2="2890" />
+      <!-- NODOS -->
+      <a class="node" href="carta1.html" style="top: 100px; left: 30%;">
+        <span class="node-id">01</span>
+        <span class="node-label">la noche del tsuru blanco.xic</span>
+      </a>
 
-      <!-- conexiones extra cruzadas -->
-      <line class="link" x1="520" y1="170" x2="430" y2="610" />
-      <line class="link" x1="610" y1="360" x2="640" y2="860" />
-      <line class="link" x1="430" y1="610" x2="350" y2="1120" />
-      <line class="link" x1="640" y1="860" x2="710" y2="1390" />
-      <line class="link" x1="350" y1="1120" x2="470" y2="1680" />
-      <line class="link" x1="710" y1="1390" x2="640" y2="1970" />
-      <line class="link" x1="470" y1="1680" x2="400" y2="2280" />
-      <line class="link" x1="640" y1="1970" x2="590" y2="2580" />
-      <line class="link" x1="400" y1="2280" x2="480" y2="2890" />
-    </svg>
+      <a class="node" href="carta2.html" style="top: 390px; left: 48%;">
+        <span class="node-id">02</span>
+        <span class="node-label">explosión de planta agroquímica atc.xic</span>
+      </a>
 
-    <!-- NODOS -->
-    <a class="node" href="carta1.html" style="top: 140px; left: 46%;">
-      <span class="node-id">01</span>
-      <span class="node-label">la noche del tsuru blanco.xic</span>
-    </a>
+      <a class="node" href="carta3.html" style="top: 730px; left: 22%;">
+        <span class="node-id">03</span>
+        <span class="node-label">construcción de la refinería miguel hidalgo.xic</span>
+      </a>
 
-    <a class="node" href="carta2.html" style="top: 330px; left: 60%;">
-      <span class="node-id">02</span>
-      <span class="node-label">explosión de planta agroquímica atc.xic</span>
-    </a>
+      <a class="node" href="carta4.html" style="top: 1050px; left: 53%;">
+        <span class="node-id">04</span>
+        <span class="node-label">archivos de la misión gusano rojo.xic</span>
+      </a>
 
-    <a class="node" href="carta3.html" style="top: 580px; left: 34%;">
-      <span class="node-id">03</span>
-      <span class="node-label">construcción de la refinería miguel hidalgo.xic</span>
-    </a>
+      <a class="node" href="carta5.html" style="top: 1390px; left: 14%;">
+        <span class="node-id">05</span>
+        <span class="node-label">experimento biotecnológico territorial.xic</span>
+      </a>
 
-    <a class="node" href="carta4.html" style="top: 840px; left: 62%;">
-      <span class="node-id">04</span>
-      <span class="node-label">archivos de la misión gusano rojo.xic</span>
-    </a>
+      <a class="node" href="carta6.html" style="top: 1720px; left: 58%;">
+        <span class="node-id">06</span>
+        <span class="node-label">plaga patronal.xic</span>
+      </a>
 
-    <a class="node" href="carta5.html" style="top: 1100px; left: 24%;">
-      <span class="node-id">05</span>
-      <span class="node-label">experimento biotecnológico territorial.xic</span>
-    </a>
+      <a class="node" href="carta7.html" style="top: 2050px; left: 26%;">
+        <span class="node-id">07</span>
+        <span class="node-label">culebra tormenta.xic</span>
+      </a>
 
-    <a class="node" href="carta6.html" style="top: 1370px; left: 68%;">
-      <span class="node-id">06</span>
-      <span class="node-label">plaga patronal.xic</span>
-    </a>
+      <a class="node" href="carta8.html" style="top: 2380px; left: 53%;">
+        <span class="node-id">08</span>
+        <span class="node-label">diablito robot.xic</span>
+      </a>
 
-    <a class="node" href="carta7.html" style="top: 1660px; left: 38%;">
-      <span class="node-id">07</span>
-      <span class="node-label">culebra tormenta.xic</span>
-    </a>
-
-    <a class="node" href="carta8.html" style="top: 1950px; left: 61%;">
-      <span class="node-id">08</span>
-      <span class="node-label">diablito robot.xic</span>
-    </a>
-
-    <a class="node" href="carta9.html" style="top: 2260px; left: 30%;">
-      <span class="node-id">09</span>
-      <span class="node-label">canto de las aves.xic</span>
-    </a>
+      <a class="node" href="carta9.html" style="top: 2710px; left: 18%;">
+        <span class="node-id">09</span>
+        <span class="node-label">canto de las aves.xic</span>
+      </a>
+    </div>
   </main>
 
   <script>
