@@ -99,15 +99,34 @@
 
     .loader {
       margin-top: 22px;
-      font-size: clamp(0.95rem, 1.4vw, 1.1rem);
       opacity: 0;
       transition: opacity 0.2s ease;
-      min-height: 1.5em;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: clamp(0.9rem, 1.3vw, 1.1rem);
       text-shadow: 0 0 8px var(--green-soft);
+      min-width: 320px;
     }
 
     .loader.visible {
       opacity: 1;
+    }
+
+    .loader-label {
+      white-space: nowrap;
+    }
+
+    .loader-percent {
+      width: 4ch;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .loader-bar {
+      width: 16ch;
+      display: inline-block;
     }
 
     .glyph-layer {
@@ -169,6 +188,16 @@
       .title {
         min-height: 7em;
       }
+
+      .loader {
+        min-width: 0;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+      }
+
+      .loader-bar {
+        width: 16ch;
+      }
     }
   </style>
 </head>
@@ -180,7 +209,11 @@
   <main class="wrap">
     <div class="title-wrap" id="titleWrap" aria-label="Abrir archivo">
       <div class="title" id="title"></div>
-      <div class="loader" id="loader"></div>
+      <div class="loader" id="loader">
+        <span class="loader-label">cargando archivo</span>
+        <span class="loader-percent" id="loaderPercent">000%</span>
+        <span class="loader-bar" id="loaderBar">[··············]</span>
+      </div>
     </div>
   </main>
 
@@ -248,11 +281,16 @@
     }
 
     function updateLoader(percent) {
+      const percentEl = document.getElementById("loaderPercent");
+      const barEl = document.getElementById("loaderBar");
+
+      percentEl.textContent = String(percent).padStart(3, "0") + "%";
+
       const totalBars = 14;
       const filled = Math.round((percent / 100) * totalBars);
-      loader.textContent =
-        `cargando archivo ${String(percent).padStart(3, "0")}%  [` +
-        "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
+
+      barEl.textContent =
+        "[" + "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
     }
 
     function createGlyph() {
