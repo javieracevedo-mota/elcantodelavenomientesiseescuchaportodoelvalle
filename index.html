@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -17,10 +17,10 @@
     }
 
     :root {
-      --bg: #000000;
-      --fg: #dfffe7;
-      --green: #39ff88;
-      --green-soft: rgba(57, 255, 136, 0.22);
+      --bg: #d6ef43;
+      --fg: #0b0b0b;
+      --ink-soft: rgba(0, 0, 0, 0.12);
+      --ink-mid: rgba(0, 0, 0, 0.22);
     }
 
     body {
@@ -28,7 +28,7 @@
       background: var(--bg);
       color: var(--fg);
       overflow: hidden;
-      font-family: 'Share Tech Mono', monospace;
+      font-family: 'VT323', monospace;
       position: relative;
     }
 
@@ -39,12 +39,12 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,0.028) 0px,
-          rgba(255,255,255,0.028) 1px,
+          rgba(0,0,0,0.05) 0px,
+          rgba(0,0,0,0.05) 1px,
           transparent 2px,
           transparent 4px
         );
-      opacity: 0.12;
+      opacity: 0.22;
       pointer-events: none;
       z-index: 1;
       animation: flicker 4s infinite;
@@ -53,11 +53,12 @@
     .noise {
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.12) 0.7px, transparent 0.8px);
-      background-size: 8px 8px;
-      opacity: 0.04;
+      background-image: radial-gradient(rgba(0,0,0,0.11) 0.7px, transparent 0.8px);
+      background-size: 7px 7px;
+      opacity: 0.08;
       pointer-events: none;
       z-index: 1;
+      mix-blend-mode: multiply;
     }
 
     .wrap {
@@ -65,7 +66,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 30px;
+      padding: 32px;
       position: relative;
       z-index: 3;
     }
@@ -76,15 +77,17 @@
       text-align: left;
       position: relative;
       z-index: 4;
+      width: min(92vw, 900px);
     }
 
     .title {
-      font-size: clamp(2rem, 6vw, 5rem);
-      line-height: 1.05;
-      letter-spacing: 0.04em;
+      font-size: clamp(2.2rem, 6vw, 5.6rem);
+      line-height: 0.98;
+      letter-spacing: 0.03em;
       white-space: pre-line;
-      text-shadow: 0 0 8px var(--green-soft);
-      min-height: 6em;
+      min-height: 5.8em;
+      color: var(--fg);
+      text-transform: uppercase;
     }
 
     .title.idle {
@@ -93,21 +96,22 @@
 
     .cursor {
       display: inline-block;
-      width: 0.6em;
+      width: 0.58em;
       animation: blink 0.9s steps(1) infinite;
     }
 
     .loader {
-      margin-top: 22px;
+      margin-top: 18px;
       opacity: 0;
       transition: opacity 0.2s ease;
       display: flex;
       gap: 16px;
       align-items: center;
       justify-content: flex-start;
-      font-size: clamp(0.9rem, 1.3vw, 1.1rem);
-      text-shadow: 0 0 8px var(--green-soft);
+      font-size: clamp(1.3rem, 2vw, 1.9rem);
       min-width: 320px;
+      color: var(--fg);
+      text-transform: uppercase;
     }
 
     .loader.visible {
@@ -144,10 +148,7 @@
 
     .glyph {
       position: absolute;
-      color: rgba(57,255,136,0.95);
-      text-shadow:
-        0 0 8px rgba(57,255,136,0.28),
-        0 0 18px rgba(57,255,136,0.12);
+      color: rgba(0,0,0,0.94);
       white-space: nowrap;
       animation: glyphPulse linear forwards;
     }
@@ -157,36 +158,36 @@
     }
 
     @keyframes breathe {
-      0%, 100% { text-shadow: 0 0 6px rgba(57,255,136,0.18); }
-      50% { text-shadow: 0 0 14px rgba(57,255,136,0.34); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.88; }
     }
 
     @keyframes flicker {
-      0%,100% { opacity: 0.12; }
-      48% { opacity: 0.13; }
-      49% { opacity: 0.08; }
-      50% { opacity: 0.14; }
-      51% { opacity: 0.10; }
-      52% { opacity: 0.13; }
+      0%,100% { opacity: 0.22; }
+      48% { opacity: 0.24; }
+      49% { opacity: 0.18; }
+      50% { opacity: 0.26; }
+      51% { opacity: 0.19; }
+      52% { opacity: 0.23; }
     }
 
     @keyframes glyphPulse {
       0% {
         opacity: 0;
-        transform: scale(0.85) rotate(0deg);
+        transform: scale(0.82) rotate(0deg);
       }
       20% {
         opacity: 1;
       }
       100% {
-        opacity: 0.88;
-        transform: scale(1.08) rotate(0.8deg);
+        opacity: 0.95;
+        transform: scale(1.08) rotate(0.6deg);
       }
     }
 
     @media (max-width: 640px) {
       .title {
-        min-height: 7em;
+        min-height: 6.8em;
       }
 
       .loader {
@@ -262,7 +263,7 @@
       if (i < fullText.length) {
         render(fullText.slice(0, i + 1));
         i++;
-        setTimeout(typeText, 58);
+        setTimeout(typeText, 62);
       } else {
         setFinalText();
       }
@@ -300,7 +301,7 @@
 
       el.style.left = Math.random() * 100 + "vw";
       el.style.top = Math.random() * 100 + "vh";
-      el.style.fontSize = (12 + Math.random() * 34) + "px";
+      el.style.fontSize = (14 + Math.random() * 38) + "px";
       el.style.animationDuration = (1.6 + Math.random() * 1.8) + "s";
 
       glyphLayer.appendChild(el);
