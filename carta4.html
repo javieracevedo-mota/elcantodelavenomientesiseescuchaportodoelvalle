@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>registro 04 — misión gusano rojo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:#d6ef43;
+      color:#0b0b0b;
+      font-family:'VT323', monospace;
+      padding:14px 18px 80px 18px;
+      min-height:100vh;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04) 0px,
+        rgba(0,0,0,0.04) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events:none;
+      opacity:0.18;
+    }
+
+    .header {
+      background:#000;
+      color:#d6ef43;
+      padding:12px;
+      display:inline-block;
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader, .text {
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader { margin:12px 0 18px 0; }
+
+    .cursor {
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity:0; }
+    }
+
+    .nav {
+      display:none;
+      margin-top:40px;
+      justify-content:space-between;
+    }
+
+    .nav.show { display:flex; }
+
+    .nav a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+
+    .nav a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+
+<div id="header" class="header"></div>
+<div id="loader" class="loader"></div>
+<div id="text" class="text"></div>
+
+<div id="nav" class="nav">
+  <a href="carta3.html">←</a>
+  <a href="carta5.html">→</a>
+</div>
+<script>
+const headerTemplate = [
+'╔══════════════════════════════════════════════════════╗',
+' ARCHIVO INTERCEPTADO',
+' registro: 04',
+' asunto: archivos de la misión gusano rojo',
+' fecha de emisión estimada: 17 de marzo, 2027',
+' ubicación aproximada: {{COORDS}}',
+' estado de señal: parcial',
+'╚══════════════════════════════════════════════════════╝'
+];
+
+const finalCoords = '20° 13´19.82´´N / 99°18´30.14´´O';
+
+const message = `[INICIO DEL MENSAJE]
+
+
+A veces quiero regresar.
+Es complicado encontrar lugares 
+desde donde enviarte mensajes.
+Mi cuerpo empieza a resentir los brincos temporales.
+Tengo dolores 
+muy 
+fuertes en la cabeza.
+Y empiezo a olvidar cosas.
+
+He tenido que documentar con una cámara los hallazgos que encuentro.
+
+El artefacto con espinas que encontré 
+es el vestigio 
+de 
+alguna operación militar 
+perdida en el tiempo.
+Pero lo que descubrí es mucho más extraño.
+GUSANO ROJO 
+no es un nombre. 
+ni una persona.
+
+Es una misión.
+Una guerra 
+secreta
+
+que nadie sabe si ya ocurrió
+si está ocurriendo
+o si está por suceder.
+
+Los chinicuiles son agentes secretos.
+Organismos programados.
+Modificados.
+Adaptados
+
+que han estado desapareciendo 
+los garambullos
+y usando su tecnología 
+para viajar en el tiempo.
+
+Llegué en el verano de Tenango en 2027.
+
+Encontré una especie de cuartel secreto 
+escondido en lo profundo del cerro.
+Era una casa abandonada 
+acondicionada como centro de monitoreo.
+
+Observaban el Túnel Emisor Oriente 
+y los vasos reguladores 
+de aguas residuales desde el año 2021.
+
+Un equipo clandestino los vigilaba las 24 horas.
+No por casualidad.
+Sino porque estaban 
+al límite de su capacidad.
+Seguían especialmente 
+los movimientos de los directivos 
+de la CONAGUA.
+
+Pero eso no fue lo único.
+
+El cuartel estaba lleno de armas.
+Pistolas alineadas 
+sobre una mesa metálica.
+Drones de videovigilancia 
+en estado de calibración.
+
+Pequeños robots de búsqueda.
+Y en una esquina un criadero de chinicuiles.
+Estos gusanos parecen criaturas simples, 
+pero su cuerpo es una promesa de algo que todavía no es.
+
+Primero larva.
+Después pupa
+Finalmente polilla.
+
+Los criaban en contenedores ovalados 
+con protuberancias de barro.
+Los magueyes con los que alimentaban 
+a los gusanos habían sido
+modificados genéticamente.
+
+Sobre una mesa estaban armando 
+una bomba de garambullos.
+No era un explosivo común.
+
+La energía que liberaría sería suficiente 
+para fracturar un portal temporal.
+Abrirlo o cerrarlo para siempre
+
+Tuve que salir corriendo.
+Alguien se acercaba.
+Pero no fueron militares ni policías.
+Los que encontraron el cuartel fueron niños.
+
+
+Jugaban en el cerro con resorteras 
+y bolas de masa robadas a su abuela.
+
+Después llegaron los adultos.
+Luego la policía.
+Cerraron la zona.
+
+Dijeron que era un laboratorio de metanfetaminas abandonado.
+Que no había nada peligroso.
+Pero había demasiado silencio en las voces de los oficiales.
+
+Pude averiguar que se abrió una carpeta de investigación.
+Clasificada como confidencial.
+
+No podía quedarme con la incertidumbre.
+Así que me infiltré a la fiscalía.
+En un disco duro confiscado encontré la confirmación. 
+
+La bomba en los vasos reguladores es real.
+Pero no estaba diseñada para destruir 
+el Túnel Emisor Oriente.
+
+
+Era lo contrario.
+
+La bomba serviría para abrir un portal 
+en los vasos reguladores
+evitar una inundación de aguas residuales.
+
+No es un ataque terrorista.
+Ni una rebelión.
+
+Es una forma de evitar 
+una inundación con aguas negras
+lo suficientemente grande 
+como para cubrir 
+comunidades enteras.
+
+Y con ello 
+borrar las huellas de experimentos biotecnológicos 
+realizados en la población
+
+¿Quién ha decidido que la historia 
+del Valle debe ser borrada una y otra vez?
+
+Si Gusano Rojo
+fue una misión para evitar la inundación 
+¿fracasó?
+o
+¿está esperando ser activada de nuevo?
+
+Te escribiré cuando tenga más certezas que dudas.
+Si es que el tiempo me deja.
+
+Mis manos dejaron de ser suaves como te gustaban.
+Ahora tienen espinas enterradas.
+
+
+
+[FIN DEL MENSAJE]
+..
+...
+.....
+...............
+estado de señal: activo
+registro archivado
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.`;
+
+const headerEl = document.getElementById("header");
+const loaderEl = document.getElementById("loader");
+const textEl = document.getElementById("text");
+const navEl = document.getElementById("nav");
+
+function randChar(){
+  const c="0123456789NSEO°´/";
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function scrambleCoords(){
+  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+}
+
+function drawHeader(coords){
+  headerEl.textContent = headerTemplate
+    .map(l=>l.replace("{{COORDS}}",coords))
+    .join("\n");
+}
+
+let s=0;
+function animateHeader(){
+  drawHeader(scrambleCoords());
+  s++;
+  if(s<20) setTimeout(animateHeader,80);
+  else startLoad();
+}
+
+function startLoad(p=0){
+  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
+  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p<100){
+    setTimeout(()=>startLoad(p+5),40);
+  }else{
+    drawHeader(finalCoords);
+    loaderEl.textContent="";
+    setTimeout(typeText,300);
+  }
+}
+
+function typeText(i=0){
+  if(i<message.length){
+    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
+    setTimeout(()=>typeText(i+1),18);
+  }else{
+    textEl.innerHTML=message + '<span class="cursor">_</span>';
+    navEl.classList.add("show");
+  }
+}
+
+animateHeader();
+</script>
+
+</body>
+</html>
