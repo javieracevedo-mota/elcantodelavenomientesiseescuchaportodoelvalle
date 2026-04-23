@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>registro 03 — refinería miguel hidalgo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:#d6ef43;
+      color:#0b0b0b;
+      font-family:'VT323', monospace;
+      padding:14px 18px 80px 18px;
+      min-height:100vh;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04) 0px,
+        rgba(0,0,0,0.04) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events:none;
+      opacity:0.18;
+    }
+
+    .header {
+      background:#000;
+      color:#d6ef43;
+      padding:12px;
+      display:inline-block;
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader, .text {
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader { margin:12px 0 18px 0; }
+
+    .cursor {
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity:0; }
+    }
+
+    .nav {
+      display:none;
+      margin-top:40px;
+      justify-content:space-between;
+    }
+
+    .nav.show { display:flex; }
+
+    .nav a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+  </style>
+</head>
+<body>
+
+<div id="header" class="header"></div>
+<div id="loader" class="loader"></div>
+<div id="text" class="text"></div>
+
+<div id="nav" class="nav">
+  <a href="carta2.html">←</a>
+  <a href="carta4.html">→</a>
+</div>
+<script>
+const headerTemplate = [
+'╔═══════════════════════════════════════════════════════╗',
+' ARCHIVO INTERCEPTADO',
+' registro: 03',
+' asunto: construcción de la refinería Miguel Hidalgo',
+' fecha de emisión: 03.1972',
+' ubicación aproximada: {{COORDS}}',
+' estado de señal: estable',
+'╚═══════════════════════════════════════════════════════╝'
+];
+
+const finalCoords = '20° 03´15.40´´N / 99°16´39.49´´O';
+
+const message = `[INICIO DEL MENSAJE]
+
+
+Han pasado días 
+desde mi último mensaje que te envié.
+No sé si para ti son años.
+Pero el tiempo parece desdibujarse 
+para mí.
+
+Mis intentos por abrir otro portal 
+han sido una mezcla de fracasos y éxitos.
+
+Fui testigo del inicio de la construcción 
+de la refinería Miguel Hidalgo
+en Tula
+en el año 1972.
+
+Cientos de trabajadores 
+levantaban 
+estructuras metálicas
+en una extensión enorme de más 
+de 700 hectáreas.
+
+La magnitud del proyecto era imponente.
+
+Cuando alzaron las torretas de refinación sentí
+como si estuviera observando 
+a los toltecas alzar sus atlantes.
+
+Pero estos no sostenían el cielo.
+Sostenían otra cosa.
+
+
+En otra ocasión llegué a un cerro de Atotonilco.
+
+Presencié su detonación 
+para la extracción de materiales 
+destinados a las cementeras.
+
+La tierra temblaba bajo mis pies 
+mientras enormes máquinas 
+devoraban 
+montañas enteras.
+
+
+Durante uno de mis recorridos 
+para observar cómo se tritura la caliza
+Encontré un artefacto 
+casi enterrado en la tierra.
+
+
+Era un dispositivo electrónico.
+
+Posiblemente un viejo transmisor 
+de radiofrecuencia.
+Pero alguien lo había intervenido.
+
+Estaba cubierto de espinas.
+Parecían espinas de mezquite.
+
+En su superficie oxidada alguien había grabado las palabras:
+
+“GUSANO ROJO”
+
+
+Me costó mucho hacerlo encender.
+Pero cuando lo logré
+
+emitió una serie
+de sonidos
+y estática.
+
+
+Entre los ruidos pude distinguir 
+una voz susurrante que decía:
+
+“El gusano rojo se alimenta de la energía liberada.
+Busca las raíces donde el 
+tiempo se enreda.”
+
+
+Era la misma voz del Tsuru blanco.
+
+
+¿Quién ha estado enviando estos mensajes?
+¿Qué significa realmente el gusano rojo?
+
+Siento que apenas estoy desentrañando la superficie 
+de algo mucho más profundo
+y complejo.
+
+
+Aunque estos viajes me han 
+permitido ser testigo de eventos 
+significativos
+
+cada salto temporal conlleva riesgos.
+
+No siempre logro identificar 
+la época en la que me encuentro.
+Y regresar se vuelve muy complicado.
+
+
+Sin embargo
+
+la posibilidad de descubrir 
+la verdad detrás de estos cruces
+y su conexión con nuestra tierra
+me impulsa a continuar.
+
+
+Te extraño.
+
+
+
+
+A veces cuando el tiempo 
+se abre frente a mí
+lo primero que busco es 
+imaginar que en algún lugar 
+tú también 
+estás mirando las estrellas.
+
+
+Pienso que sí estos mensajes logran cruzar
+todas estas capas del tiempo
+
+quizá tu cuerpo y el mío 
+puedan rozarse
+aunque sea por un instante
+
+
+y por un momento
+el futuro deja de darme miedo.
+
+
+
+[FIN DEL MENSAJE]
+..
+....
+estado de señal: activo
+registro archivado`;
+
+const headerEl = document.getElementById("header");
+const loaderEl = document.getElementById("loader");
+const textEl = document.getElementById("text");
+const navEl = document.getElementById("nav");
+
+function randChar(){
+  const c="0123456789NSEO°´/";
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function scrambleCoords(){
+  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+}
+
+function drawHeader(coords){
+  headerEl.textContent = headerTemplate
+    .map(l=>l.replace("{{COORDS}}",coords))
+    .join("\n");
+}
+
+let s=0;
+function animateHeader(){
+  drawHeader(scrambleCoords());
+  s++;
+  if(s<20) setTimeout(animateHeader,80);
+  else startLoad();
+}
+
+function startLoad(p=0){
+  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
+  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p<100){
+    setTimeout(()=>startLoad(p+5),40);
+  }else{
+    drawHeader(finalCoords);
+    loaderEl.textContent="";
+    setTimeout(typeText,300);
+  }
+}
+
+function typeText(i=0){
+  if(i<message.length){
+    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
+    setTimeout(()=>typeText(i+1),18);
+  }else{
+    textEl.innerHTML=message + '<span class="cursor">_</span>';
+    navEl.classList.add("show");
+  }
+}
+
+animateHeader();
+</script>
+
+</body>
+</html>
