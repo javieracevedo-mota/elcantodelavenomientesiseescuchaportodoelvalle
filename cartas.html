@@ -78,66 +78,46 @@
       background: rgba(0,0,0,0.08);
     }
 
-    .status-line {
+    .status-block {
       position: fixed;
-      top: 18px;
+      top: 16px;
       right: 16px;
       z-index: 30;
-      font-size: clamp(1.15rem, 1.8vw, 1.6rem);
-      letter-spacing: 0.03em;
       text-align: right;
-      max-width: min(62vw, 760px);
-      line-height: 1.05;
+      font-size: clamp(1.05rem, 1.7vw, 1.45rem);
+      line-height: 1.02;
+      max-width: min(42vw, 540px);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .status-line {
       white-space: nowrap;
     }
 
-    .status-cursor {
-      animation: blink 0.9s steps(1) infinite;
+    .radio-bars {
+      letter-spacing: 0.08em;
+      white-space: nowrap;
     }
 
     .page {
       position: relative;
       width: 100%;
-      min-height: 2000px;
-      padding-top: 120px;
-      padding-bottom: 160px;
+      min-height: 1800px;
+      padding-top: 130px;
+      padding-bottom: 120px;
     }
 
     .cluster {
       position: absolute;
-      left: 6%;
-      top: 130px;
-      width: 54%;
-      height: 1550px;
+      left: 5%;
+      top: 150px;
+      width: 56%;
+      height: 1250px;
       z-index: 2;
       animation: clusterPulse 4.2s ease-in-out infinite;
       transform-origin: center center;
-    }
-
-    .snake {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      overflow: visible;
-    }
-
-    .snake-dot {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: rgba(0,0,0,0.9);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
-      opacity: 1;
-    }
-
-    .snake-dot.head {
-      width: 12px;
-      height: 12px;
-      background: rgba(0,0,0,1);
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
     }
 
     .node {
@@ -193,18 +173,14 @@
       }
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
     @media (max-width: 980px) {
       .cluster {
         left: 4%;
         width: 72%;
       }
 
-      .status-line {
-        max-width: 60vw;
+      .status-block {
+        max-width: 46vw;
       }
 
       .node-label {
@@ -221,23 +197,22 @@
         padding: 5px 9px;
       }
 
-      .status-line {
+      .status-block {
         top: 56px;
         right: 10px;
         max-width: calc(100vw - 20px);
-        font-size: 1rem;
-        white-space: normal;
+        font-size: 0.98rem;
       }
 
       .page {
-        min-height: 2200px;
-        padding-top: 140px;
+        min-height: 2000px;
+        padding-top: 150px;
       }
 
       .cluster {
         left: 2%;
         width: 94%;
-        height: 1750px;
+        height: 1450px;
       }
 
       .node {
@@ -254,16 +229,6 @@
         min-width: 46px;
         font-size: 1.15rem;
       }
-
-      .snake-dot {
-        width: 6px;
-        height: 6px;
-      }
-
-      .snake-dot.head {
-        width: 10px;
-        height: 10px;
-      }
     }
   </style>
 </head>
@@ -275,55 +240,56 @@
     <span>20°07'40.65"N 99°17'51.44"W</span>
   </a>
 
-  <div class="status-line" id="statusLine">
-    desviando conexión IPN 73% / latencia 18% / rastro 04% / eco encubierto 61%<span class="status-cursor">_</span>
+  <div class="status-block">
+    <div class="status-line" id="signalLine">evadiendo señal 73% / rastreo 04% / blindaje 61%</div>
+    <div class="status-line" id="coordLine">20.0849, -99.3437</div>
+    <div class="status-line" id="placeLine">tezontepec de aldama, hidalgo</div>
+    <div class="radio-bars" id="radioLine">▁▂▃▅▇▆▃▂</div>
   </div>
 
   <main class="page">
-    <div class="cluster" id="cluster">
-      <div class="snake" id="snake"></div>
-
-      <a class="node" href="carta1.html" style="top: 80px; left: 16%;">
+    <div class="cluster">
+      <a class="node" href="carta1.html" style="top: 80px; left: 8%;">
         <span class="node-id">01</span>
         <span class="node-label">la noche del tsuru blanco.xic</span>
       </a>
 
-      <a class="node" href="carta2.html" style="top: 210px; left: 24%;">
+      <a class="node" href="carta2.html" style="top: 180px; left: 12%;">
         <span class="node-id">02</span>
         <span class="node-label">explosión de planta agroquímica atc.xic</span>
       </a>
 
-      <a class="node" href="carta3.html" style="top: 360px; left: 14%;">
+      <a class="node" href="carta3.html" style="top: 290px; left: 7%;">
         <span class="node-id">03</span>
         <span class="node-label">construcción de la refinería miguel hidalgo.xic</span>
       </a>
 
-      <a class="node" href="carta4.html" style="top: 510px; left: 26%;">
+      <a class="node" href="carta4.html" style="top: 400px; left: 14%;">
         <span class="node-id">04</span>
         <span class="node-label">archivos de la misión gusano rojo.xic</span>
       </a>
 
-      <a class="node" href="carta5.html" style="top: 660px; left: 10%;">
+      <a class="node" href="carta5.html" style="top: 510px; left: 5%;">
         <span class="node-id">05</span>
         <span class="node-label">experimento biotecnológico territorial.xic</span>
       </a>
 
-      <a class="node" href="carta6.html" style="top: 810px; left: 28%;">
+      <a class="node" href="carta6.html" style="top: 620px; left: 13%;">
         <span class="node-id">06</span>
         <span class="node-label">plaga patronal.xic</span>
       </a>
 
-      <a class="node" href="carta7.html" style="top: 960px; left: 16%;">
+      <a class="node" href="carta7.html" style="top: 730px; left: 8%;">
         <span class="node-id">07</span>
         <span class="node-label">culebra tormenta.xic</span>
       </a>
 
-      <a class="node" href="carta8.html" style="top: 1110px; left: 26%;">
+      <a class="node" href="carta8.html" style="top: 840px; left: 14%;">
         <span class="node-id">08</span>
         <span class="node-label">diablito robot.xic</span>
       </a>
 
-      <a class="node" href="carta9.html" style="top: 1260px; left: 12%;">
+      <a class="node" href="carta9.html" style="top: 950px; left: 6%;">
         <span class="node-id">09</span>
         <span class="node-label">canto de las aves.xic</span>
       </a>
@@ -331,130 +297,49 @@
   </main>
 
   <script>
-    const messages = [
-      "desviando conexión IPN 73% / latencia 18% / rastro 04% / eco encubierto 61%",
-      "ocultando firma digital 68% / detección 09% / rebote activo 42% / máscara 77%",
-      "camuflando origen 81% / rastreo 06% / desviación proxy 64% / señal viva 39%",
-      "anulando patrón de escucha 57% / latencia 22% / camuflaje 71% / fuga mínima 03%",
-      "desplazando conexión IPN 76% / eco residual 14% / rastro 05% / blindaje 69%"
+    const signalMessages = [
+      "evadiendo señal 73% / rastreo 04% / blindaje 61%",
+      "desviando conexión IPN 76% / eco residual 14% / máscara 69%",
+      "camuflando origen 81% / latencia 18% / fuga 03%",
+      "anulando patrón de escucha 57% / detección 09% / rebote 42%",
+      "ocultando firma digital 68% / rastro 05% / blindaje 77%"
     ];
 
-    let msgIndex = 0;
-    const statusLine = document.getElementById("statusLine");
+    const locations = [
+      { coords: "20.0849, -99.3437", place: "tezontepec de aldama, hidalgo" },
+      { coords: "20.2167, -99.2667", place: "tula de allende, hidalgo" },
+      { coords: "20.3053, -99.3425", place: "tlahuelilpan, hidalgo" },
+      { coords: "20.1156, -99.2219", place: "mixquiahuala de juárez, hidalgo" },
+      { coords: "20.2306, -99.2136", place: "progreso de obregón, hidalgo" },
+      { coords: "20.4472, -99.2189", place: "ixmiquilpan, hidalgo" },
+      { coords: "20.5478, -99.3147", place: "chilcuautla, hidalgo" },
+      { coords: "20.3417, -99.2314", place: "francisco i. madero, hidalgo" }
+    ];
 
-    function cycleStatus() {
-      msgIndex = (msgIndex + 1) % messages.length;
-      statusLine.innerHTML = messages[msgIndex] + '<span class="status-cursor">_</span>';
+    const barPatterns = [
+      "▁▂▃▅▇▆▃▂",
+      "▂▄▆█▇▄▂▁",
+      "▁▃▅▇█▆▄▂",
+      "▂▂▄▆▇▅▃▁",
+      "▁▄▆▇▆▄▂▂"
+    ];
+
+    let index = 0;
+    const signalLine = document.getElementById("signalLine");
+    const coordLine = document.getElementById("coordLine");
+    const placeLine = document.getElementById("placeLine");
+    const radioLine = document.getElementById("radioLine");
+
+    function updateStatusBlock() {
+      signalLine.textContent = signalMessages[index % signalMessages.length];
+      coordLine.textContent = locations[index % locations.length].coords;
+      placeLine.textContent = locations[index % locations.length].place;
+      radioLine.textContent = barPatterns[index % barPatterns.length];
+      index++;
     }
 
-    setInterval(cycleStatus, 2200);
-
-    function interpAxis(a, b, spacing = 16) {
-      const pts = [];
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const dist = Math.hypot(dx, dy);
-      const steps = Math.max(1, Math.floor(dist / spacing));
-
-      for (let i = 0; i <= steps; i++) {
-        const t = i / steps;
-        pts.push({
-          x: a.x + dx * t,
-          y: a.y + dy * t
-        });
-      }
-      return pts;
-    }
-
-    function orthogonalPath(start, end, mode = "vh") {
-      const points = [];
-      if (mode === "vh") {
-        const corner = { x: start.x, y: end.y };
-        points.push(...interpAxis(start, corner));
-        points.push(...interpAxis(corner, end));
-      } else {
-        const corner = { x: end.x, y: start.y };
-        points.push(...interpAxis(start, corner));
-        points.push(...interpAxis(corner, end));
-      }
-      return points;
-    }
-
-    function buildSnakePath() {
-      const cluster = document.getElementById("cluster");
-      const ids = document.querySelectorAll(".node-id");
-      const clusterBox = cluster.getBoundingClientRect();
-
-      const anchors = [];
-      ids.forEach((id) => {
-        const box = id.getBoundingClientRect();
-        anchors.push({
-          x: box.left - clusterBox.left + box.width / 2,
-          y: box.top - clusterBox.top + box.height / 2
-        });
-      });
-
-      if (!anchors.length) return [];
-
-      const path = [];
-
-      // entrada horizontal desde la izquierda al nodo 1
-      const entry = { x: -40, y: anchors[0].y };
-      path.push(...interpAxis(entry, anchors[0]));
-
-      // conexiones ortogonales entre nodos
-      const modes = ["vh", "vh", "vh", "vh", "vh", "vh", "vh", "vh"];
-      for (let i = 0; i < anchors.length - 1; i++) {
-        path.push(...orthogonalPath(anchors[i], anchors[i + 1], modes[i]));
-      }
-
-      // salida especial: desde nodo 9 baja y luego sale a la derecha
-      const last = anchors[anchors.length - 1];
-      const down = { x: last.x, y: last.y + 160 };
-      const exit = { x: clusterBox.width + 80, y: down.y };
-
-      path.push(...interpAxis(last, down));
-      path.push(...interpAxis(down, exit));
-
-      return path;
-    }
-
-    function animateSnake() {
-      const snake = document.getElementById("snake");
-      snake.innerHTML = "";
-
-      const path = buildSnakePath();
-      let current = 0;
-      let previousHead = null;
-
-      function step() {
-        if (current >= path.length) return;
-
-        const p = path[current];
-        const dot = document.createElement("div");
-        dot.className = "snake-dot head";
-        dot.style.left = p.x + "px";
-        dot.style.top = p.y + "px";
-
-        if (previousHead) previousHead.classList.remove("head");
-
-        snake.appendChild(dot);
-        previousHead = dot;
-        current++;
-
-        setTimeout(step, 58);
-      }
-
-      step();
-    }
-
-    window.addEventListener("load", () => {
-      setTimeout(animateSnake, 250);
-    });
-
-    window.addEventListener("resize", () => {
-      animateSnake();
-    });
+    updateStatusBlock();
+    setInterval(updateStatusBlock, 2200);
   </script>
 </body>
 </html>
