@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>registro 06 — plaga patronal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:#d6ef43;
+      color:#0b0b0b;
+      font-family:'VT323', monospace;
+      padding:14px 18px 80px 18px;
+      min-height:100vh;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04) 0px,
+        rgba(0,0,0,0.04) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events:none;
+      opacity:0.18;
+    }
+
+    .header {
+      background:#000;
+      color:#d6ef43;
+      padding:12px;
+      display:inline-block;
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader, .text {
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader { margin:12px 0 18px 0; }
+
+    .cursor {
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity:0; }
+    }
+
+    .nav {
+      display:none;
+      margin-top:40px;
+      justify-content:space-between;
+    }
+
+    .nav.show { display:flex; }
+
+    .nav a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+
+    .nav a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+
+<div id="header" class="header"></div>
+<div id="loader" class="loader"></div>
+<div id="text" class="text"></div>
+
+<div id="nav" class="nav">
+  <a href="carta5.html">←</a>
+  <a href="carta7.html">→</a>
+</div>
+<script>
+const headerTemplate = [
+'╔══════════════════════════════════════════════════════════╗',
+' ARCHIVO INTERCEPTADO',
+' registro: 06',
+' asunto: plaga patronal',
+' fecha estimada: 1 de septiembre, 2042',
+' ubicación aproximada: {{COORDS}}',
+' estado de señal: estable',
+'╚══════════════════════════════════════════════════════════╝'
+];
+
+const finalCoords = '20° 13´21.44´´N / 99°05´27.04´´O';
+
+const message = `[INICIO DEL MENSAJE]
+
+
+Llegué al Jardín Botánico del Instituto Intercontinental de Adaptación Hidrobiológica.
+Era enorme.
+
+Un complejo entero dedicado a la reconstrucción genéticade plantas.
+Habían logrado clonar variedades antiguas de maíz.
+También tenían
+docenas de especies
+de quelites.
+
+Los mismos
+que tanto te gustan.
+
+
+
+Vi organismos que solo pueden crecer in vitro.
+Especies extremófilas.
+Diseñadas
+para soportar niveles de contaminación
+que matarían a cualquier otra forma de vida.
+
+Sus raíces no buscaban agua.
+Buscaban metales pesados.
+Sus hojas eran casi translúcidas.
+Como si hubieran aprendido a absorber lo mínimo posible de un entorno hostil.
+
+Mientras caminaba por los invernaderos sentí algo extraño.
+Como si el jardín no estuviera hecho solo de plantas.
+Sino de intentos de adaptación.
+
+Formas de vida aprendiendo a sobrevivir a lo que otros no soportarían.
+Encontré una pequeña capilla.
+
+Estaba en la sección
+dedicada
+a plagas biológicas.
+
+
+
+Ahí mantenían una variedad de heno motita 
+Una bromelia como la que crece en los mezquites.
+
+Una planta epífita que décadas atrás
+se extendió por todo el Valle.
+
+Su crecimiento había sido impulsado por la contaminación
+de los parques industriales.
+
+No solo cubrió
+árboles
+y piedras.
+Se adhirió a objetos religiosos.
+A imágenes de santos.
+
+A cohetes y castillos de fuegos artificiales.
+Todo lo tapizó.
+Todo lo absorbió. 
+
+Para los investigadores esto fue una crisis.
+
+Una plaga que desplazó flora nativa e invadió
+ecosistemas enteros.
+Pero lo que no entendieron
+fue que no solo invadió el paisaje.
+También 
+invadió la cultura.
+
+Las comunidades cercanas comenzaron a venerar
+a una virgen cubierta
+por la planta.
+
+Los investigadores lo llamaron
+“simbiosis accidental”.
+Pero no vieron lo esencial.
+
+La planta no solo había tomado
+la materia.
+Había tomado
+la fe.
+Los rituales cambiaron.
+
+
+Las festividades dejaron de ser las mismas.
+Las plantas no solo recubrían la virgen.
+
+Se entrelazaban con las costumbres.
+
+El pequeño jardín dentro de la capilla
+mantenía con vida
+reliquias
+de esa fusión
+entre lo vegetal
+y 
+lo divino.
+
+Restos de cohetes con pequeños hijuelos creciendo sobre ellos.
+Adornos festivos cubiertos por racimos de plantas.
+Y la virgen que aún llevaban en procesión.
+
+Mientras observaba esa mezcla de planta y creencia
+pensé en algo.
+Hay organismos que no viven solos.
+Existen
+entre otros cuerpos. 
+Entre pieles que no son suyas.
+Entre ramas
+que los sostienen.
+
+Saqué unas fotos de los objetos, 
+alguien se acercaba
+Tuve que esconderme
+casi me descubren.
+
+Con todo lo que he visto he entendido que la historia no es un río
+que avanza en línea recta.
+
+Se escurre a los costados.
+Se filtra en el suelo.
+Se evapora en el aire.
+
+Y me estoy perdiendo
+dentro de ella.
+
+
+Cada viaje deja marcas en mi cuerpo. 
+
+Los músculos tardan más en responder.
+A veces olvido palabras en medio de una oración.
+Siento como si mis pensamientos estuvieran siendo filtrados
+por algo que no comprendo.
+
+No sé cuánto más podré seguir escribiéndote 
+antes de no saber como
+ pronunciar 
+tu nombre
+
+[FIN DEL MENSAJE]
+..
+...
+....
+......
+estado de señal: activo
+registro archivado
+.
+.
+.
+.
+.`;
+
+const headerEl = document.getElementById("header");
+const loaderEl = document.getElementById("loader");
+const textEl = document.getElementById("text");
+const navEl = document.getElementById("nav");
+
+function randChar(){
+  const c="0123456789NSEO°´/";
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function scrambleCoords(){
+  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+}
+
+function drawHeader(coords){
+  headerEl.textContent = headerTemplate
+    .map(l=>l.replace("{{COORDS}}",coords))
+    .join("\n");
+}
+
+let s=0;
+function animateHeader(){
+  drawHeader(scrambleCoords());
+  s++;
+  if(s<20) setTimeout(animateHeader,80);
+  else startLoad();
+}
+
+function startLoad(p=0){
+  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
+  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p<100){
+    setTimeout(()=>startLoad(p+5),40);
+  }else{
+    drawHeader(finalCoords);
+    loaderEl.textContent="";
+    setTimeout(typeText,300);
+  }
+}
+
+function typeText(i=0){
+  if(i<message.length){
+    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
+    setTimeout(()=>typeText(i+1),18);
+  }else{
+    textEl.innerHTML=message + '<span class="cursor">_</span>';
+    navEl.classList.add("show");
+  }
+}
+
+animateHeader();
+</script>
+
+</body>
+</html>
