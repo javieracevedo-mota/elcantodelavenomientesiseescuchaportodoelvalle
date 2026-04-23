@@ -49,6 +49,19 @@
       font-size:1.6rem;
       line-height:1.05;
     }
+    .text {
+  animation: unstableText 3.5s infinite;
+}
+
+@keyframes unstableText {
+  0%, 100% { opacity: 1; }
+  48% { opacity: 1; }
+  49% { opacity: 0.86; }
+  50% { opacity: 1; }
+  72% { transform: translateX(0); }
+  73% { transform: translateX(1px); }
+  74% { transform: translateX(0); }
+}
 
     .loader { margin:12px 0 18px 0; }
 
@@ -109,18 +122,25 @@ const finalCoords = '20° 02´03.61´´N / 99°14´29.60´´O';
 
 const message = `[INICIO DEL MENSAJE]
 
-
 No sé cómo empezar esto.
-Al principio dudé de lo que viví.
+Al principio 
+dudé de lo 
+que viví.
 
-Pensé que el cerro de Nopala juega con las mentes de quienes lo pisan.
-La tierra guarda secretos que nadie se atreve a nombrar.
+Pensé que el cerro de Nopala juega con 
+las mentes de quienes lo pisan.
+La tierra guarda secretos 
+que nadie se atreve 
+a nombrar.
 
 Encontré el garambullo.
 Era el único en toda la ladera 
 como si lo hubieran colocado ahí a propósito.
-Cuando lo toqué la piel se me enchinó. 
-Diferente a cuando nuestros cuerpos se tocan.
+
+Cuando lo toqué 
+la piel se me enchinó. 
+Diferente a cuando nuestros 
+cuerpos se tocan.
 
 el aire cambió.
 
@@ -138,7 +158,8 @@ Algo que parecía atravesar la materia.
 Sentí mis partículas dividirse.
 No dolía.
 Era una sensación extraña 
-como si mi cuerpo se deslizara entre capas invisibles.
+como si mi cuerpo se deslizara 
+entre capas invisibles.
 
 No sé cuánto tiempo pasó antes de darme cuenta 
 de que ya no estaba en el cerro.
@@ -146,17 +167,21 @@ de que ya no estaba en el cerro.
 Había llegado a otro lugar.
 Había retrocedido en el tiempo.
 
-Estaba en el momento en que la fábrica de agroquímicos ATC en 
+Estaba en el momento en que la fábrica de agroquímicos ATC 
+en 
 Atitalaquia explotó.
 
-Lo supe porque frente a mí las llamas cubrían los laboratorios.
+Lo supe porque frente a mí las llamas 
+cubrían los laboratorios.
 
 El humo lo cubría todo.
 
 Los trabajadores corrían en todas direcciones.
 
 Escapé del fuego buscando un lugar seguro.
-Algo dentro de mí me decía que no había llegado ahí por accidente.
+Algo dentro de mí me decía que 
+no había llegado ahí 
+por accidente.
 
 
 Entré en una oficina que aún seguía en pie.
@@ -173,16 +198,12 @@ Viajar
 en el tiempo.
 
 
-Los garambullos no eran sólo cactus.
-
+Los garambullos 
+no eran sólo cactus.
 Eran puertas intertemporales.
 
-
 Pero el suelo tembló.
-
 La explosión me alcanzó.
-
-
 El aire volvió a cambiar.
 
 Aparecí en otro cerro.
@@ -191,8 +212,10 @@ He llegado a Tenango.
 Creo que es el año 2040.
 
 
-Te q_
-
+Te q(███████████
+▓▓▓▓▓▓▓▓▓▓
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+█)
 
 [SEÑAL INTERRUMPIDA]
 ..
@@ -203,6 +226,7 @@ Te q_
 estado de señal: degradado
 fragmento incompleto
 registro archivado`;
+
 
 const headerEl = document.getElementById("header");
 const loaderEl = document.getElementById("loader");
