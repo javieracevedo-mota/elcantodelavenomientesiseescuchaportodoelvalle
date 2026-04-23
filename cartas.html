@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>directorio recuperado</title>
+  <title>archivos interceptado</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +31,7 @@
       color: var(--fg);
       font-family: 'Share Tech Mono', monospace;
       position: relative;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     body::before {
@@ -65,15 +65,27 @@
     .wrap {
       position: relative;
       z-index: 2;
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 42px 24px 56px;
+      min-height: 100vh;
+      padding: 34px 24px 40px;
     }
 
     .top {
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 16px;
+      position: relative;
+      z-index: 4;
+      margin-bottom: 10px;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .status-left {
+      max-width: 820px;
     }
 
     .kicker {
@@ -81,47 +93,57 @@
       font-size: 0.82rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     h1 {
-      font-size: clamp(1.3rem, 2.5vw, 2rem);
+      font-size: clamp(1.2rem, 2.4vw, 1.9rem);
       font-weight: normal;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       text-shadow: 0 0 8px var(--green-soft);
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      font-weight: normal;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-shadow: 0 0 8px var(--green-soft);
+    }
+
+    .clock {
+      color: var(--green);
+      font-size: clamp(0.95rem, 1.7vw, 1.15rem);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      text-shadow: 0 0 8px var(--green-soft);
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      background: rgba(57,255,136,0.03);
     }
 
     .sub {
-      margin-top: 10px;
+      margin-top: 12px;
       color: var(--green-dim);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.95fr);
-      gap: 24px;
-      align-items: start;
-    }
-
-    .culture-field {
-      position: relative;
-      min-height: 78vh;
-      border: 1px solid var(--line);
-      background:
-        radial-gradient(circle at 20% 30%, rgba(57,255,136,0.03), transparent 24%),
-        radial-gradient(circle at 70% 65%, rgba(57,255,136,0.025), transparent 28%),
-        rgba(57,255,136,0.02);
-      box-shadow: inset 0 0 30px rgba(57,255,136,0.03);
+    .field {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
       overflow: hidden;
-      padding: 18px;
     }
 
     .sample {
       position: absolute;
-      width: 250px;
-      min-height: 120px;
+      width: 255px;
+      min-height: 122px;
       padding: 14px 14px 12px;
       text-decoration: none;
       color: var(--fg);
@@ -136,6 +158,7 @@
         0 0 10px rgba(57,255,136,0.04);
       transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
       overflow: hidden;
+      z-index: 3;
     }
 
     .sample::before {
@@ -150,7 +173,7 @@
     .sample:hover,
     .sample:focus-visible,
     .sample.active {
-      transform: scale(1.03);
+      transform: scale(1.04);
       background:
         radial-gradient(circle at 30% 30%, rgba(57,255,136,0.16), transparent 42%),
         radial-gradient(circle at 70% 75%, rgba(57,255,136,0.10), transparent 38%),
@@ -200,70 +223,25 @@
       animation: pulseEncrypted 2.1s ease-in-out infinite;
     }
 
-    .viewer {
-      border: 1px solid var(--line);
-      background: rgba(57,255,136,0.02);
-      box-shadow: inset 0 0 20px rgba(57,255,136,0.03);
-      padding: 18px;
-      min-height: 78vh;
-    }
-
-    .viewer-title {
-      color: var(--green);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 0.84rem;
-      margin-bottom: 18px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 10px;
-    }
-
-    .meta-block {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      gap: 10px 14px;
-      font-size: 0.92rem;
-      line-height: 1.45;
-      margin-bottom: 18px;
-    }
-
-    .meta-label {
-      color: var(--green-dim);
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-    }
-
-    .preview {
-      border-top: 1px solid var(--line);
-      padding-top: 16px;
-      color: rgba(223, 255, 231, 0.88);
-      line-height: 1.6;
-      min-height: 180px;
-      white-space: pre-wrap;
-    }
-
-    .preview-code {
-      margin-top: 16px;
-      color: rgba(57, 255, 136, 0.58);
-      font-size: 0.82rem;
-      line-height: 1.7;
-      word-break: break-word;
-    }
-
     .footer {
-      margin-top: 18px;
+      position: fixed;
+      left: 24px;
+      right: 24px;
+      bottom: 14px;
+      z-index: 4;
       color: rgba(57, 255, 136, 0.62);
       font-size: 0.84rem;
       display: flex;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
+      pointer-events: none;
     }
 
     .back {
       color: var(--green-dim);
       text-decoration: none;
+      pointer-events: auto;
     }
 
     .back:hover {
@@ -307,33 +285,35 @@
       50% { letter-spacing: 0.045em; }
     }
 
-    @media (max-width: 980px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .culture-field,
-      .viewer {
-        min-height: auto;
-      }
-
-      .culture-field {
-        height: 980px;
+    @media (max-width: 900px) {
+      .sample {
+        width: 220px;
+        min-height: 116px;
       }
     }
 
     @media (max-width: 560px) {
       .wrap {
-        padding: 28px 14px 42px;
+        padding: 22px 14px 36px;
+      }
+
+      .clock {
+        font-size: 0.92rem;
       }
 
       .sample {
-        width: 220px;
+        width: 196px;
+        padding: 12px 12px 10px;
       }
 
-      .meta-block {
-        grid-template-columns: 1fr;
-        gap: 4px 0;
+      .sample-name {
+        font-size: 0.88rem;
+      }
+
+      .footer {
+        left: 14px;
+        right: 14px;
+        bottom: 10px;
       }
     }
   </style>
@@ -343,194 +323,128 @@
 
   <main class="wrap">
     <header class="top">
-      <div class="kicker">sistema de escucha activo</div>
-      <h1>directorio recuperado</h1>
-      <div class="sub">9 archivos interceptados disponibles / formato detectado: .xic</div>
+      <div class="status">
+        <div class="status-left">
+          <div class="kicker">TRANSMISIÓN PARCIALMENTE DECODIFICADA</div>
+          <h1>ARCHIVOS INTERCEPTADO</h1>
+          <div class="sub">9 archivos disponibles / formato detectado: .xic</div>
+        </div>
+
+        <div class="clock" id="clock">--:--:--</div>
+      </div>
     </header>
 
-    <section class="layout">
-      <section class="culture-field">
-        <a class="sample stable active"
-           href="carta1.html"
-           style="top: 4%; left: 4%;"
-           data-title="la noche del tsuru blanco.xic"
-           data-state="estable"
-           data-type="archivo interceptado"
-           data-origin="procedencia no verificada"
-           data-access="lectura disponible"
-           data-preview="Primer registro recuperado. La lectura presenta continuidad estable y trazas mínimas de corrupción. El archivo conserva estructura narrativa legible.">
-          <div class="sample-id">[01]</div>
-          <div class="sample-name">la noche del tsuru blanco.xic</div>
-          <div class="sample-state">estado: estable</div>
-        </a>
+    <section class="field">
+      <a class="sample stable active"
+         href="carta1.html"
+         style="top: 15%; left: 4%;"
+         data-title="la noche del tsuru blanco.xic">
+        <div class="sample-id">[01]</div>
+        <div class="sample-name">la noche del tsuru blanco.xic</div>
+        <div class="sample-state">estado: estable</div>
+      </a>
 
-        <a class="sample unstable"
-           href="carta2.html"
-           style="top: 10%; left: 42%;"
-           data-title="explosión de planta agroquímica atc.xic"
-           data-state="inestable"
-           data-type="archivo interceptado"
-           data-origin="transmisión fragmentaria"
-           data-access="lectura disponible"
-           data-preview="Registro con alteraciones de consistencia. Se detectan zonas de interferencia y ligera inestabilidad en la secuencia del archivo.">
-          <div class="sample-id">[02]</div>
-          <div class="sample-name">explosión de planta agroquímica atc.xic</div>
-          <div class="sample-state">estado: inestable</div>
-        </a>
+      <a class="sample unstable"
+         href="carta2.html"
+         style="top: 10%; left: 42%;"
+         data-title="explosión de planta agroquímica atc.xic">
+        <div class="sample-id">[02]</div>
+        <div class="sample-name">explosión de planta agroquímica atc.xic</div>
+        <div class="sample-state">estado: inestable</div>
+      </a>
 
-        <a class="sample stable"
-           href="carta3.html"
-           style="top: 26%; left: 16%;"
-           data-title="construcción de la refinería miguel hidalgo.xic"
-           data-state="estable"
-           data-type="archivo interceptado"
-           data-origin="directorio recuperado"
-           data-access="lectura disponible"
-           data-preview="Secuencia íntegra con baja pérdida de señal. El archivo conserva continuidad narrativa y metadatos parciales.">
-          <div class="sample-id">[03]</div>
-          <div class="sample-name">construcción de la refinería miguel hidalgo.xic</div>
-          <div class="sample-state">estado: estable</div>
-        </a>
+      <a class="sample stable"
+         href="carta3.html"
+         style="top: 28%; left: 18%;"
+         data-title="construcción de la refinería miguel hidalgo.xic">
+        <div class="sample-id">[03]</div>
+        <div class="sample-name">construcción de la refinería miguel hidalgo.xic</div>
+        <div class="sample-state">estado: estable</div>
+      </a>
 
-        <a class="sample partial"
-           href="carta4.html"
-           style="top: 31%; left: 56%;"
-           data-title="archivos de la misión gusano rojo.xic"
-           data-state="parcial"
-           data-type="archivo interceptado"
-           data-origin="módulo secundario"
-           data-access="lectura parcial"
-           data-preview="Registro recuperado de forma incompleta. Se reconocen segmentos útiles, pero el archivo presenta lagunas y áreas ausentes.">
-          <div class="sample-id">[04]</div>
-          <div class="sample-name">archivos de la misión gusano rojo.xic</div>
-          <div class="sample-state">estado: parcial</div>
-        </a>
+      <a class="sample partial"
+         href="carta4.html"
+         style="top: 30%; left: 58%;"
+         data-title="archivos de la misión gusano rojo.xic">
+        <div class="sample-id">[04]</div>
+        <div class="sample-name">archivos de la misión gusano rojo.xic</div>
+        <div class="sample-state">estado: parcial</div>
+      </a>
 
-        <a class="sample degraded"
-           href="carta5.html"
-           style="top: 48%; left: 8%;"
-           data-title="experimento biotecnológico territorial.xic"
-           data-state="degradado"
-           data-type="archivo interceptado"
-           data-origin="fuente no identificada"
-           data-access="lectura con pérdida"
-           data-preview="El archivo presenta degradación estructural. Persisten restos legibles y rastros de contenido biotecnológico territorial.">
-          <div class="sample-id">[05]</div>
-          <div class="sample-name">experimento biotecnológico territorial.xic</div>
-          <div class="sample-state">estado: degradado</div>
-        </a>
+      <a class="sample degraded"
+         href="carta5.html"
+         style="top: 48%; left: 8%;"
+         data-title="experimento biotecnológico territorial.xic">
+        <div class="sample-id">[05]</div>
+        <div class="sample-name">experimento biotecnológico territorial.xic</div>
+        <div class="sample-state">estado: degradado</div>
+      </a>
 
-        <a class="sample stable"
-           href="carta6.html"
-           style="top: 53%; left: 46%;"
-           data-title="plaga patronal.xic"
-           data-state="estable"
-           data-type="archivo interceptado"
-           data-origin="registro sin firma"
-           data-access="lectura disponible"
-           data-preview="Registro estable. El cuerpo del archivo conserva continuidad interna y una lectura sostenida.">
-          <div class="sample-id">[06]</div>
-          <div class="sample-name">plaga patronal.xic</div>
-          <div class="sample-state">estado: estable</div>
-        </a>
+      <a class="sample stable"
+         href="carta6.html"
+         style="top: 52%; left: 44%;"
+         data-title="plaga patronal.xic">
+        <div class="sample-id">[06]</div>
+        <div class="sample-name">plaga patronal.xic</div>
+        <div class="sample-state">estado: estable</div>
+      </a>
 
-        <a class="sample unstable"
-           href="carta7.html"
-           style="top: 64%; left: 26%;"
-           data-title="culebra tormenta.xic"
-           data-state="inestable"
-           data-type="archivo interceptado"
-           data-origin="escucha territorial"
-           data-access="lectura disponible"
-           data-preview="Registro con oscilaciones de señal. Se recomienda lectura secuencial para evitar pérdida de continuidad.">
-          <div class="sample-id">[07]</div>
-          <div class="sample-name">culebra tormenta.xic</div>
-          <div class="sample-state">estado: inestable</div>
-        </a>
+      <a class="sample unstable"
+         href="carta7.html"
+         style="top: 66%; left: 22%;"
+         data-title="culebra tormenta.xic">
+        <div class="sample-id">[07]</div>
+        <div class="sample-name">culebra tormenta.xic</div>
+        <div class="sample-state">estado: inestable</div>
+      </a>
 
-        <a class="sample unstable"
-           href="carta8.html"
-           style="top: 70%; left: 58%;"
-           data-title="diablito robot.xic"
-           data-state="inestable"
-           data-type="archivo interceptado"
-           data-origin="procedencia no verificada"
-           data-access="lectura disponible"
-           data-preview="Archivo con comportamiento errático. Se detectan variaciones leves en la integridad del registro.">
-          <div class="sample-id">[08]</div>
-          <div class="sample-name">diablito robot.xic</div>
-          <div class="sample-state">estado: inestable</div>
-        </a>
+      <a class="sample unstable"
+         href="carta8.html"
+         style="top: 70%; left: 60%;"
+         data-title="diablito robot.xic">
+        <div class="sample-id">[08]</div>
+        <div class="sample-name">diablito robot.xic</div>
+        <div class="sample-state">estado: inestable</div>
+      </a>
 
-        <a class="sample encrypted"
-           href="carta9.html"
-           style="top: 82%; left: 14%;"
-           data-title="canto de las aves.xic"
-           data-state="cifrado"
-           data-type="archivo interceptado"
-           data-origin="módulo bioacústico"
-           data-access="lectura restringida"
-           data-preview="Registro cifrado. El archivo conserva estructura visible, pero parte de su contenido permanece sin decodificar.">
-          <div class="sample-id">[09]</div>
-          <div class="sample-name">canto de las aves.xic</div>
-          <div class="sample-state">estado: cifrado</div>
-        </a>
-      </section>
-
-      <aside class="viewer">
-        <div class="viewer-title">visor de muestra</div>
-
-        <div class="meta-block">
-          <div class="meta-label">archivo</div>
-          <div id="metaTitle">la noche del tsuru blanco.xic</div>
-
-          <div class="meta-label">estado</div>
-          <div id="metaState">estable</div>
-
-          <div class="meta-label">tipo</div>
-          <div id="metaType">archivo interceptado</div>
-
-          <div class="meta-label">origen</div>
-          <div id="metaOrigin">procedencia no verificada</div>
-
-          <div class="meta-label">acceso</div>
-          <div id="metaAccess">lectura disponible</div>
-        </div>
-
-        <div class="preview" id="metaPreview">Primer registro recuperado. La lectura presenta continuidad estable y trazas mínimas de corrupción. El archivo conserva estructura narrativa legible.</div>
-
-        <div class="preview-code">
-cultivo activo / muestra xic / lectura no autorizada / eco territorial / archivo vivo
-        </div>
-      </aside>
+      <a class="sample encrypted"
+         href="carta9.html"
+         style="top: 82%; left: 12%;"
+         data-title="canto de las aves.xic">
+        <div class="sample-id">[09]</div>
+        <div class="sample-name">canto de las aves.xic</div>
+        <div class="sample-state">estado: cifrado</div>
+      </a>
     </section>
 
     <div class="footer">
       <a class="back" href="index.html">← volver al acceso</a>
-      <div>directorio vivo / lectura no autorizada</div>
+      <div>archivo vivo / lectura no autorizada</div>
     </div>
   </main>
 
   <script>
-    const samples = document.querySelectorAll(".sample");
-    const metaTitle = document.getElementById("metaTitle");
-    const metaState = document.getElementById("metaState");
-    const metaType = document.getElementById("metaType");
-    const metaOrigin = document.getElementById("metaOrigin");
-    const metaAccess = document.getElementById("metaAccess");
-    const metaPreview = document.getElementById("metaPreview");
+    function updateMexicoCityClock() {
+      const now = new Date();
+      const formatted = new Intl.DateTimeFormat('es-MX', {
+        timeZone: 'America/Mexico_City',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).format(now);
 
+      document.getElementById('clock').textContent = formatted + ' h';
+    }
+
+    updateMexicoCityClock();
+    setInterval(updateMexicoCityClock, 1000);
+
+    const samples = document.querySelectorAll(".sample");
     samples.forEach((sample) => {
       function activateSample() {
         samples.forEach(s => s.classList.remove("active"));
         sample.classList.add("active");
-
-        metaTitle.textContent = sample.dataset.title;
-        metaState.textContent = sample.dataset.state;
-        metaType.textContent = sample.dataset.type;
-        metaOrigin.textContent = sample.dataset.origin;
-        metaAccess.textContent = sample.dataset.access;
-        metaPreview.textContent = sample.dataset.preview;
       }
 
       sample.addEventListener("mouseenter", activateSample);
