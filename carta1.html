@@ -16,6 +16,41 @@
       color:#0b0b0b;
       font-family:'VT323', monospace;
       padding:14px 18px 80px 18px;
+      min-height:100vh;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0,0,0,0.04) 0px,
+          rgba(0,0,0,0.04) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+      pointer-events:none;
+      opacity:0.18;
+      z-index:10;
+    }
+
+    .noise {
+      position:fixed;
+      inset:0;
+      background-image: radial-gradient(rgba(0,0,0,0.09) 0.7px, transparent 0.8px);
+      background-size:8px 8px;
+      opacity:0.08;
+      pointer-events:none;
+      z-index:9;
+    }
+
+    .page {
+      position:relative;
+      z-index:2;
     }
 
     .header, .loader, .text {
@@ -24,7 +59,9 @@
       line-height:1.05;
     }
 
-    .loader { margin:12px 0 18px 0; }
+    .loader {
+      margin:12px 0 18px 0;
+    }
 
     .cursor {
       animation: blink 0.9s steps(1) infinite;
@@ -34,11 +71,9 @@
       50% { opacity:0; }
     }
 
-    /* 🔥 CONTENEDOR DE NAVEGACIÓN FINAL */
     .nav {
       display:none;
       margin-top:40px;
-      display:flex;
       justify-content:space-between;
       align-items:center;
     }
@@ -60,29 +95,46 @@
       background:rgba(0,0,0,0.08);
     }
 
+    @media (max-width:640px){
+      body {
+        padding:10px 12px 80px 12px;
+      }
+
+      .header, .loader, .text {
+        font-size:1.28rem;
+      }
+
+      .nav a {
+        font-size:1.6rem;
+        padding:5px 10px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<div id="header" class="header"></div>
-<div id="loader" class="loader"></div>
-<div id="text" class="text"></div>
+<div class="noise"></div>
 
-<!-- 🔥 AQUÍ VAN LAS DOS FLECHAS -->
-<div id="nav" class="nav">
-  <a href="cartas.html">←</a>
-  <a href="carta2.html">→</a>
+<div class="page">
+  <div id="header" class="header"></div>
+  <div id="loader" class="loader"></div>
+  <div id="text" class="text"></div>
+
+  <div id="nav" class="nav">
+    <a href="cartas.html">←</a>
+    <a href="carta2.html">→</a>
+  </div>
 </div>
 <script>
 const headerTemplate = [
-'╔══════════════════════════════════════════════════════╗',
+'╔═════════════════════════════════════════════════════════╗',
 ' ARCHIVO INTERCEPTADO',
 ' registro: 01',
 ' asunto: la noche del tsuru blanco',
 ' fecha de emisión: 19.07.2019',
 ' ubicación aproximada: {{COORDS}}',
 ' estado de señal: estable',
-'╚══════════════════════════════════════════════════════╝'
+'╚═════════════════════════════════════════════════════════╝'
 ];
 
 const finalCoords = '20° 08´30.06´´N / 99°17´10.74´´O';
