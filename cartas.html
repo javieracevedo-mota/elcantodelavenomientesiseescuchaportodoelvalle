@@ -20,9 +20,9 @@
       --bg: #000000;
       --fg: #dfffe7;
       --green: #39ff88;
-      --green-soft: rgba(57, 255, 136, 0.16);
-      --green-dim: rgba(57, 255, 136, 0.65);
-      --line: rgba(57, 255, 136, 0.24);
+      --green-dim: rgba(57, 255, 136, 0.72);
+      --green-soft: rgba(57, 255, 136, 0.14);
+      --line: rgba(57, 255, 136, 0.22);
     }
 
     body {
@@ -65,15 +65,15 @@
     .wrap {
       position: relative;
       z-index: 2;
-      max-width: 1220px;
+      max-width: 1320px;
       margin: 0 auto;
-      padding: 42px 24px 60px;
+      padding: 40px 24px 56px;
     }
 
     .top {
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       border-bottom: 1px solid var(--line);
-      padding-bottom: 18px;
+      padding-bottom: 16px;
     }
 
     .kicker {
@@ -85,11 +85,10 @@
     }
 
     h1 {
-      font-size: clamp(1.3rem, 2.6vw, 2rem);
+      font-size: clamp(1.3rem, 2.5vw, 2rem);
       font-weight: normal;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--fg);
       text-shadow: 0 0 8px var(--green-soft);
     }
 
@@ -97,6 +96,13 @@
       margin-top: 10px;
       color: var(--green-dim);
       font-size: 0.92rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.9fr);
+      gap: 20px;
+      align-items: start;
     }
 
     .panel {
@@ -108,7 +114,7 @@
     .head-row,
     .file-row {
       display: grid;
-      grid-template-columns: 72px 1fr 170px;
+      grid-template-columns: 72px 1fr 150px;
       gap: 18px;
       align-items: center;
       padding: 14px 18px;
@@ -134,7 +140,8 @@
     }
 
     .file-row:hover,
-    .file-row:focus-visible {
+    .file-row:focus-visible,
+    .file-row.active {
       background: rgba(57, 255, 136, 0.08);
       color: #ffffff;
       padding-left: 26px;
@@ -152,10 +159,57 @@
     }
 
     .state {
-      text-transform: lowercase;
       color: var(--green-dim);
+      text-transform: lowercase;
       white-space: nowrap;
-      text-align: left;
+    }
+
+    .viewer {
+      min-height: 100%;
+      padding: 18px;
+    }
+
+    .viewer-title {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.84rem;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    .meta-block {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 10px 14px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      margin-bottom: 18px;
+    }
+
+    .meta-label {
+      color: var(--green-dim);
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+    }
+
+    .preview {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      color: rgba(223, 255, 231, 0.88);
+      line-height: 1.6;
+      min-height: 180px;
+      white-space: pre-wrap;
+    }
+
+    .preview-code {
+      margin-top: 16px;
+      color: rgba(57, 255, 136, 0.58);
+      font-size: 0.82rem;
+      line-height: 1.7;
+      word-break: break-word;
     }
 
     .footer {
@@ -178,7 +232,7 @@
     }
 
     @keyframes flicker {
-      0%, 100% { opacity: 0.12; }
+      0%,100% { opacity: 0.12; }
       48% { opacity: 0.13; }
       49% { opacity: 0.08; }
       50% { opacity: 0.14; }
@@ -186,20 +240,21 @@
       52% { opacity: 0.13; }
     }
 
-    @media (max-width: 820px) {
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
       .head-row,
       .file-row {
         grid-template-columns: 64px 1fr;
       }
 
-      .head-row .state,
-      .file-row .state {
+      .state {
         grid-column: 2 / 3;
         margin-top: 4px;
-      }
-
-      .head-row .state {
-        margin-top: 0;
       }
     }
 
@@ -209,14 +264,15 @@
       }
 
       .head-row,
-      .file-row {
-        padding: 12px 12px;
-        gap: 12px;
+      .file-row,
+      .viewer {
+        padding-left: 12px;
+        padding-right: 12px;
       }
 
-      .name,
-      .state {
-        font-size: 0.92rem;
+      .meta-block {
+        grid-template-columns: 1fr;
+        gap: 4px 0;
       }
     }
   </style>
@@ -228,75 +284,214 @@
     <header class="top">
       <div class="kicker">sistema de escucha activo</div>
       <h1>directorio recuperado</h1>
-      <div class="sub">9 archivos interceptados disponibles</div>
+      <div class="sub">9 archivos interceptados disponibles / formato detectado: .xic</div>
     </header>
 
-    <section class="panel">
-      <div class="head-row">
-        <div>id</div>
-        <div>archivo</div>
-        <div class="state">estado</div>
-      </div>
+    <section class="layout">
+      <section class="panel">
+        <div class="head-row">
+          <div>id</div>
+          <div>archivo</div>
+          <div>estado</div>
+        </div>
 
-      <a class="file-row" href="carta1.html">
-        <div class="index">[01]</div>
-        <div class="name">archivo_interceptado_la noche del tsuru blanco.xic</div>
-        <div class="state">estable</div>
-      </a>
+        <a class="file-row active"
+           href="carta1.html"
+           data-title="archivo_interceptado_la noche del tsuru blanco.xic"
+           data-state="estable"
+           data-type="archivo interceptado"
+           data-origin="procedencia no verificada"
+           data-access="lectura disponible"
+           data-preview="Primer registro recuperado. La lectura presenta continuidad estable y trazas mínimas de corrupción. El archivo conserva estructura narrativa legible."
+        >
+          <div class="index">[01]</div>
+          <div class="name">archivo_interceptado_la noche del tsuru blanco.xic</div>
+          <div class="state">estable</div>
+        </a>
 
-      <a class="file-row" href="carta2.html">
-        <div class="index">[02]</div>
-        <div class="name">archivo_interceptado_explosión de planta agroquímica atc.xic</div>
-        <div class="state">inestable</div>
-      </a>
+        <a class="file-row"
+           href="carta2.html"
+           data-title="archivo_interceptado_explosión de planta agroquímica atc.xic"
+           data-state="inestable"
+           data-type="archivo interceptado"
+           data-origin="transmisión fragmentaria"
+           data-access="lectura disponible"
+           data-preview="Registro con alteraciones de consistencia. Se detectan zonas de interferencia y ligera inestabilidad en la secuencia del archivo."
+        >
+          <div class="index">[02]</div>
+          <div class="name">archivo_interceptado_explosión de planta agroquímica atc.xic</div>
+          <div class="state">inestable</div>
+        </a>
 
-      <a class="file-row" href="carta3.html">
-        <div class="index">[03]</div>
-        <div class="name">archivo_interceptado_construcción de la refinería miguel hidalgo.xic</div>
-        <div class="state">estable</div>
-      </a>
+        <a class="file-row"
+           href="carta3.html"
+           data-title="archivo_interceptado_construcción de la refinería miguel hidalgo.xic"
+           data-state="estable"
+           data-type="archivo interceptado"
+           data-origin="directorio recuperado"
+           data-access="lectura disponible"
+           data-preview="Secuencia íntegra con baja pérdida de señal. El archivo conserva continuidad narrativa y metadatos parciales."
+        >
+          <div class="index">[03]</div>
+          <div class="name">archivo_interceptado_construcción de la refinería miguel hidalgo.xic</div>
+          <div class="state">estable</div>
+        </a>
 
-      <a class="file-row" href="carta4.html">
-        <div class="index">[04]</div>
-        <div class="name">archivo_interceptado_archivos de la misión gusano rojo.xic</div>
-        <div class="state">parcial</div>
-      </a>
+        <a class="file-row"
+           href="carta4.html"
+           data-title="archivo_interceptado_archivos de la misión gusano rojo.xic"
+           data-state="parcial"
+           data-type="archivo interceptado"
+           data-origin="módulo secundario"
+           data-access="lectura parcial"
+           data-preview="Registro recuperado de forma incompleta. Se reconocen segmentos útiles, pero el archivo presenta lagunas y áreas ausentes."
+        >
+          <div class="index">[04]</div>
+          <div class="name">archivo_interceptado_archivos de la misión gusano rojo.xic</div>
+          <div class="state">parcial</div>
+        </a>
 
-      <a class="file-row" href="carta5.html">
-        <div class="index">[05]</div>
-        <div class="name">archivo_interceptado_experimento biotecnológico territorial.xic</div>
-        <div class="state">degradado</div>
-      </a>
+        <a class="file-row"
+           href="carta5.html"
+           data-title="archivo_interceptado_experimento biotecnológico territorial.xic"
+           data-state="degradado"
+           data-type="archivo interceptado"
+           data-origin="fuente no identificada"
+           data-access="lectura con pérdida"
+           data-preview="El archivo presenta degradación estructural. Persisten restos legibles y rastros de contenido biotecnológico territorial."
+        >
+          <div class="index">[05]</div>
+          <div class="name">archivo_interceptado_experimento biotecnológico territorial.xic</div>
+          <div class="state">degradado</div>
+        </a>
 
-      <a class="file-row" href="carta6.html">
-        <div class="index">[06]</div>
-        <div class="name">archivo_interceptado_plaga patronal.xic</div>
-        <div class="state">estable</div>
-      </a>
+        <a class="file-row"
+           href="carta6.html"
+           data-title="archivo_interceptado_plaga patronal.xic"
+           data-state="estable"
+           data-type="archivo interceptado"
+           data-origin="registro sin firma"
+           data-access="lectura disponible"
+           data-preview="Registro estable. El cuerpo del archivo conserva continuidad interna y una lectura sostenida."
+        >
+          <div class="index">[06]</div>
+          <div class="name">archivo_interceptado_plaga patronal.xic</div>
+          <div class="state">estable</div>
+        </a>
 
-      <a class="file-row" href="carta7.html">
-        <div class="index">[07]</div>
-        <div class="name">archivo_interceptado_culebra tormenta.xic</div>
-        <div class="state">inestable</div>
-      </a>
+        <a class="file-row"
+           href="carta7.html"
+           data-title="archivo_interceptado_culebra tormenta.xic"
+           data-state="inestable"
+           data-type="archivo interceptado"
+           data-origin="escucha territorial"
+           data-access="lectura disponible"
+           data-preview="Registro con oscilaciones de señal. Se recomienda lectura secuencial para evitar pérdida de continuidad."
+        >
+          <div class="index">[07]</div>
+          <div class="name">archivo_interceptado_culebra tormenta.xic</div>
+          <div class="state">inestable</div>
+        </a>
 
-      <a class="file-row" href="carta8.html">
-        <div class="index">[08]</div>
-        <div class="name">archivo_interceptado_diablito robot.xic</div>
-        <div class="state">inestable</div>
-      </a>
+        <a class="file-row"
+           href="carta8.html"
+           data-title="archivo_interceptado_diablito robot.xic"
+           data-state="inestable"
+           data-type="archivo interceptado"
+           data-origin="procedencia no verificada"
+           data-access="lectura disponible"
+           data-preview="Archivo con comportamiento errático. Se detectan variaciones leves en la integridad del registro."
+        >
+          <div class="index">[08]</div>
+          <div class="name">archivo_interceptado_diablito robot.xic</div>
+          <div class="state">inestable</div>
+        </a>
 
-      <a class="file-row" href="carta9.html">
-        <div class="index">[09]</div>
-        <div class="name">archivo_interceptado_canto de las aves.xic</div>
-        <div class="state">cifrado</div>
-      </a>
+        <a class="file-row"
+           href="carta9.html"
+           data-title="archivo_interceptado_canto de las aves.xic"
+           data-state="cifrado"
+           data-type="archivo interceptado"
+           data-origin="módulo bioacústico"
+           data-access="lectura restringida"
+           data-preview="Registro cifrado. El archivo conserva estructura visible, pero parte de su contenido permanece sin decodificar."
+        >
+          <div class="index">[09]</div>
+          <div class="name">archivo_interceptado_canto de las aves.xic</div>
+          <div class="state">cifrado</div>
+        </a>
+      </section>
+
+      <aside class="panel viewer">
+        <div class="viewer-title">visor de archivo</div>
+
+        <div class="meta-block">
+          <div class="meta-label">archivo</div>
+          <div id="metaTitle">archivo_interceptado_la noche del tsuru blanco.xic</div>
+
+          <div class="meta-label">estado</div>
+          <div id="metaState">estable</div>
+
+          <div class="meta-label">tipo</div>
+          <div id="metaType">archivo interceptado</div>
+
+          <div class="meta-label">origen</div>
+          <div id="metaOrigin">procedencia no verificada</div>
+
+          <div class="meta-label">acceso</div>
+          <div id="metaAccess">lectura disponible</div>
+        </div>
+
+        <div class="preview" id="metaPreview">
+Primer registro recuperado. La lectura presenta continuidad estable y trazas mínimas de corrupción. El archivo conserva estructura narrativa legible.
+        </div>
+
+        <div class="preview-code">
+001101 / escucha / valle / archivo / señal / recuperación / protocolo / xic
+        </div>
+      </aside>
     </section>
 
     <div class="footer">
       <a class="back" href="index.html">← volver al acceso</a>
-      <div>formato detectado: .xic</div>
+      <div>terminal de directorio / lectura no autorizada</div>
     </div>
   </main>
+
+  <script>
+    const rows = document.querySelectorAll(".file-row");
+    const metaTitle = document.getElementById("metaTitle");
+    const metaState = document.getElementById("metaState");
+    const metaType = document.getElementById("metaType");
+    const metaOrigin = document.getElementById("metaOrigin");
+    const metaAccess = document.getElementById("metaAccess");
+    const metaPreview = document.getElementById("metaPreview");
+
+    rows.forEach((row) => {
+      row.addEventListener("mouseenter", () => {
+        rows.forEach(r => r.classList.remove("active"));
+        row.classList.add("active");
+
+        metaTitle.textContent = row.dataset.title;
+        metaState.textContent = row.dataset.state;
+        metaType.textContent = row.dataset.type;
+        metaOrigin.textContent = row.dataset.origin;
+        metaAccess.textContent = row.dataset.access;
+        metaPreview.textContent = row.dataset.preview;
+      });
+
+      row.addEventListener("focus", () => {
+        rows.forEach(r => r.classList.remove("active"));
+        row.classList.add("active");
+
+        metaTitle.textContent = row.dataset.title;
+        metaState.textContent = row.dataset.state;
+        metaType.textContent = row.dataset.type;
+        metaOrigin.textContent = row.dataset.origin;
+        metaAccess.textContent = row.dataset.access;
+        metaPreview.textContent = row.dataset.preview;
+      });
+    });
+  </script>
 </body>
 </html>
