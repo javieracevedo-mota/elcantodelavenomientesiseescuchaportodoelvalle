@@ -98,9 +98,9 @@
     .page {
       position: relative;
       width: 100%;
-      min-height: 1900px;
+      min-height: 2000px;
       padding-top: 120px;
-      padding-bottom: 120px;
+      padding-bottom: 160px;
     }
 
     .cluster {
@@ -108,7 +108,7 @@
       left: 6%;
       top: 130px;
       width: 54%;
-      height: 1450px;
+      height: 1550px;
       z-index: 2;
       animation: clusterPulse 4.2s ease-in-out infinite;
       transform-origin: center center;
@@ -230,14 +230,14 @@
       }
 
       .page {
-        min-height: 2100px;
+        min-height: 2200px;
         padding-top: 140px;
       }
 
       .cluster {
         left: 2%;
         width: 94%;
-        height: 1650px;
+        height: 1750px;
       }
 
       .node {
@@ -349,8 +349,8 @@
 
     setInterval(cycleStatus, 2200);
 
-    function interpolatePoints(a, b, spacing = 16) {
-      const points = [];
+    function interpAxis(a, b, spacing = 16) {
+      const pts = [];
       const dx = b.x - a.x;
       const dy = b.y - a.y;
       const dist = Math.hypot(dx, dy);
@@ -358,23 +358,34 @@
 
       for (let i = 0; i <= steps; i++) {
         const t = i / steps;
-        points.push({
+        pts.push({
           x: a.x + dx * t,
           y: a.y + dy * t
         });
       }
+      return pts;
+    }
 
+    function orthogonalPath(start, end, mode = "vh") {
+      const points = [];
+      if (mode === "vh") {
+        const corner = { x: start.x, y: end.y };
+        points.push(...interpAxis(start, corner));
+        points.push(...interpAxis(corner, end));
+      } else {
+        const corner = { x: end.x, y: start.y };
+        points.push(...interpAxis(start, corner));
+        points.push(...interpAxis(corner, end));
+      }
       return points;
     }
 
     function buildSnakePath() {
       const cluster = document.getElementById("cluster");
-      const snake = document.getElementById("snake");
       const ids = document.querySelectorAll(".node-id");
-
       const clusterBox = cluster.getBoundingClientRect();
-      const anchors = [];
 
+      const anchors = [];
       ids.forEach((id) => {
         const box = id.getBoundingClientRect();
         anchors.push({
@@ -387,26 +398,23 @@
 
       const path = [];
 
-      // entrada por izquierda hacia el nodo 1
-      const entry = {
-        x: -30,
-        y: anchors[0].y
-      };
+      // entrada horizontal desde la izquierda al nodo 1
+      const entry = { x: -40, y: anchors[0].y };
+      path.push(...interpAxis(entry, anchors[0]));
 
-      path.push(...interpolatePoints(entry, anchors[0], 18));
-
-      // de nodo a nodo
+      // conexiones ortogonales entre nodos
+      const modes = ["vh", "vh", "vh", "vh", "vh", "vh", "vh", "vh"];
       for (let i = 0; i < anchors.length - 1; i++) {
-        path.push(...interpolatePoints(anchors[i], anchors[i + 1], 18));
+        path.push(...orthogonalPath(anchors[i], anchors[i + 1], modes[i]));
       }
 
-      // salida hacia la derecha desde el nodo 9
-      const exit = {
-        x: clusterBox.width + 60,
-        y: anchors[anchors.length - 1].y
-      };
+      // salida especial: desde nodo 9 baja y luego sale a la derecha
+      const last = anchors[anchors.length - 1];
+      const down = { x: last.x, y: last.y + 160 };
+      const exit = { x: clusterBox.width + 80, y: down.y };
 
-      path.push(...interpolatePoints(anchors[anchors.length - 1], exit, 18));
+      path.push(...interpAxis(last, down));
+      path.push(...interpAxis(down, exit));
 
       return path;
     }
@@ -416,7 +424,6 @@
       snake.innerHTML = "";
 
       const path = buildSnakePath();
-      const dots = [];
       let current = 0;
       let previousHead = null;
 
@@ -429,18 +436,13 @@
         dot.style.left = p.x + "px";
         dot.style.top = p.y + "px";
 
-        if (previousHead) {
-          previousHead.classList.remove("head");
-        }
+        if (previousHead) previousHead.classList.remove("head");
 
         snake.appendChild(dot);
         previousHead = dot;
-        dots.push(dot);
         current++;
 
-        requestAnimationFrame(() => {
-          setTimeout(step, 65);
-        });
+        setTimeout(step, 58);
       }
 
       step();
