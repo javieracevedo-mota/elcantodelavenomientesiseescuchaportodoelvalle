@@ -39,8 +39,8 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,0.03) 0px,
-          rgba(255,255,255,0.03) 1px,
+          rgba(255,255,255,0.028) 0px,
+          rgba(255,255,255,0.028) 1px,
           transparent 2px,
           transparent 4px
         );
@@ -75,10 +75,11 @@
       user-select: none;
       text-align: left;
       position: relative;
-      z-index: 4;
+      z-index: 5;
     }
 
     .title {
+      position: relative;
       font-size: clamp(2rem, 6vw, 5rem);
       line-height: 1.05;
       letter-spacing: 0.04em;
@@ -110,29 +111,65 @@
       opacity: 1;
     }
 
-    .rain {
+    .fragments-layer,
+    .swarm-layer {
       position: fixed;
       inset: 0;
       pointer-events: none;
       overflow: hidden;
+    }
+
+    .fragments-layer {
+      z-index: 4;
+    }
+
+    .swarm-layer {
       z-index: 2;
+    }
+
+    .frag {
+      position: absolute;
+      color: rgba(57,255,136,0.95);
+      text-shadow:
+        0 0 8px rgba(57,255,136,0.25),
+        0 0 18px rgba(57,255,136,0.12);
+      white-space: nowrap;
+      transform-origin: center;
+      animation: fragmentDrift linear forwards;
+    }
+
+    .swarm {
+      position: absolute;
+      color: rgba(57,255,136,0.95);
+      text-shadow:
+        0 0 8px rgba(57,255,136,0.25),
+        0 0 18px rgba(57,255,136,0.10);
+      white-space: pre;
+      animation: swarmFly linear forwards;
+      filter: blur(0.1px);
+    }
+
+    .scramble-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
       opacity: 0;
     }
 
-    .rain.visible {
+    .scramble-overlay.visible {
       opacity: 1;
     }
 
-    .column {
+    .scramble-line {
       position: absolute;
-      top: -140px;
-      color: rgba(57,255,136,0.95);
-      text-shadow:
-        0 0 8px rgba(57,255,136,0.3),
-        0 0 20px rgba(57,255,136,0.15);
-      writing-mode: vertical-rl;
-      font-size: 14px;
-      animation: codefall linear forwards;
+      left: 4vw;
+      right: 4vw;
+      color: rgba(57,255,136,0.8);
+      font-size: clamp(0.85rem, 1.2vw, 1rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-shadow: 0 0 6px rgba(57,255,136,0.18);
     }
 
     @keyframes blink {
@@ -140,24 +177,47 @@
     }
 
     @keyframes breathe {
-      0%,100% { text-shadow: 0 0 6px rgba(57,255,136,0.2); }
-      50% { text-shadow: 0 0 16px rgba(57,255,136,0.4); }
+      0%, 100% { text-shadow: 0 0 6px rgba(57,255,136,0.18); }
+      50% { text-shadow: 0 0 14px rgba(57,255,136,0.34); }
     }
 
     @keyframes flicker {
       0%,100% { opacity: 0.12; }
-      50% { opacity: 0.08; }
+      48% { opacity: 0.13; }
+      49% { opacity: 0.08; }
+      50% { opacity: 0.14; }
+      51% { opacity: 0.10; }
+      52% { opacity: 0.13; }
     }
 
-    @keyframes codefall {
+    @keyframes fragmentDrift {
       0% {
-        transform: translateY(-20vh);
-        opacity: 0;
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
       }
-      10% { opacity: 1; }
       100% {
-        transform: translateY(140vh);
         opacity: 0;
+        transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.8);
+      }
+    }
+
+    @keyframes swarmFly {
+      0% {
+        opacity: 0;
+        transform: translate(var(--sx), var(--sy)) rotate(var(--r1)) scale(0.9);
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--ex), var(--ey)) rotate(var(--r2)) scale(1.08);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .title {
+        min-height: 7em;
       }
     }
   </style>
@@ -165,10 +225,13 @@
 
 <body>
   <div class="noise"></div>
-  <div class="rain" id="rain"></div>
+
+  <div class="swarm-layer" id="swarmLayer"></div>
+  <div class="scramble-overlay" id="scrambleOverlay"></div>
+  <div class="fragments-layer" id="fragmentsLayer"></div>
 
   <main class="wrap">
-    <div class="title-wrap" id="titleWrap">
+    <div class="title-wrap" id="titleWrap" aria-label="Abrir archivo">
       <div class="title" id="title"></div>
       <div class="loader" id="loader"></div>
     </div>
@@ -185,76 +248,259 @@
       "el valle"
     ];
 
+    const fullText = lines.join("\n");
+
     const title = document.getElementById("title");
-    const rain = document.getElementById("rain");
+    const titleWrap = document.getElementById("titleWrap");
     const loader = document.getElementById("loader");
+    const fragmentsLayer = document.getElementById("fragmentsLayer");
+    const swarmLayer = document.getElementById("swarmLayer");
+    const scrambleOverlay = document.getElementById("scrambleOverlay");
 
     let i = 0;
-    let done = false;
+    let typingDone = false;
     let locked = false;
 
-    function render(text){
-      title.innerHTML = text.replace(/\n/g,"<br>") + '<span class="cursor">_</span>';
+    const ecosystemGlyphs = [
+      "𓅭","𓅯","𓅪","𓅬","𓅫","v","^","~",
+      "𓆙","𓆘","𓆚","≈","∿","⌇",
+      "𓆏","𓆉","○","°","∙",
+      "𓇢","𓇣","𓇩","✢","❊",
+      "𓆣","𓆤","·",";",
+      "/","\\","|","_","=","+","#","@","0","1",":","::","//","[]"
+    ];
+
+    const swarmChunks = [
+      "𓅭 v 𓅯",
+      "^ ~ v",
+      "𓆙 ≈ 𓆘",
+      "𓆏 ° ∿",
+      "𓇢 ✢ 𓇣",
+      "𓆣 · 𓆤",
+      "v ^ ~",
+      "≈ ∿ ⌇",
+      "𓅪 𓅬 𓅫",
+      ":: // []",
+      "0 1 @ #",
+      "𓅭 𓆙 𓇢",
+      "𓅯 𓆏 ≈",
+      "𓅪 𓆣 ✢",
+      "𓆘 𓆚 ∿",
+      "𓇩 ✢ 𓇢"
+    ];
+
+    function render(text) {
+      title.innerHTML = text.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
     }
 
-    function type(){
-      const full = lines.join("\n");
-      if(i < full.length){
-        render(full.slice(0,i+1));
+    function setFinalText() {
+      title.innerHTML = fullText.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
+      title.classList.add("idle");
+      typingDone = true;
+    }
+
+    function typeText() {
+      if (i < fullText.length) {
+        render(fullText.slice(0, i + 1));
         i++;
-        setTimeout(type,60);
+        setTimeout(typeText, 58);
       } else {
-        done = true;
-        title.classList.add("idle");
+        setFinalText();
       }
     }
 
-    function createColumn(){
+    function randomGlyph() {
+      return ecosystemGlyphs[Math.floor(Math.random() * ecosystemGlyphs.length)];
+    }
+
+    function randomChunk() {
+      return swarmChunks[Math.floor(Math.random() * swarmChunks.length)];
+    }
+
+    function updateLoader(percent) {
+      const totalBars = 14;
+      const filled = Math.round((percent / 100) * totalBars);
+      loader.textContent = `cargando archivo ${String(percent).padStart(3, "0")}%  [` +
+        "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
+    }
+
+    function startLoadingSequence() {
+      loader.classList.add("visible");
+      title.classList.remove("idle");
+      title.innerHTML = title.innerHTML.replace('<span class="cursor">_</span>', '');
+
+      let percent = 0;
+
+      function step() {
+        updateLoader(percent);
+
+        if (percent < 89) {
+          percent += Math.floor(Math.random() * 8) + 4;
+          if (percent > 89) percent = 89;
+          setTimeout(step, 45);
+          return;
+        }
+
+        if (percent < 100) {
+          percent += 1;
+          setTimeout(step, percent < 95 ? 180 : 320);
+          return;
+        }
+
+        finishSequence();
+      }
+
+      step();
+    }
+
+    function createFragmentExplosion() {
+      const rect = title.getBoundingClientRect();
+      const text = fullText.replace(/\n/g, " ");
+      const chars = text.split("").filter(ch => ch !== " ");
+
+      const total = Math.min(chars.length * 2, 120);
+
+      for (let n = 0; n < total; n++) {
+        const frag = document.createElement("div");
+        frag.className = "frag";
+        frag.textContent = Math.random() > 0.45 ? chars[n % chars.length] : randomGlyph();
+
+        const startX = rect.left + Math.random() * rect.width;
+        const startY = rect.top + Math.random() * rect.height;
+
+        const dx = (Math.random() * 70 - 35) + "vw";
+        const dy = (Math.random() * 70 - 35) + "vh";
+        const rot = (Math.random() * 160 - 80) + "deg";
+
+        frag.style.left = startX + "px";
+        frag.style.top = startY + "px";
+        frag.style.fontSize = (14 + Math.random() * 26) + "px";
+        frag.style.setProperty("--dx", dx);
+        frag.style.setProperty("--dy", dy);
+        frag.style.setProperty("--rot", rot);
+        frag.style.animationDuration = (2.2 + Math.random() * 2.8) + "s";
+
+        fragmentsLayer.appendChild(frag);
+        setTimeout(() => frag.remove(), 5200);
+      }
+    }
+
+    function createSwarm() {
       const el = document.createElement("div");
-      el.className = "column";
+      el.className = "swarm";
 
-      const glyphs = [
-        "𓅭","𓅯","𓅪","𓅬","𓅫",
-        "𓆏","𓆙","𓆉",
-        "v","^","~","/","\\","|","=","+","*","#","@","0","1"
-      ];
+      let content = "";
+      const length = Math.floor(Math.random() * 6) + 3;
 
-      let str = "";
-      const len = Math.floor(Math.random()*25)+20;
-
-      for(let i=0;i<len;i++){
-        str += glyphs[Math.floor(Math.random()*glyphs.length)];
+      for (let i = 0; i < length; i++) {
+        content += (Math.random() > 0.45 ? randomChunk() : randomGlyph()) + " ";
       }
 
-      el.textContent = str;
-      el.style.left = Math.random()*100 + "vw";
-      el.style.animationDuration = (2 + Math.random()*4) + "s";
+      el.textContent = content.trim();
 
-      rain.appendChild(el);
-      setTimeout(()=>el.remove(),6000);
+      const startSide = Math.floor(Math.random() * 4);
+      let sx, sy, ex, ey;
+
+      if (startSide === 0) {
+        sx = "-20vw";
+        sy = (Math.random() * 100 - 10) + "vh";
+        ex = "110vw";
+        ey = (Math.random() * 100 - 10) + "vh";
+      } else if (startSide === 1) {
+        sx = "110vw";
+        sy = (Math.random() * 100 - 10) + "vh";
+        ex = "-20vw";
+        ey = (Math.random() * 100 - 10) + "vh";
+      } else if (startSide === 2) {
+        sx = (Math.random() * 100) + "vw";
+        sy = "-15vh";
+        ex = (Math.random() * 100) + "vw";
+        ey = "110vh";
+      } else {
+        sx = "-10vw";
+        sy = (Math.random() * 90) + "vh";
+        ex = "110vw";
+        ey = (Math.random() * 90) + "vh";
+      }
+
+      el.style.left = "0";
+      el.style.top = "0";
+      el.style.fontSize = (12 + Math.random() * 24) + "px";
+      el.style.setProperty("--sx", sx);
+      el.style.setProperty("--sy", sy);
+      el.style.setProperty("--ex", ex);
+      el.style.setProperty("--ey", ey);
+      el.style.setProperty("--r1", (Math.random() * 30 - 15) + "deg");
+      el.style.setProperty("--r2", (Math.random() * 40 - 20) + "deg");
+      el.style.animationDuration = (2.8 + Math.random() * 3.4) + "s";
+
+      swarmLayer.appendChild(el);
+      setTimeout(() => el.remove(), 7000);
     }
 
-    function chaos(){
-      rain.classList.add("visible");
+    function spawnSwarmBurst(total, intervalMs) {
+      for (let j = 0; j < total; j++) {
+        setTimeout(createSwarm, j * intervalMs);
+      }
+    }
 
-      for(let i=0;i<350;i++){
-        setTimeout(createColumn, i*15);
+    function startScrambleOverlay() {
+      scrambleOverlay.classList.add("visible");
+
+      const lineCount = 18;
+      for (let i = 0; i < lineCount; i++) {
+        const line = document.createElement("div");
+        line.className = "scramble-line";
+        line.style.top = (4 + i * 5.1) + "vh";
+        scrambleOverlay.appendChild(line);
       }
 
-      setTimeout(()=>{
+      const lineEls = [...scrambleOverlay.children];
+
+      let cycles = 0;
+      const interval = setInterval(() => {
+        lineEls.forEach(el => {
+          let s = "";
+          const len = Math.floor(Math.random() * 48) + 28;
+          for (let n = 0; n < len; n++) {
+            s += Math.random() > 0.65 ? " " : randomGlyph();
+          }
+          el.textContent = s;
+        });
+
+        cycles++;
+        if (cycles > 48) {
+          clearInterval(interval);
+        }
+      }, 90);
+    }
+
+    function finishSequence() {
+      createFragmentExplosion();
+      startScrambleOverlay();
+
+      spawnSwarmBurst(120, 26);
+
+      setTimeout(() => {
+        spawnSwarmBurst(90, 18);
+      }, 900);
+
+      setTimeout(() => {
+        spawnSwarmBurst(75, 14);
+      }, 1800);
+
+      setTimeout(() => {
         window.location.href = `${REPO_BASE}/cartas.html`;
       }, 7500);
     }
 
-    document.getElementById("titleWrap").onclick = ()=>{
-      if(!done || locked) return;
+    titleWrap.addEventListener("click", () => {
+      if (locked || !typingDone) return;
       locked = true;
-      title.innerHTML = "";
-      loader.classList.add("visible");
-      chaos();
-    };
+      startLoadingSequence();
+    });
 
-    type();
+    typeText();
   </script>
 </body>
 </html>
