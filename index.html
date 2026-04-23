@@ -21,7 +21,6 @@
       --bg2: #070a07;
       --fg: #eaffee;
       --glow: rgba(117, 255, 157, 0.22);
-      --noise: rgba(255,255,255,0.04);
     }
 
     body {
@@ -235,7 +234,7 @@
       "del ave no miente",
       "si se escucha",
       "por todo",
-      "el valle_"
+      "el valle"
     ];
 
     const fullText = finalLines.join("\n");
@@ -256,7 +255,7 @@
     }
 
     function setFinalText() {
-      title.innerHTML = fullText.replace(/\n/g, "<br>");
+      title.innerHTML = fullText.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
       title.classList.add("idle");
       typingDone = true;
     }
@@ -277,7 +276,7 @@
     }
 
     function scramble() {
-      const scrambled = finalLines.map(line =>
+      const scrambled = [...finalLines, "_"].join("\n").split("\n").map(line =>
         line.split("").map(c => c === " " ? " " : randomChar()).join("")
       );
       title.innerHTML = scrambled.join("<br>");
@@ -316,6 +315,8 @@
     function startLoadingSequence() {
       loader.classList.add("visible");
       title.classList.remove("idle");
+
+      title.innerHTML = title.innerHTML.replace('<span class="cursor">_</span>', '');
 
       let percent = 0;
 
