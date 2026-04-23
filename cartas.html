@@ -119,23 +119,33 @@
       inset: 0;
       z-index: 1;
       pointer-events: none;
+      overflow: visible;
     }
 
     .snake-dot {
       position: absolute;
-      font-size: 12px;
-      color: rgba(0,0,0,0.82);
+      width: 8px;
+      height: 8px;
+      background: rgba(0,0,0,0.9);
+      border-radius: 50%;
       transform: translate(-50%, -50%);
-      animation: dotPulse 2.4s infinite ease-in-out;
-      line-height: 1;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+      opacity: 1;
+    }
+
+    .snake-dot.head {
+      width: 12px;
+      height: 12px;
+      background: rgba(0,0,0,1);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
     }
 
     .node {
       position: absolute;
       z-index: 2;
       display: inline-flex;
-      align-items: center;
-      min-height: 48px;
+      align-items: stretch;
+      min-height: 56px;
       border: 2px solid var(--fg);
       color: var(--fg);
       text-decoration: none;
@@ -155,18 +165,23 @@
       background: #0b0b0b;
       color: #d6ef43;
       border-right: 2px solid var(--fg);
-      padding: 8px 10px;
-      min-width: 54px;
-      text-align: center;
+      padding: 0 12px;
+      min-width: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
       font-size: clamp(1.3rem, 2vw, 1.8rem);
       line-height: 1;
     }
 
     .node-label {
-      padding: 8px 14px;
+      padding: 10px 14px;
       font-size: clamp(1.3rem, 2vw, 1.8rem);
       line-height: 1;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
 
     @keyframes clusterPulse {
@@ -175,17 +190,6 @@
       }
       50% {
         transform: scale(1.01) translateY(-3px);
-      }
-    }
-
-    @keyframes dotPulse {
-      0%, 100% {
-        opacity: 0.28;
-        transform: translate(-50%, -50%) scale(1);
-      }
-      50% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.18);
       }
     }
 
@@ -238,6 +242,7 @@
 
       .node {
         max-width: 250px;
+        min-height: 50px;
       }
 
       .node-label {
@@ -251,7 +256,13 @@
       }
 
       .snake-dot {
-        font-size: 10px;
+        width: 6px;
+        height: 6px;
+      }
+
+      .snake-dot.head {
+        width: 10px;
+        height: 10px;
       }
     }
   </style>
@@ -269,7 +280,7 @@
   </div>
 
   <main class="page">
-    <div class="cluster">
+    <div class="cluster" id="cluster">
       <div class="snake" id="snake"></div>
 
       <a class="node" href="carta1.html" style="top: 80px; left: 16%;">
@@ -338,47 +349,109 @@
 
     setInterval(cycleStatus, 2200);
 
-    function createSnake() {
+    function interpolatePoints(a, b, spacing = 16) {
+      const points = [];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const dist = Math.hypot(dx, dy);
+      const steps = Math.max(1, Math.floor(dist / spacing));
+
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        points.push({
+          x: a.x + dx * t,
+          y: a.y + dy * t
+        });
+      }
+
+      return points;
+    }
+
+    function buildSnakePath() {
+      const cluster = document.getElementById("cluster");
       const snake = document.getElementById("snake");
       const ids = document.querySelectorAll(".node-id");
+
+      const clusterBox = cluster.getBoundingClientRect();
+      const anchors = [];
+
+      ids.forEach((id) => {
+        const box = id.getBoundingClientRect();
+        anchors.push({
+          x: box.left - clusterBox.left + box.width / 2,
+          y: box.top - clusterBox.top + box.height / 2
+        });
+      });
+
+      if (!anchors.length) return [];
+
+      const path = [];
+
+      // entrada por izquierda hacia el nodo 1
+      const entry = {
+        x: -30,
+        y: anchors[0].y
+      };
+
+      path.push(...interpolatePoints(entry, anchors[0], 18));
+
+      // de nodo a nodo
+      for (let i = 0; i < anchors.length - 1; i++) {
+        path.push(...interpolatePoints(anchors[i], anchors[i + 1], 18));
+      }
+
+      // salida hacia la derecha desde el nodo 9
+      const exit = {
+        x: clusterBox.width + 60,
+        y: anchors[anchors.length - 1].y
+      };
+
+      path.push(...interpolatePoints(anchors[anchors.length - 1], exit, 18));
+
+      return path;
+    }
+
+    function animateSnake() {
+      const snake = document.getElementById("snake");
       snake.innerHTML = "";
 
-      for (let i = 0; i < ids.length - 1; i++) {
-        const a = ids[i].getBoundingClientRect();
-        const b = ids[i + 1].getBoundingClientRect();
-        const snakeBox = snake.getBoundingClientRect();
+      const path = buildSnakePath();
+      const dots = [];
+      let current = 0;
+      let previousHead = null;
 
-        const startX = a.left - snakeBox.left + a.width / 2;
-        const startY = a.top - snakeBox.top + a.height / 2;
+      function step() {
+        if (current >= path.length) return;
 
-        const endX = b.left - snakeBox.left + b.width / 2;
-        const endY = b.top - snakeBox.top + b.height / 2;
+        const p = path[current];
+        const dot = document.createElement("div");
+        dot.className = "snake-dot head";
+        dot.style.left = p.x + "px";
+        dot.style.top = p.y + "px";
 
-        const steps = 8;
-
-        for (let s = 0; s <= steps; s++) {
-          const t = s / steps;
-          const x = startX + (endX - startX) * t;
-          const y = startY + (endY - startY) * t;
-
-          const dot = document.createElement("div");
-          dot.className = "snake-dot";
-          dot.textContent = "●";
-          dot.style.left = x + "px";
-          dot.style.top = y + "px";
-          dot.style.animationDelay = (s * 0.12) + "s";
-
-          snake.appendChild(dot);
+        if (previousHead) {
+          previousHead.classList.remove("head");
         }
+
+        snake.appendChild(dot);
+        previousHead = dot;
+        dots.push(dot);
+        current++;
+
+        requestAnimationFrame(() => {
+          setTimeout(step, 65);
+        });
       }
+
+      step();
     }
 
     window.addEventListener("load", () => {
-      setTimeout(createSnake, 200);
+      setTimeout(animateSnake, 250);
     });
 
     window.addEventListener("resize", () => {
-      createSnake();
+      animateSnake();
     });
   </script>
 </body>
