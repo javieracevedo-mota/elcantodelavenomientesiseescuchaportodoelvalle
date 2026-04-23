@@ -39,8 +39,8 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,0.028) 0px,
-          rgba(255,255,255,0.028) 1px,
+          rgba(255,255,255,0.03) 0px,
+          rgba(255,255,255,0.03) 1px,
           transparent 2px,
           transparent 4px
         );
@@ -85,7 +85,6 @@
       white-space: pre-line;
       text-shadow: 0 0 8px var(--green-soft);
       min-height: 6em;
-      transition: opacity 0.2s ease, filter 0.2s ease;
     }
 
     .title.idle {
@@ -111,17 +110,6 @@
       opacity: 1;
     }
 
-    .loader-line {
-      display: inline-block;
-      min-width: 18ch;
-    }
-
-    .loader-bar {
-      display: inline-block;
-      margin-left: 12px;
-      min-width: 18ch;
-    }
-
     .rain {
       position: fixed;
       inset: 0;
@@ -129,7 +117,6 @@
       overflow: hidden;
       z-index: 2;
       opacity: 0;
-      transition: opacity 0.2s ease;
     }
 
     .rain.visible {
@@ -141,58 +128,11 @@
       top: -140px;
       color: rgba(57,255,136,0.95);
       text-shadow:
-        0 0 8px rgba(57,255,136,0.28),
-        0 0 18px rgba(57,255,136,0.12);
-      white-space: pre;
-      line-height: 0.82;
-      animation: codefall linear forwards;
+        0 0 8px rgba(57,255,136,0.3),
+        0 0 20px rgba(57,255,136,0.15);
       writing-mode: vertical-rl;
-      text-orientation: mixed;
-      filter: blur(0.1px);
-    }
-
-    .access-box {
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%) scale(0.92);
-      border: 4px solid var(--green);
-      padding: 18px 30px;
-      color: var(--green);
-      font-size: clamp(1.1rem, 3vw, 2.4rem);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: rgba(0, 20, 6, 0.55);
-      box-shadow:
-        0 0 20px rgba(57,255,136,0.25),
-        inset 0 0 16px rgba(57,255,136,0.12);
-      opacity: 0;
-      z-index: 8;
-      text-align: center;
-      min-width: 60vw;
-      max-width: 90vw;
-      line-height: 1.2;
-    }
-
-    .access-box.show {
-      animation: accessIn 0.45s ease forwards;
-    }
-
-    .flash {
-      position: fixed;
-      inset: 0;
-      background: rgba(210, 255, 223, 0.08);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 7;
-    }
-
-    .flash.on {
-      animation: flashPulse 0.35s ease;
-    }
-
-    .fadeout {
-      animation: fadeToBlack 0.5s ease forwards;
+      font-size: 14px;
+      animation: codefall linear forwards;
     }
 
     @keyframes blink {
@@ -200,71 +140,24 @@
     }
 
     @keyframes breathe {
-      0%, 100% { text-shadow: 0 0 6px rgba(57,255,136,0.18); }
-      50% { text-shadow: 0 0 14px rgba(57,255,136,0.34); }
+      0%,100% { text-shadow: 0 0 6px rgba(57,255,136,0.2); }
+      50% { text-shadow: 0 0 16px rgba(57,255,136,0.4); }
     }
 
     @keyframes flicker {
-      0%, 100% { opacity: 0.12; }
-      48% { opacity: 0.13; }
-      49% { opacity: 0.08; }
-      50% { opacity: 0.14; }
-      51% { opacity: 0.10; }
-      52% { opacity: 0.13; }
+      0%,100% { opacity: 0.12; }
+      50% { opacity: 0.08; }
     }
 
     @keyframes codefall {
       0% {
-        transform: translateY(-25vh) rotate(0.5deg);
+        transform: translateY(-20vh);
         opacity: 0;
       }
-      8% {
-        opacity: 1;
-      }
+      10% { opacity: 1; }
       100% {
-        transform: translateY(140vh) rotate(-0.5deg);
+        transform: translateY(140vh);
         opacity: 0;
-      }
-    }
-
-    @keyframes flashPulse {
-      0% { opacity: 0; }
-      30% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    @keyframes accessIn {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.92);
-      }
-      100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-
-    @keyframes fadeToBlack {
-      to {
-        opacity: 0;
-        filter: blur(3px);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .title {
-        min-height: 7em;
-      }
-
-      .loader-bar {
-        display: block;
-        margin-left: 0;
-        margin-top: 8px;
-      }
-
-      .access-box {
-        min-width: 82vw;
-        padding: 16px 18px;
       }
     }
   </style>
@@ -273,21 +166,18 @@
 <body>
   <div class="noise"></div>
   <div class="rain" id="rain"></div>
-  <div class="flash" id="flash"></div>
-  <div class="access-box" id="accessBox">archivo parcialmente recuperado</div>
 
   <main class="wrap">
-    <div class="title-wrap" id="titleWrap" aria-label="Abrir archivo">
+    <div class="title-wrap" id="titleWrap">
       <div class="title" id="title"></div>
-      <div class="loader" id="loader">
-        <span class="loader-line" id="loaderText"></span>
-        <span class="loader-bar" id="loaderBar"></span>
-      </div>
+      <div class="loader" id="loader"></div>
     </div>
   </main>
 
   <script>
-    const finalLines = [
+    const REPO_BASE = "/elcantodelavenomientesiseescuchaportodoelvalle";
+
+    const lines = [
       "el canto",
       "del ave no miente",
       "si se escucha",
@@ -295,176 +185,76 @@
       "el valle"
     ];
 
-    const REPO_BASE = "/elcantodelavenomientesiseescuchaportodoelvalle";
-    const fullText = finalLines.join("\n");
-
     const title = document.getElementById("title");
-    const titleWrap = document.getElementById("titleWrap");
-    const loader = document.getElementById("loader");
-    const loaderText = document.getElementById("loaderText");
-    const loaderBar = document.getElementById("loaderBar");
     const rain = document.getElementById("rain");
-    const flash = document.getElementById("flash");
-    const accessBox = document.getElementById("accessBox");
+    const loader = document.getElementById("loader");
 
     let i = 0;
+    let done = false;
     let locked = false;
-    let typingDone = false;
 
-    function render(text) {
-      title.innerHTML = text.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
+    function render(text){
+      title.innerHTML = text.replace(/\n/g,"<br>") + '<span class="cursor">_</span>';
     }
 
-    function setFinalText() {
-      title.innerHTML = fullText.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
-      title.classList.add("idle");
-      typingDone = true;
-    }
-
-    function typeText() {
-      if (i < fullText.length) {
-        render(fullText.slice(0, i + 1));
+    function type(){
+      const full = lines.join("\n");
+      if(i < full.length){
+        render(full.slice(0,i+1));
         i++;
-        setTimeout(typeText, 58);
+        setTimeout(type,60);
       } else {
-        setFinalText();
+        done = true;
+        title.classList.add("idle");
       }
     }
 
-    function randomChar() {
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&/=+*<>~?@";
-      return chars[Math.floor(Math.random() * chars.length)];
-    }
-
-    function scramble() {
-      const base = [...finalLines, "_"].join("\n").split("\n");
-      const scrambled = base.map(line =>
-        line.split("").map(c => c === " " ? " " : randomChar()).join("")
-      );
-      title.innerHTML = scrambled.join("<br>");
-    }
-
-    function updateLoader(percent) {
-      loaderText.textContent = `cargando archivo ${String(percent).padStart(3, "0")}%`;
-
-      const totalBars = 14;
-      const filled = Math.round((percent / 100) * totalBars);
-      loaderBar.textContent = "[" + "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
-    }
-
-    function createColumn() {
-      const col = document.createElement("div");
-      col.className = "column";
+    function createColumn(){
+      const el = document.createElement("div");
+      el.className = "column";
 
       const glyphs = [
-        "v","^","~","𓅭","𓅯","𓅪","𓅬","𓅫",
-        "𓆏","𓆙","𓆌","𓆉",
-        "/","\\","|","_","=","+","*","?","%","@","#","&","0","1"
+        "𓅭","𓅯","𓅪","𓅬","𓅫",
+        "𓆏","𓆙","𓆉",
+        "v","^","~","/","\\","|","=","+","*","#","@","0","1"
       ];
 
-      let content = "";
-      const length = Math.floor(Math.random() * 28) + 18;
+      let str = "";
+      const len = Math.floor(Math.random()*25)+20;
 
-      for (let n = 0; n < length; n++) {
-        const roll = Math.random();
-
-        if (roll < 0.12) {
-          content += "\n";
-        } else if (roll < 0.25) {
-          content += glyphs[Math.floor(Math.random() * glyphs.length)] + glyphs[Math.floor(Math.random() * glyphs.length)];
-        } else {
-          content += glyphs[Math.floor(Math.random() * glyphs.length)];
-        }
+      for(let i=0;i<len;i++){
+        str += glyphs[Math.floor(Math.random()*glyphs.length)];
       }
 
-      col.textContent = content;
-      col.style.left = Math.random() * 100 + "vw";
-      col.style.fontSize = (12 + Math.random() * 22) + "px";
-      col.style.animationDuration = (2.4 + Math.random() * 3.4) + "s";
-      col.style.opacity = (0.55 + Math.random() * 0.45).toFixed(2);
+      el.textContent = str;
+      el.style.left = Math.random()*100 + "vw";
+      el.style.animationDuration = (2 + Math.random()*4) + "s";
 
-      rain.appendChild(col);
-      setTimeout(() => col.remove(), 7000);
+      rain.appendChild(el);
+      setTimeout(()=>el.remove(),6000);
     }
 
-    function spawnRainBurst(total, intervalMs) {
-      for (let j = 0; j < total; j++) {
-        setTimeout(createColumn, j * intervalMs);
-      }
-    }
-
-    function startLoadingSequence() {
-      loader.classList.add("visible");
-      title.classList.remove("idle");
-      title.innerHTML = title.innerHTML.replace('<span class="cursor">_</span>', '');
-
-      let percent = 0;
-
-      function step() {
-        updateLoader(percent);
-
-        if (percent < 89) {
-          percent += Math.floor(Math.random() * 8) + 4;
-          if (percent > 89) percent = 89;
-          setTimeout(step, 45);
-          return;
-        }
-
-        if (percent < 100) {
-          percent += 1;
-          setTimeout(step, percent < 95 ? 180 : 320);
-          return;
-        }
-
-        finishSequence();
-      }
-
-      step();
-    }
-
-    function finishSequence() {
-      flash.classList.remove("on");
-      void flash.offsetWidth;
-      flash.classList.add("on");
-
+    function chaos(){
       rain.classList.add("visible");
 
-      let scrambleCount = 0;
-      const scrambleInterval = setInterval(() => {
-        scramble();
-        scrambleCount++;
-        if (scrambleCount > 52) {
-          clearInterval(scrambleInterval);
-        }
-      }, 70);
+      for(let i=0;i<350;i++){
+        setTimeout(createColumn, i*15);
+      }
 
-      spawnRainBurst(280, 16);
-
-      setTimeout(() => {
-        spawnRainBurst(140, 22);
-      }, 1200);
-
-      setTimeout(() => {
-        accessBox.classList.add("show");
-      }, 2300);
-
-      setTimeout(() => {
-        document.querySelector(".wrap").classList.add("fadeout");
-        loader.classList.add("fadeout");
-      }, 6200);
-
-      setTimeout(() => {
+      setTimeout(()=>{
         window.location.href = `${REPO_BASE}/cartas.html`;
       }, 7500);
     }
 
-    titleWrap.addEventListener("click", () => {
-      if (locked || !typingDone) return;
+    document.getElementById("titleWrap").onclick = ()=>{
+      if(!done || locked) return;
       locked = true;
-      startLoadingSequence();
-    });
+      title.innerHTML = "";
+      loader.classList.add("visible");
+      chaos();
+    };
 
-    typeText();
+    type();
   </script>
 </body>
 </html>
