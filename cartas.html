@@ -55,10 +55,9 @@
       opacity: 0.08;
       pointer-events: none;
       z-index: 9;
-      mix-blend-mode: multiply;
     }
 
-    /* coordenadas izquierda */
+    /* coordenadas */
     .top-left {
       position: fixed;
       left: 16px;
@@ -97,7 +96,7 @@
       letter-spacing: 0.08em;
     }
 
-    /* cartas */
+    /* layout cartas */
     .page {
       position: relative;
       width: 100%;
@@ -108,7 +107,7 @@
     .cluster {
       position: absolute;
       left: 5%;
-      top: 160px;
+      top: 90px; /* más arriba */
       width: 60%;
     }
 
@@ -121,6 +120,25 @@
       color: var(--fg);
       text-decoration: none;
       background: rgba(0,0,0,0.02);
+
+      /* 🔥 flotación */
+      animation: floatNode 4s ease-in-out infinite;
+    }
+
+    /* desfase orgánico */
+    .node:nth-child(1) { animation-delay: 0s; }
+    .node:nth-child(2) { animation-delay: 0.4s; }
+    .node:nth-child(3) { animation-delay: 0.8s; }
+    .node:nth-child(4) { animation-delay: 1.2s; }
+    .node:nth-child(5) { animation-delay: 1.6s; }
+    .node:nth-child(6) { animation-delay: 2s; }
+    .node:nth-child(7) { animation-delay: 2.4s; }
+    .node:nth-child(8) { animation-delay: 2.8s; }
+    .node:nth-child(9) { animation-delay: 3.2s; }
+
+    @keyframes floatNode {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
     }
 
     .node-id {
@@ -137,6 +155,7 @@
       display: flex;
       align-items: center;
     }
+
   </style>
 </head>
 
@@ -163,42 +182,42 @@
       <div class="node-label">la noche del tsuru blanco.xic</div>
     </a>
 
-    <a class="node" href="carta2.html" style="top:160px; left:10%;">
+    <a class="node" href="carta2.html" style="top:150px; left:10%;">
       <div class="node-id">02</div>
       <div class="node-label">explosión planta agroquímica.xic</div>
     </a>
 
-    <a class="node" href="carta3.html" style="top:240px; left:6%;">
+    <a class="node" href="carta3.html" style="top:220px; left:6%;">
       <div class="node-id">03</div>
       <div class="node-label">refinería miguel hidalgo.xic</div>
     </a>
 
-    <a class="node" href="carta4.html" style="top:320px; left:12%;">
+    <a class="node" href="carta4.html" style="top:290px; left:12%;">
       <div class="node-id">04</div>
       <div class="node-label">misión gusano rojo.xic</div>
     </a>
 
-    <a class="node" href="carta5.html" style="top:400px; left:5%;">
+    <a class="node" href="carta5.html" style="top:360px; left:5%;">
       <div class="node-id">05</div>
       <div class="node-label">experimento territorial.xic</div>
     </a>
 
-    <a class="node" href="carta6.html" style="top:480px; left:11%;">
+    <a class="node" href="carta6.html" style="top:430px; left:11%;">
       <div class="node-id">06</div>
       <div class="node-label">plaga patronal.xic</div>
     </a>
 
-    <a class="node" href="carta7.html" style="top:560px; left:7%;">
+    <a class="node" href="carta7.html" style="top:500px; left:7%;">
       <div class="node-id">07</div>
       <div class="node-label">culebra tormenta.xic</div>
     </a>
 
-    <a class="node" href="carta8.html" style="top:640px; left:12%;">
+    <a class="node" href="carta8.html" style="top:570px; left:12%;">
       <div class="node-id">08</div>
       <div class="node-label">diablito robot.xic</div>
     </a>
 
-    <a class="node" href="carta9.html" style="top:720px; left:6%;">
+    <a class="node" href="carta9.html" style="top:640px; left:6%;">
       <div class="node-id">09</div>
       <div class="node-label">canto de las aves.xic</div>
     </a>
@@ -206,102 +225,77 @@
   </div>
 </main>
 <script>
-/* ===============================
-   MUNICIPIOS + COORDENADAS
-================================= */
-const municipalities = [
-  { coords: "20.1609, -98.5634", place: "actopan, hidalgo" },
-  { coords: "20.0533, -99.0719", place: "ajacuba, hidalgo" },
-  { coords: "20.2435, -99.2058", place: "alfajayucan, hidalgo" },
-  { coords: "20.0332, -99.1316", place: "atitalaquia, hidalgo" },
-  { coords: "20.0027, -99.1312", place: "atotonilco de tula, hidalgo" },
-  { coords: "20.1707, -99.2447", place: "chapantongo, hidalgo" },
-  { coords: "20.1951, -99.1354", place: "chilcuautla, hidalgo" },
-  { coords: "20.1317, -98.5439", place: "el arenal, hidalgo" },
-  { coords: "20.1442, -99.0520", place: "francisco i. madero, hidalgo" },
-  { coords: "20.2231, -99.3904", place: "huichapan, hidalgo" },
-  { coords: "20.2905, -99.1307", place: "ixmiquilpan, hidalgo" },
-  { coords: "20.1345, -99.1249", place: "mixquiahuala de juárez, hidalgo" },
-  { coords: "20.1506, -99.3839", place: "nopala de villagrán, hidalgo" },
-  { coords: "20.1453, -99.1121", place: "progreso de obregón, hidalgo" },
-  { coords: "20.0656, -98.5312", place: "san agustín tlaxiaca, hidalgo" },
-  { coords: "20.1704, -99.0056", place: "san salvador, hidalgo" },
-  { coords: "20.2257, -98.5750", place: "santiago de anaya, hidalgo" },
-  { coords: "20.3306, -99.1845", place: "tasquillo, hidalgo" },
-  { coords: "20.3201, -99.3805", place: "tecozautla, hidalgo" },
-  { coords: "19.5418, -99.2030", place: "tepeji del río de ocampo, hidalgo" },
-  { coords: "20.1113, -99.2249", place: "tepetitlán, hidalgo" },
-  { coords: "20.0609, -99.0922", place: "tetepango, hidalgo" },
-  { coords: "20.1133, -99.1621", place: "tezontepec de aldama, hidalgo" },
-  { coords: "20.0750, -99.1404", place: "tlahuelilpan, hidalgo" },
-  { coords: "20.0529, -99.1317", place: "tlaxcoapan, hidalgo" },
-  { coords: "20.0318, -99.2035", place: "tula de allende, hidalgo" }
-];
+  const municipalities = [
+    { coords: "20.1609, -98.5634", place: "actopan, hidalgo" },
+    { coords: "20.0533, -99.0719", place: "ajacuba, hidalgo" },
+    { coords: "20.2435, -99.2058", place: "alfajayucan, hidalgo" },
+    { coords: "20.0332, -99.1316", place: "atitalaquia, hidalgo" },
+    { coords: "20.0027, -99.1312", place: "atotonilco de tula, hidalgo" },
+    { coords: "20.1707, -99.2447", place: "chapantongo, hidalgo" },
+    { coords: "20.1951, -99.1354", place: "chilcuautla, hidalgo" },
+    { coords: "20.1317, -98.5439", place: "el arenal, hidalgo" },
+    { coords: "20.1442, -99.0520", place: "francisco i. madero, hidalgo" },
+    { coords: "20.2231, -99.3904", place: "huichapan, hidalgo" },
+    { coords: "20.2905, -99.1307", place: "ixmiquilpan, hidalgo" },
+    { coords: "20.1345, -99.1249", place: "mixquiahuala de juárez, hidalgo" },
+    { coords: "20.1506, -99.3839", place: "nopala de villagrán, hidalgo" },
+    { coords: "20.1453, -99.1121", place: "progreso de obregón, hidalgo" },
+    { coords: "20.0656, -98.5312", place: "san agustín tlaxiaca, hidalgo" },
+    { coords: "20.1704, -99.0056", place: "san salvador, hidalgo" },
+    { coords: "20.2257, -98.5750", place: "santiago de anaya, hidalgo" },
+    { coords: "20.3306, -99.1845", place: "tasquillo, hidalgo" },
+    { coords: "20.3201, -99.3805", place: "tecozautla, hidalgo" },
+    { coords: "19.5418, -99.2030", place: "tepeji del río de ocampo, hidalgo" },
+    { coords: "20.1113, -99.2249", place: "tepetitlán, hidalgo" },
+    { coords: "20.0609, -99.0922", place: "tetepango, hidalgo" },
+    { coords: "20.1133, -99.1621", place: "tezontepec de aldama, hidalgo" },
+    { coords: "20.0750, -99.1404", place: "tlahuelilpan, hidalgo" },
+    { coords: "20.0529, -99.1317", place: "tlaxcoapan, hidalgo" },
+    { coords: "20.0318, -99.2035", place: "tula de allende, hidalgo" }
+  ];
 
-/* ===============================
-   REFERENCIAS DOM
-================================= */
-const signalLine = document.getElementById("signalLine");
-const coordLine = document.getElementById("coordLine");
-const placeLine = document.getElementById("placeLine");
-const radioLine = document.getElementById("radioLine");
+  const signalLine = document.getElementById("signalLine");
+  const coordLine = document.getElementById("coordLine");
+  const placeLine = document.getElementById("placeLine");
+  const radioLine = document.getElementById("radioLine");
 
-/* ===============================
-   VARIABLES DE CONTROL
-================================= */
-let ipPercent = 0;
-let municipalityIndex = 0;
+  let ipPercent = 0;
+  let municipalityIndex = 0;
 
-/* ===============================
-   GENERADOR DE BARRAS (RADIO)
-================================= */
-function makeBars(p) {
-  const levels = ["▁","▂","▃","▄","▅","▆","▇","█"];
-  let bars = "";
+  function makeBars(p) {
+    const levels = ["▁","▂","▃","▄","▅","▆","▇","█"];
+    let bars = "";
 
-  for (let i = 0; i < 16; i++) {
-    const v = Math.abs(Math.sin((p / 10) + i * 0.5));
-    const idx = Math.floor(v * 8);
-    bars += levels[idx];
+    for (let i = 0; i < 16; i++) {
+      const v = Math.abs(Math.sin((p / 10) + i * 0.5));
+      const idx = Math.min(7, Math.floor(v * 8));
+      bars += levels[idx];
+    }
+
+    return bars;
   }
 
-  return bars;
-}
+  function updateStatus() {
+    signalLine.textContent =
+      "conexión IP " + String(ipPercent).padStart(3, "0") + "%";
 
-/* ===============================
-   ACTUALIZACIÓN PRINCIPAL
-================================= */
-function updateStatus() {
+    const current = municipalities[municipalityIndex];
+    coordLine.textContent = current.coords;
+    placeLine.textContent = current.place;
 
-  // línea 1 → conexión IP
-  signalLine.textContent =
-    "conexión IP " + String(ipPercent).padStart(3, "0") + "%";
+    radioLine.textContent = makeBars(ipPercent);
 
-  // línea 2 y 3 → municipio sincronizado
-  const current = municipalities[municipalityIndex];
-  coordLine.textContent = current.coords;
-  placeLine.textContent = current.place;
+    ipPercent += 3;
+    if (ipPercent > 100) ipPercent = 0;
 
-  // línea 4 → barras dinámicas
-  radioLine.textContent = makeBars(ipPercent);
-
-  // incremento IP
-  ipPercent += 3;
-  if (ipPercent > 100) ipPercent = 0;
-
-  // avanzar municipio
-  municipalityIndex++;
-  if (municipalityIndex >= municipalities.length) {
-    municipalityIndex = 0;
+    municipalityIndex++;
+    if (municipalityIndex >= municipalities.length) {
+      municipalityIndex = 0;
+    }
   }
-}
 
-/* ===============================
-   LOOP
-================================= */
-updateStatus();
-setInterval(updateStatus, 1000);
-
+  updateStatus();
+  setInterval(updateStatus, 1000);
 </script>
 
 </body>
