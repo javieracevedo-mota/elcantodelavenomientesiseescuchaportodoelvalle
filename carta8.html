@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>registro 08 — diablito robot</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:#d6ef43;
+      color:#0b0b0b;
+      font-family:'VT323', monospace;
+      padding:14px 18px 80px 18px;
+      min-height:100vh;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04) 0px,
+        rgba(0,0,0,0.04) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events:none;
+      opacity:0.18;
+    }
+
+    .header {
+      background:#000;
+      color:#d6ef43;
+      padding:12px;
+      display:inline-block;
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader, .text {
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .text {
+      animation: unstableText 3.5s infinite;
+    }
+
+    .loader { margin:12px 0 18px 0; }
+
+    .cursor {
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity:0; }
+    }
+
+    @keyframes unstableText {
+      0%, 100% { opacity:1; transform:translateX(0); }
+      48% { opacity:1; }
+      49% { opacity:0.86; }
+      50% { opacity:1; }
+      72% { transform:translateX(0); }
+      73% { transform:translateX(1px); }
+      74% { transform:translateX(0); }
+    }
+
+    .nav {
+      display:none;
+      margin-top:40px;
+      justify-content:space-between;
+    }
+
+    .nav.show { display:flex; }
+
+    .nav a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+
+    .nav a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+
+<div id="header" class="header"></div>
+<div id="loader" class="loader"></div>
+<div id="text" class="text"></div>
+
+<div id="nav" class="nav">
+  <a href="carta7.html">←</a>
+  <a href="carta9.html">→</a>
+</div>
+<script>
+const headerTemplate = [
+'╔════════════════════════════════════════════════════════════╗',
+' ARCHIVO INTERCEPTADO',
+' registro: 08',
+' asunto: diablito robot',
+' fecha estimada: 1972',
+' ubicación aproximada: {{COORDS}}',
+'estado de señal: inestable',
+'╚════════════════════════════════════════════════════════════╝'
+];
+
+const finalCoords = '20° 09´43.00´´N / 99°23´43.09´´O';
+
+const message = `[INICIO DEL MENSAJE]
+
+
+Llevo haciendo micro saltos en el tiempo desde hace mucho
+No tengo idea si han sido días, semanas o meses
+Siento que alguien me persigue 
+No es seguro
+Alguien sabe que conozco la profecía y 
+Están intentando detener la invocación.
+
+
+Las notas de la científica están fragmentadas.
+Apenas logro seguir algunas pistas.
+
+He decidido refugiarme en el pasado 
+para despistar a quién me sigue
+
+Llegué a un campo lleno de magueyes.
+Acampé un par de días.
+
+Hasta que vi algo moverse entre las rocas.
+
+Al principio pensé que era un animal.
+Pero no.
+Era una máquina.
+Caminaba entre los nopales y las plantas espinosas.
+Saltaba.
+Analizaba el suelo.
+Tenía patas cortas que se expandían.
+Una forma extraña.
+Parecía un pequeño diablito.
+
+Lo observé de lejos.
+Pero me detectó.
+Giró violentamente.
+Y empezó a perseguirme.
+
+No de forma torpe.
+Sabía exactamente lo que hacía.
+
+Medía la distancia.
+Calculaba el terreno.
+Me marcó como anomalía.
+Como si mi sola presencia pudiera alterar su misión.
+
+Corrí.
+
+Lo escuchaba detrás.
+Cada vez más cerca.
+Su zumbido se volvió agudo.
+Intenté perderlo en una barranca.
+Fue inútil.
+Pensé que era el final. 
+
+Entonces recordé cuando corríamos entre tu milpa.
+Después de amarrar las coliflores.
+Nos aventábamos los restos de hojas.
+
+Saltando entre el lodo.
+Con el atardecer cayendo.
+Y las garzas blancas comiendo gusanos entre las milpas regadas.
+
+Eso me hizo confiar en mi puntería.
+Saqué una pequeña bomba de salto temporal.
+La lancé. 
+
+El diablito desapareció en un destello.
+
+Seguí 
+ocultándome 
+en 
+el tiempo.
+
+Capturé varios de esos robots
+Necesitaba entender su código.
+Tal vez podía  mejorar
+mis transmisiones hacia ti.
+
+Los diablitos robot recorren el valle día y noche.
+Se esconden de los habitantes.
+
+Es difícil que alguien llegue hasta donde están.
+Pero algunos los han visto.
+
+Señores
+que regresan
+borrachos
+de tomar pulque.
+
+Dicen que en el cerro aparecen cosas.
+Que en las ramas del mezquite descansa un pequeño diablo.
+
+Los llaman entes de la noche.
+Brujas.
+Nahuales.
+Fantasmas.
+Vampiros.
+Como nosotros.
+
+Pero nadie sabe que son tecnologías de otras eras.
+Los diablitos repiten siempre la misma frase:
+
+
+
+“Al servicio del Sistema Nacional de Refinación.” 
+
+Recorren los mismos caminos.
+Una y otra vez.
+Como si vigilaran el territorio.
+
+Capturarlos no es fácil.
+Pero a veces el sol los atonta.
+Y entonces es así como los atrapo.
+
+Desarmarlos es complicado.
+Cada tornillo parece tener voluntad propia.
+Sus circuitos están cubiertos con restos de garambullo.
+Creo que puedo usarlos.
+
+Convertirlos en transmisores.
+Necesito regresar al futuro.
+Hay un lugar donde trituran tecnología vieja.
+
+Un centro de reciclaje.
+Antes fue un parque de energía solar
+
+
+
+Usaban avionetas para disipar las nubes.
+Decían que era para proteger los paneles.
+Pero los pobladores detuvieron el proyecto.
+
+Después todo cambió.
+Las mismas tierras fueron ocupadas otra vez.
+Con apoyo del gobierno.
+
+Las empresas habían financiado las últimas campañas.
+Ahora fabrican tecnología para evitar la lluvia.
+
+La llaman la Oposición de la lluvia.
+Máquinas que calientan la atmósfera.
+Drones que dispersan las nubes.
+Torres que rompen la condensación.
+
+Creo que ellos son los que están intentado detener 
+a la Culebra Tormenta. 
+
+Recuerdo haber visto los restos de un robot araña 
+en el centro de reciclaje.
+Creo que puedo reconstruirlo.
+Tal vez pueda armar una computadora 
+lo suficientemente potente
+para abrir un 
+puente intertemporal estable.
+
+Para hablar contigo.
+Si una noche escuchas un zumbido no huyas.
+Si ves una araña no la aplastes.
+Si se detiene frente a ti
+acércate.
+
+Tal vez traiga mi voz.
+O mi sombra.
+O una ruta para encontrarnos.
+
+Espero estés teniendo 
+buena venta 
+de tus betabeles.
+
+
+
+[FIN DEL MENSAJE]
+..
+...
+....
+......
+........
+.............
+estado de señal: degradado
+registro archivado`;
+
+const headerEl = document.getElementById("header");
+const loaderEl = document.getElementById("loader");
+const textEl = document.getElementById("text");
+const navEl = document.getElementById("nav");
+
+function randChar(){
+  const c="0123456789NSEO°´/";
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function scrambleCoords(){
+  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+}
+
+function drawHeader(coords){
+  headerEl.textContent = headerTemplate
+    .map(l=>l.replace("{{COORDS}}",coords))
+    .join("\n");
+}
+
+let s=0;
+function animateHeader(){
+  drawHeader(scrambleCoords());
+  s++;
+  if(s<20) setTimeout(animateHeader,80);
+  else startLoad();
+}
+
+function startLoad(p=0){
+  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
+  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p<100){
+    setTimeout(()=>startLoad(p+5),40);
+  }else{
+    drawHeader(finalCoords);
+    loaderEl.textContent="";
+    setTimeout(typeText,300);
+  }
+}
+
+function typeText(i=0){
+  if(i<message.length){
+    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
+    setTimeout(()=>typeText(i+1),18);
+  }else{
+    textEl.innerHTML=message + '<span class="cursor">_</span>';
+    navEl.classList.add("show");
+  }
+}
+
+animateHeader();
+</script>
+
+</body>
+</html>
