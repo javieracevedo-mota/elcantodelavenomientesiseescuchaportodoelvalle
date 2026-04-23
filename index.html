@@ -18,15 +18,16 @@
 
     :root {
       --bg1: #020302;
-      --bg2: #070a07;
-      --fg: #eaffee;
-      --glow: rgba(117, 255, 157, 0.22);
+      --bg2: #071008;
+      --fg: #dfffe7;
+      --green: #39ff88;
+      --green-soft: rgba(57, 255, 136, 0.22);
     }
 
     body {
       min-height: 100vh;
       background:
-        radial-gradient(circle at top, rgba(120, 255, 170, 0.06), transparent 30%),
+        radial-gradient(circle at center, rgba(57,255,136,0.08), transparent 34%),
         linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
       color: var(--fg);
       overflow: hidden;
@@ -38,14 +39,15 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.025) 0px,
-        rgba(255,255,255,0.025) 1px,
-        transparent 2px,
-        transparent 4px
-      );
-      opacity: 0.12;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.03) 0px,
+          rgba(255,255,255,0.03) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+      opacity: 0.13;
       pointer-events: none;
       z-index: 1;
       animation: flicker 4s infinite;
@@ -54,9 +56,21 @@
     .noise {
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.15) 0.7px, transparent 0.8px);
+      background-image: radial-gradient(rgba(255,255,255,0.12) 0.7px, transparent 0.8px);
       background-size: 8px 8px;
       opacity: 0.04;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(57,255,136,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(57,255,136,0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.22;
       pointer-events: none;
       z-index: 1;
     }
@@ -84,7 +98,7 @@
       line-height: 1.05;
       letter-spacing: 0.04em;
       white-space: pre-line;
-      text-shadow: 0 0 6px var(--glow);
+      text-shadow: 0 0 8px var(--green-soft);
       min-height: 6em;
       transition: opacity 0.2s ease, filter 0.2s ease;
     }
@@ -105,7 +119,7 @@
       opacity: 0;
       transition: opacity 0.2s ease;
       min-height: 1.5em;
-      text-shadow: 0 0 6px var(--glow);
+      text-shadow: 0 0 8px var(--green-soft);
     }
 
     .loader.visible {
@@ -123,20 +137,55 @@
       min-width: 18ch;
     }
 
-    .sky {
+    .rain {
       position: fixed;
       inset: 0;
       pointer-events: none;
       overflow: hidden;
       z-index: 2;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
 
-    .bird {
+    .rain.visible {
+      opacity: 1;
+    }
+
+    .column {
       position: absolute;
-      color: rgba(235,255,241,0.95);
-      white-space: nowrap;
-      animation: fly linear forwards;
-      text-shadow: 0 0 8px rgba(117,255,157,0.25);
+      top: -120px;
+      color: rgba(57,255,136,0.95);
+      text-shadow: 0 0 8px rgba(57,255,136,0.28);
+      white-space: pre;
+      line-height: 0.9;
+      animation: codefall linear forwards;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    .access-box {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.92);
+      border: 4px solid var(--green);
+      padding: 18px 30px;
+      color: var(--green);
+      font-size: clamp(1.4rem, 4vw, 3.2rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(0, 20, 6, 0.55);
+      box-shadow:
+        0 0 20px rgba(57,255,136,0.25),
+        inset 0 0 16px rgba(57,255,136,0.12);
+      opacity: 0;
+      z-index: 8;
+      text-align: center;
+      min-width: 60vw;
+    }
+
+    .access-box.show {
+      animation: accessIn 0.45s ease forwards;
     }
 
     .flash {
@@ -145,7 +194,7 @@
       background: rgba(210, 255, 223, 0.08);
       opacity: 0;
       pointer-events: none;
-      z-index: 10;
+      z-index: 7;
     }
 
     .flash.on {
@@ -153,7 +202,7 @@
     }
 
     .fadeout {
-      animation: fadeToBlack 0.45s ease forwards;
+      animation: fadeToBlack 0.5s ease forwards;
     }
 
     @keyframes blink {
@@ -161,27 +210,29 @@
     }
 
     @keyframes breathe {
-      0%, 100% { text-shadow: 0 0 6px rgba(117,255,157,0.18); }
-      50% { text-shadow: 0 0 12px rgba(117,255,157,0.30); }
+      0%, 100% { text-shadow: 0 0 6px rgba(57,255,136,0.18); }
+      50% { text-shadow: 0 0 14px rgba(57,255,136,0.34); }
     }
 
     @keyframes flicker {
-      0%, 100% { opacity: 0.11; }
-      48% { opacity: 0.12; }
+      0%, 100% { opacity: 0.12; }
+      48% { opacity: 0.13; }
       49% { opacity: 0.08; }
-      50% { opacity: 0.13; }
+      50% { opacity: 0.14; }
       51% { opacity: 0.10; }
-      52% { opacity: 0.12; }
+      52% { opacity: 0.13; }
     }
 
-    @keyframes fly {
+    @keyframes codefall {
       0% {
-        transform: translateX(-25vw) translateY(0) scale(0.8) rotate(0deg);
+        transform: translateY(-20vh);
         opacity: 0;
       }
-      10% { opacity: 1; }
+      10% {
+        opacity: 1;
+      }
       100% {
-        transform: translateX(120vw) translateY(-60px) scale(1.1) rotate(5deg);
+        transform: translateY(130vh);
         opacity: 0;
       }
     }
@@ -190,6 +241,17 @@
       0% { opacity: 0; }
       30% { opacity: 1; }
       100% { opacity: 0; }
+    }
+
+    @keyframes accessIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.92);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
 
     @keyframes fadeToBlack {
@@ -209,14 +271,21 @@
         margin-left: 0;
         margin-top: 8px;
       }
+
+      .access-box {
+        min-width: 82vw;
+        padding: 16px 18px;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="noise"></div>
-  <div class="sky" id="sky"></div>
+  <div class="grid"></div>
+  <div class="rain" id="rain"></div>
   <div class="flash" id="flash"></div>
+  <div class="access-box" id="accessBox">acceso concedido</div>
 
   <main class="wrap">
     <div class="title-wrap" id="titleWrap" aria-label="Abrir archivo">
@@ -229,8 +298,6 @@
   </main>
 
   <script>
-    const REPO_BASE = "/elcantodelavenomientesiseescuchaportodoelvalle";
-
     const finalLines = [
       "el canto",
       "del ave no miente",
@@ -239,14 +306,17 @@
       "el valle"
     ];
 
+    const REPO_BASE = "/elcantodelavenomientesiseescuchaportodoelvalle";
     const fullText = finalLines.join("\n");
+
     const title = document.getElementById("title");
-    const sky = document.getElementById("sky");
     const titleWrap = document.getElementById("titleWrap");
     const loader = document.getElementById("loader");
     const loaderText = document.getElementById("loaderText");
     const loaderBar = document.getElementById("loaderBar");
+    const rain = document.getElementById("rain");
     const flash = document.getElementById("flash");
+    const accessBox = document.getElementById("accessBox");
 
     let i = 0;
     let locked = false;
@@ -284,40 +354,39 @@
       title.innerHTML = scrambled.join("<br>");
     }
 
-    function createBird() {
-      const bird = document.createElement("div");
-      bird.className = "bird";
-
-      const symbols = [
-        "v","V","^","~",
-        "𓅭","𓅯","𓅪","𓅬","𓅫",
-        "vv","^^","v~v","~v~",
-        "𓅭𓅯","𓅪𓅪","v v v","^~^","𓅭 v 𓅯"
-      ];
-
-      bird.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      bird.style.top = (Math.random() * 95) + "%";
-      bird.style.left = "-25vw";
-      bird.style.fontSize = (12 + Math.random() * 38) + "px";
-      bird.style.animationDuration = (1.2 + Math.random() * 2.4) + "s";
-
-      sky.appendChild(bird);
-      setTimeout(() => bird.remove(), 4200);
-    }
-
     function updateLoader(percent) {
       loaderText.textContent = `cargando archivo ${String(percent).padStart(3, "0")}%`;
 
       const totalBars = 14;
       const filled = Math.round((percent / 100) * totalBars);
-      const bar = "[" + "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
-      loaderBar.textContent = bar;
+      loaderBar.textContent = "[" + "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
+    }
+
+    function createColumn() {
+      const col = document.createElement("div");
+      col.className = "column";
+
+      const glyphs = ["v","^","~","𓅭","𓅯","𓅪","𓅬","𓅫","𓆏","𓆙","𓆌","/","\\","|","_","=","+","*"];
+      let content = "";
+
+      const length = Math.floor(Math.random() * 20) + 12;
+      for (let n = 0; n < length; n++) {
+        content += glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+
+      col.textContent = content;
+      col.style.left = Math.random() * 100 + "vw";
+      col.style.fontSize = (14 + Math.random() * 18) + "px";
+      col.style.animationDuration = (1.6 + Math.random() * 2.2) + "s";
+      col.style.opacity = (0.45 + Math.random() * 0.5).toFixed(2);
+
+      rain.appendChild(col);
+      setTimeout(() => col.remove(), 4500);
     }
 
     function startLoadingSequence() {
       loader.classList.add("visible");
       title.classList.remove("idle");
-
       title.innerHTML = title.innerHTML.replace('<span class="cursor">_</span>', '');
 
       let percent = 0;
@@ -356,17 +425,24 @@
         if (count > 24) clearInterval(interval);
       }, 55);
 
-      for (let j = 0; j < 180; j++) {
-        setTimeout(createBird, j * 12);
+      rain.classList.add("visible");
+
+      for (let j = 0; j < 160; j++) {
+        setTimeout(createColumn, j * 18);
       }
 
       setTimeout(() => {
+        accessBox.classList.add("show");
+      }, 950);
+
+      setTimeout(() => {
         document.querySelector(".wrap").classList.add("fadeout");
-      }, 900);
+        loader.classList.add("fadeout");
+      }, 1900);
 
       setTimeout(() => {
         window.location.href = `${REPO_BASE}/cartas.html`;
-      }, 1450);
+      }, 2600);
     }
 
     titleWrap.addEventListener("click", () => {
