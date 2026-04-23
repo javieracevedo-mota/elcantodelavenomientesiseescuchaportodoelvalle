@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>registro 05 — experimento biotecnológico territorial</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:#d6ef43;
+      color:#0b0b0b;
+      font-family:'VT323', monospace;
+      padding:14px 18px 80px 18px;
+      min-height:100vh;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04) 0px,
+        rgba(0,0,0,0.04) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events:none;
+      opacity:0.18;
+    }
+
+    .header {
+      background:#000;
+      color:#d6ef43;
+      padding:12px;
+      display:inline-block;
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader, .text {
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .text {
+      animation: degradedSignal 4.2s infinite;
+    }
+
+    .loader { margin:12px 0 18px 0; }
+
+    .cursor {
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity:0; }
+    }
+
+    @keyframes degradedSignal {
+      0%, 100% { opacity:1; transform:translateX(0); }
+      44% { opacity:1; }
+      45% { opacity:0.82; transform:translateX(1px); }
+      46% { opacity:1; transform:translateX(0); }
+      73% { opacity:0.9; }
+      74% { opacity:1; }
+    }
+
+    .nav {
+      display:none;
+      margin-top:40px;
+      justify-content:space-between;
+    }
+
+    .nav.show { display:flex; }
+
+    .nav a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+
+    .nav a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+
+<div id="header" class="header"></div>
+<div id="loader" class="loader"></div>
+<div id="text" class="text"></div>
+
+<div id="nav" class="nav">
+  <a href="carta4.html">←</a>
+  <a href="carta6.html">→</a>
+</div>
+<script>
+const headerTemplate = [
+'╔════════════════════════════════════════════════════════╗',
+' ARCHIVO INTERCEPTADO',
+' registro: 05',
+' asunto: experimento biotecnológico territorial',
+' fecha estimada: 11 de julio, 2098',
+' ubicación aproximada: {{COORDS}}',
+'estado de señal: degradado',
+'╚════════════════════════════════════════════════════════╝'
+];
+
+const finalCoords = '19° 57´55.67´´N / 99°17´33.80´´O';
+
+const message = `[INICIO DEL MENSAJE]
+
+
+Robé el disco duro que contenía la información 
+sobre los vasos reguladores
+del Sistema Hídrico del Valle del Mezquital.
+Reuní los garambullos suficientes para intentar otro salto.
+
+He comenzado a entender mejor el umbral entre tiempo y materia.
+Los puentes intertemporales necesitan 
+temperatura
+presión
+y ese segundo exacto en que la energía se libera.
+
+Lo intento cada atardecer.
+Como el inicio del  metabolismo de los garambullos.
+Nocturnos. 
+
+A este punto de mi viaje 
+puedo ver cómo el tiempo se pliega sobre sí mismo.
+Como un cuerpo cansado. 
+Como una largartija que muerde su cola y se la desprende ella misma
+Las secuelas de estos saltos temporales 
+me atraviesan cada vez más profundo.
+
+Los dolores de cabeza son persistentes.
+Punzadas que solo logro calmar sumergiéndome en algún manantial.
+Aunque ya casi no quedan.
+Al menos no limpios.
+Ni lo suficientemente hondos como 
+para cubrir mi cuerpo entero.
+
+Llegué al interior de una bodega.
+
+Oculta tras la sala principal de un museo.
+El Museo de Historia y Antropología de las Culturas Perdidas.
+Los arqueólogos habían comenzado a clasificar cajas selladas
+Estaban marcadas con sellos de HydraGenomics Systems y 
+Consorcio Infraestructura del
+Altiplano,
+La primera una empresa de biotecnología en agricultura industrial
+La segunda una empresa que había participado 
+en la ampliación del sistema 
+hidráulico 
+del
+Valle.
+
+
+El material había sido encontrado
+en terrenos que la empresa había adquirido décadas atrás.
+
+Una extensa franja de tierra entre los vasos reguladores
+del Valle de México, 
+justo al final del Túnel Emisor Oriente 
+y la planta tratadora de aguas.
+
+La misma zona que Gusano Rojo monitoreaba.
+
+Caminé entre vitrinas incompletas.
+Hojas sueltas.
+Fragmentos de traducciones. 
+
+Los documentos hablaban de comunidades agrícolas 
+que durante décadas cultivaron con aguas residuales.
+Pero en los informes científicos no aparecían como comunidades.
+
+Aparecían como poblaciones de adaptación.
+Personas observadas durante generaciones.
+Sus cuerpos analizados.
+Sus enfermedades registradas.
+Sus hábitos documentados. 
+
+El uso del agua residual no comenzó como un experimento.
+
+Comenzó como una solución técnica.
+Una forma de deshacerse de las aguas negras de la ciudad.
+
+Pero después llegaron los científicos.
+
+Instituciones como el Centro Hemisférico de Ingeniería Hídrica
+
+Para ellos,
+el Valle del Mezquital se convirtió en algo más.
+Un laboratorio a cielo abierto.
+
+
+Registraban cómo los cuerpos se adaptaban a los patógenos.
+Cómo cambiaba su fisiología al convivir c
+on metales pesados y bacterias desconocidas.
+Cómo la exposición prolongada modificaba 
+sus estados de ánimo.
+
+No era un experimento declarado.
+Era algo más silencioso.
+
+Aprovechar
+una condición ya existente.
+
+
+
+Observar.
+Medir.
+Publicar.
+
+Y callar.
+
+Entonces entendí algo.
+Gusano Rojo no intentaba detener
+una conspiración imposible. 
+
+Intentaba reunir las piezas de una historia
+que nadie quería contar. 
+El agua que inundó y sepultó a los pueblos
+no fue necesariamente planeada. 
+
+Pero 
+cuando ocurrió la inundación los archivos desaparecieron.
+Las bodegas se vaciaron.
+Los laboratorios cerraron.
+Las responsabilidades se diluyeron.
+
+
+Salvar a la Ciudad de México
+había sido siempre
+la prioridad.
+
+Incluso
+si eso significaba
+enterrar al Valle.
+
+Entre las piezas arqueológicas había una ya ensamblada.
+Un sistema de destilación por arrastre de vapor modificado.
+
+Donde debería estar el matraz de ebullición 
+habían colocado una vasija prehispánica.
+No era decoración.
+Los científicos sabían que esas vasijas hechas 
+con arcillas específicas potenciaban
+la interacción de los compuestos.
+
+
+Los conocimientos antiguos no eran mitos.
+Eran ciencia
+interrumpida.
+
+El dispositivo destilaba aceites esenciales de cilantro 
+genéticamente modificado
+Cultivado por las comunidades.
+Había desarrollado una línea genética 
+donde aprovechaban la capacidad 
+de bioacumulación de metales pesados en esta planta 
+para poder sintetizar un aceite 
+con el cual creaban un perfume neuroactivo. 
+
+Una fragancia imperceptible.
+Diseñada para alterar el sistema neuroconductual.
+No causaba dolor.
+Ni alucinaciones.
+Provocaba docilidad.
+Pérdida de voluntad.
+
+
+Una sensación artificial de bienestar.
+Un arma suave.
+
+Capaz de operar en silencio.
+
+Pero el perfume no era la única herramienta.
+
+Descubrí registros de antenas instaladas entre los cultivos.
+Camufladas entre los tallos de maíz.
+
+Emitían frecuencias capaces de alterar la actividad cerebral.
+
+En una computadora había un video.
+Un dron agrícola sobrevolaba una pirámide de alfalfa.
+
+La regaba mientras personas cosechaban cilantro
+Maíz.
+Alfalfa.
+Lechugas.
+Parecían bailar una coreografía perfectamente sincronizada.
+
+Entonces entendí.
+No era solo agua lo que caía desde el aire.
+
+Era el perfume.
+Y las frecuencia ayudaban a la adhesión 
+del perfume en el sistema nervioso 
+
+Cultivando obediencia a nivel molecular.
+
+Los experimentos eran parte de un programa de investigación.
+Universidades.
+Corporaciones.
+Estado.
+
+Ingeniería social.
+Biotecnología.
+Control ambiental.
+
+
+Este museo custodiaba las pruebas de esa historia.
+Entre los archivos encontré 
+una lista de instituciones involucradas.
+
+Uno de los nombres estaba marcado con marcatextos amarillo es
+Instituto Intercontinental de Adaptación Hidrobiológica
+
+La misma que te quiere quitar tus milpas.
+
+Fui a buscarla.
+
+No he olvidado
+tu olor.
+A tierra mojada cuando me llevabas a cortar 
+colifl0r_
+
+[SEÑAL PARCIAL]
+..
+...
+....
+......
+.........
+.
+estado de señal: inestable
+registro archivado`;
+
+const headerEl = document.getElementById("header");
+const loaderEl = document.getElementById("loader");
+const textEl = document.getElementById("text");
+const navEl = document.getElementById("nav");
+
+function randChar(){
+  const c="0123456789NSEO°´/";
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function scrambleCoords(){
+  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+}
+
+function drawHeader(coords){
+  headerEl.textContent = headerTemplate
+    .map(l=>l.replace("{{COORDS}}",coords))
+    .join("\n");
+}
+
+let s=0;
+function animateHeader(){
+  drawHeader(scrambleCoords());
+  s++;
+  if(s<20) setTimeout(animateHeader,80);
+  else startLoad();
+}
+
+function startLoad(p=0){
+  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
+  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p<100){
+    setTimeout(()=>startLoad(p+5),40);
+  }else{
+    drawHeader(finalCoords);
+    loaderEl.textContent="";
+    setTimeout(typeText,300);
+  }
+}
+
+function typeText(i=0){
+  if(i<message.length){
+    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
+    setTimeout(()=>typeText(i+1),18);
+  }else{
+    textEl.innerHTML=message + '<span class="cursor">_</span>';
+    navEl.classList.add("show");
+  }
+}
+
+animateHeader();
+</script>
+
+</body>
+</html>
