@@ -19,7 +19,6 @@
     :root {
       --bg: #d6ef43;
       --fg: #0b0b0b;
-      --line: rgba(0, 0, 0, 0.9);
     }
 
     body {
@@ -59,33 +58,46 @@
       mix-blend-mode: multiply;
     }
 
-    .clock {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      z-index: 30;
-      font-size: clamp(1.4rem, 2vw, 2rem);
-      background: rgba(0,0,0,0.03);
-      border: 2px solid var(--fg);
-      padding: 6px 12px;
-      letter-spacing: 0.04em;
-    }
-
-    .back {
+    .top-left {
       position: fixed;
       left: 16px;
       top: 16px;
       z-index: 30;
       color: var(--fg);
       text-decoration: none;
-      font-size: clamp(1.3rem, 2vw, 1.8rem);
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
       border: 2px solid var(--fg);
       padding: 6px 12px;
       background: rgba(0,0,0,0.03);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .back:hover {
+    .top-left:hover {
       background: rgba(0,0,0,0.08);
+    }
+
+    .status-window {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 30;
+      font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+      border: 2px solid var(--fg);
+      padding: 6px 12px;
+      background: rgba(0,0,0,0.03);
+      width: min(48vw, 520px);
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .status-text {
+      display: inline-block;
     }
 
     .page {
@@ -96,32 +108,15 @@
       padding-bottom: 120px;
     }
 
-    /* contenedor del racimo */
     .cluster {
       position: absolute;
       left: 8%;
       top: 120px;
-      width: 78%;
+      width: 60%;
       height: 3000px;
       z-index: 2;
       animation: clusterPulse 4.2s ease-in-out infinite;
       transform-origin: center center;
-    }
-
-    svg.network {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-      overflow: visible;
-    }
-
-    .link {
-      stroke: var(--fg);
-      stroke-width: 2;
-      fill: none;
     }
 
     .node {
@@ -146,7 +141,8 @@
     }
 
     .node-id {
-      background: #bff11f;
+      background: #0b0b0b;
+      color: #d6ef43;
       border-right: 2px solid var(--fg);
       padding: 8px 10px;
       min-width: 54px;
@@ -167,43 +163,41 @@
         transform: scale(1) translateY(0px);
       }
       50% {
-        transform: scale(1.012) translateY(-4px);
+        transform: scale(1.01) translateY(-3px);
       }
     }
 
     @media (max-width: 900px) {
-      .page {
-        min-height: 3800px;
-      }
-
       .cluster {
         left: 4%;
-        width: 88%;
-        height: 3350px;
+        width: 90%;
       }
 
       .node-label {
         white-space: normal;
-        max-width: 220px;
+        max-width: 240px;
+      }
+
+      .status-window {
+        width: min(58vw, 440px);
       }
     }
 
     @media (max-width: 640px) {
-      .clock,
-      .back {
-        font-size: 1.1rem;
+      .top-left,
+      .status-window {
+        font-size: 1rem;
         padding: 5px 9px;
       }
 
       .page {
-        min-height: 4100px;
+        min-height: 3700px;
         padding-top: 140px;
       }
 
       .cluster {
-        left: 2%;
+        left: 3%;
         width: 94%;
-        height: 3600px;
       }
 
       .node {
@@ -219,71 +213,75 @@
         min-width: 46px;
         font-size: 1.15rem;
       }
+
+      .status-window {
+        top: 62px;
+        right: 10px;
+        width: calc(100vw - 20px);
+      }
+
+      .top-left {
+        left: 10px;
+        top: 10px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="noise"></div>
 
-  <a class="back" href="index.html">← volver</a>
-  <div class="clock" id="clock">--:--:--</div>
+  <a class="top-left" href="index.html">
+    <span>←</span>
+    <span>coord_xicuco://PON_AQUÍ_LAS_COORDENADAS</span>
+  </a>
+
+  <div class="status-window">
+    <span class="status-text" id="statusText">ocultando señal / reubicando origen / rastreo evitado</span>
+  </div>
 
   <main class="page">
     <div class="cluster">
-      <svg class="network" viewBox="0 0 1000 3000" preserveAspectRatio="none" aria-hidden="true">
-        <!-- conexiones secuenciales -->
-        <line class="link" x1="380" y1="140"  x2="520" y2="420" />
-        <line class="link" x1="520" y1="420"  x2="320" y2="760" />
-        <line class="link" x1="320" y1="760"  x2="560" y2="1080" />
-        <line class="link" x1="560" y1="1080" x2="260" y2="1420" />
-        <line class="link" x1="260" y1="1420" x2="600" y2="1750" />
-        <line class="link" x1="600" y1="1750" x2="360" y2="2080" />
-        <line class="link" x1="360" y1="2080" x2="560" y2="2410" />
-        <line class="link" x1="560" y1="2410" x2="300" y2="2740" />
-      </svg>
-
-      <!-- NODOS -->
-      <a class="node" href="carta1.html" style="top: 100px; left: 30%;">
+      <a class="node" href="carta1.html" style="top: 100px; left: 8%;">
         <span class="node-id">01</span>
         <span class="node-label">la noche del tsuru blanco.xic</span>
       </a>
 
-      <a class="node" href="carta2.html" style="top: 390px; left: 48%;">
+      <a class="node" href="carta2.html" style="top: 390px; left: 14%;">
         <span class="node-id">02</span>
         <span class="node-label">explosión de planta agroquímica atc.xic</span>
       </a>
 
-      <a class="node" href="carta3.html" style="top: 730px; left: 22%;">
+      <a class="node" href="carta3.html" style="top: 730px; left: 10%;">
         <span class="node-id">03</span>
         <span class="node-label">construcción de la refinería miguel hidalgo.xic</span>
       </a>
 
-      <a class="node" href="carta4.html" style="top: 1050px; left: 53%;">
+      <a class="node" href="carta4.html" style="top: 1050px; left: 16%;">
         <span class="node-id">04</span>
         <span class="node-label">archivos de la misión gusano rojo.xic</span>
       </a>
 
-      <a class="node" href="carta5.html" style="top: 1390px; left: 14%;">
+      <a class="node" href="carta5.html" style="top: 1390px; left: 6%;">
         <span class="node-id">05</span>
         <span class="node-label">experimento biotecnológico territorial.xic</span>
       </a>
 
-      <a class="node" href="carta6.html" style="top: 1720px; left: 58%;">
+      <a class="node" href="carta6.html" style="top: 1720px; left: 18%;">
         <span class="node-id">06</span>
         <span class="node-label">plaga patronal.xic</span>
       </a>
 
-      <a class="node" href="carta7.html" style="top: 2050px; left: 26%;">
+      <a class="node" href="carta7.html" style="top: 2050px; left: 9%;">
         <span class="node-id">07</span>
         <span class="node-label">culebra tormenta.xic</span>
       </a>
 
-      <a class="node" href="carta8.html" style="top: 2380px; left: 53%;">
+      <a class="node" href="carta8.html" style="top: 2380px; left: 15%;">
         <span class="node-id">08</span>
         <span class="node-label">diablito robot.xic</span>
       </a>
 
-      <a class="node" href="carta9.html" style="top: 2710px; left: 18%;">
+      <a class="node" href="carta9.html" style="top: 2710px; left: 7%;">
         <span class="node-id">09</span>
         <span class="node-label">canto de las aves.xic</span>
       </a>
@@ -291,21 +289,23 @@
   </main>
 
   <script>
-    function updateMexicoCityClock() {
-      const now = new Date();
-      const formatted = new Intl.DateTimeFormat('es-MX', {
-        timeZone: 'America/Mexico_City',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      }).format(now);
+    const messages = [
+      "ocultando señal / reubicando origen / rastreo evitado",
+      "camuflando transmisión / nodo no identificado / latencia variable",
+      "desvío activo / firma espectral inestable / escucha en curso",
+      "ocultando rastro / falsificando procedencia / detección parcial",
+      "interferencia activa / origen no verificable / señal viva"
+    ];
 
-      document.getElementById('clock').textContent = formatted;
+    let msgIndex = 0;
+    const statusText = document.getElementById("statusText");
+
+    function cycleStatus() {
+      msgIndex = (msgIndex + 1) % messages.length;
+      statusText.textContent = messages[msgIndex];
     }
 
-    updateMexicoCityClock();
-    setInterval(updateMexicoCityClock, 1000);
+    setInterval(cycleStatus, 2200);
   </script>
 </body>
 </html>
