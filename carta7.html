@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>registro 07 — culebra tormenta</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:#d6ef43;
+      color:#0b0b0b;
+      font-family:'VT323', monospace;
+      padding:14px 18px 80px 18px;
+      min-height:100vh;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04) 0px,
+        rgba(0,0,0,0.04) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events:none;
+      opacity:0.18;
+    }
+
+    .header {
+      background:#000;
+      color:#d6ef43;
+      padding:12px;
+      display:inline-block;
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader, .text {
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .text {
+      animation: unstableText 3.5s infinite;
+    }
+
+    .loader { margin:12px 0 18px 0; }
+
+    .cursor {
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity:0; }
+    }
+
+    @keyframes unstableText {
+      0%, 100% { opacity:1; transform:translateX(0); }
+      48% { opacity:1; }
+      49% { opacity:0.86; }
+      50% { opacity:1; }
+      72% { transform:translateX(0); }
+      73% { transform:translateX(1px); }
+      74% { transform:translateX(0); }
+    }
+
+    .nav {
+      display:none;
+      margin-top:40px;
+      justify-content:space-between;
+    }
+
+    .nav.show { display:flex; }
+
+    .nav a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+
+    .nav a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+
+<div id="header" class="header"></div>
+<div id="loader" class="loader"></div>
+<div id="text" class="text"></div>
+
+<div id="nav" class="nav">
+  <a href="carta6.html">←</a>
+  <a href="carta8.html">→</a>
+</div>
+<script>
+const headerTemplate = [
+'╔═════════════════════════════════════════════════════════╗',
+' ARCHIVO INTERCEPTADO',
+' registro: 07',
+' asunto: culebra tormenta',
+' fecha estimada: 22 de junio, 2033',
+' ubicación aproximada: {{COORDS}}',
+'estado de señal: inestable',
+'╚═════════════════════════════════════════════════════════╝'
+];
+
+const finalCoords = '20° 07´43.46´´N / 99°17´38.04´´O';
+
+const message = `[INICIO DEL MENSAJE]
+
+
+
+
+
+He llegado demasiado lejos.
+Más lejos
+de lo que quería llegar.
+
+Desarrollé un dispositivo que sintetiza la tecnología del garambullo.
+Con algunos chinicuiles  que robé del cuartel de Gusano Rojo.
+No sabía que sus capullos producirían filamentos tan extraños.
+Los alimenté con raíces de garambullo.
+
+
+
+Su seda comenzó a tejerse con arena de un hormiguero.
+Formaron una estructura que latía.
+Casi como si estuviera viva.
+
+Los circuitos electrónicos respondieron.
+El dispositivo se activó.
+
+Puedo abrir momentos intertemporales.
+Pero son frágiles.
+Borrosos.
+Inestables. 
+
+
+Y ahora estoy aquí.
+
+En un futuro que ojalá nunca veas.
+El Valle del Mezquital ya no es el mismo.
+La guerra del agua ocurrió.
+
+Mejor dicho,
+Estaba ocurriendo
+cuando llegué.
+
+
+Me costó entenderlo al principio.
+No quedaba un solo rastro de agua para tomar.
+
+Las cisternas vacías.
+Los pozos secos.
+
+Lo único que circulaba
+era agua residual.
+Esa agua podía cubrir a pueblos enteros
+ahora es lo único que queda para beber.
+
+El agua se intercambia en los mismos bidones
+que antes se usaban para el huachicol.
+Se trafica en botellas con etiquetas falsas.
+
+Se roba.
+Se mata.
+Se muere
+por ella.
+
+Llegué en medio de una balacera.
+
+
+
+Unos sicarios interceptaron una camioneta.
+Después le prendieron fuego.
+La estaban esperando. 
+
+Mientras observaba cómo las llamas
+la cubrían debajo de un sol infernal
+recordé el parecido que tenía con tu camioneta.
+
+Una armada con piezas de distintos vehículos.
+La frankenstein, le llamábamos
+Seguí las huellas de las llantas.
+
+Me llevaron a una bodega escondida en una falla del Cerro del Xicuco.
+Esperé horas antes de entrar, 
+cuando estuve seguro de que nadie vigilaba entré.
+
+Era un laboratorio.
+
+Intentaban clonar reptiles y anfibios.
+Había vitrinas con extremidades secas conservadas en formol.
+Figuras de barro representando criaturas que parecían antiguas
+y nuevas al mismo tiempo.
+
+
+
+En las mesas 
+había esculturas quemadas eran reconstruidas.
+Como si intentaran armar algo perdido.
+El laboratorio contenía un herpetario.
+Los estantes y terrarios 
+parecían altares.
+Cubiertos de espinas. 
+
+
+En la mesa había una grabadora.
+La encendí 
+y escuché  a una científica 
+registraba su investigación.
+Hablaba de una culebra sagrada.
+
+Intentaban clonarlo.
+Habían encontrado una imagen de una profecía.
+Decía que en medio de la guerra del agua
+tres animales
+sagrados
+podrían traer
+el diluvio
+de vuelta.
+
+Una lagartija cuyas lágrimas harían brotar plantas del suelo.
+Una rana capaz de tocar las rocas y convertirlas
+en agua.
+Y una serpiente con ojos de rayo, capaz de traer 
+treinta días de tormenta al Valle.
+Treinta días 
+de lluvias.
+Treinta días
+de descargas eléctricas.
+Suficiente energía
+para abrir un portal estable.
+
+
+
+Y regresar
+contigo.
+
+
+
+Si todo lo que dijeron es cierto
+esto no es el final.
+El Valle aún puede renacer.
+El agua aún puede volver.
+
+Debo encontrar a estos animales.
+
+
+
+Tal vez este mensaje sea el último por mucho tiempo.
+
+
+
+[FIN DEL MENSAJE]
+..
+...
+....
+......
+estado de señal: degradado
+registro archivado`;
+
+const headerEl = document.getElementById("header");
+const loaderEl = document.getElementById("loader");
+const textEl = document.getElementById("text");
+const navEl = document.getElementById("nav");
+
+function randChar(){
+  const c="0123456789NSEO°´/";
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function scrambleCoords(){
+  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+}
+
+function drawHeader(coords){
+  headerEl.textContent = headerTemplate
+    .map(l=>l.replace("{{COORDS}}",coords))
+    .join("\n");
+}
+
+let s=0;
+function animateHeader(){
+  drawHeader(scrambleCoords());
+  s++;
+  if(s<20) setTimeout(animateHeader,80);
+  else startLoad();
+}
+
+function startLoad(p=0){
+  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
+  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p<100){
+    setTimeout(()=>startLoad(p+5),40);
+  }else{
+    drawHeader(finalCoords);
+    loaderEl.textContent="";
+    setTimeout(typeText,300);
+  }
+}
+
+function typeText(i=0){
+  if(i<message.length){
+    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
+    setTimeout(()=>typeText(i+1),18);
+  }else{
+    textEl.innerHTML=message + '<span class="cursor">_</span>';
+    navEl.classList.add("show");
+  }
+}
+
+animateHeader();
+</script>
+
+</body>
+</html>
