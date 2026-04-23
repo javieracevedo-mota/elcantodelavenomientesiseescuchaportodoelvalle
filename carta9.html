@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>registro 09 — canto de las aves</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background:#d6ef43;
+      color:#0b0b0b;
+      font-family:'VT323', monospace;
+      padding:14px 18px 80px 18px;
+      min-height:100vh;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.04) 0px,
+        rgba(0,0,0,0.04) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events:none;
+      opacity:0.18;
+    }
+
+    .header {
+      background:#000;
+      color:#d6ef43;
+      padding:12px;
+      display:inline-block;
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .loader, .text {
+      white-space:pre-wrap;
+      font-size:1.6rem;
+      line-height:1.05;
+    }
+
+    .text {
+      animation: degradedText 3.2s infinite;
+    }
+
+    .loader { margin:12px 0 18px 0; }
+
+    .cursor {
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity:0; }
+    }
+
+    @keyframes degradedText {
+      0%, 100% { opacity:1; transform:translateX(0); }
+      28% { opacity:0.92; }
+      29% { opacity:1; }
+      61% { transform:translateX(0); }
+      62% { transform:translateX(1px); opacity:0.82; }
+      63% { transform:translateX(0); opacity:1; }
+      87% { opacity:0.9; }
+      88% { opacity:1; }
+    }
+
+    .nav {
+      display:none;
+      margin-top:40px;
+      justify-content:space-between;
+    }
+
+    .nav.show { display:flex; }
+
+    .nav a {
+      border:2px solid #000;
+      padding:6px 12px;
+      text-decoration:none;
+      color:#000;
+      font-size:2rem;
+      background:rgba(0,0,0,0.03);
+    }
+
+    .nav a:hover {
+      background:rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+
+<div id="header" class="header"></div>
+<div id="loader" class="loader"></div>
+<div id="text" class="text"></div>
+
+<div id="nav" class="nav">
+  <a href="carta8.html">←</a>
+  <a href="cartas.html">→</a>
+</div>
+<script>
+const headerTemplate = [
+'╔═══════════════════════════════════════════════════════════════╗',
+' ARCHIVO INTERCEPTADO',
+' registro: 09',
+' asunto: canto de las aves',
+' fecha: indeterminada',
+' ubicación aproximada: {{COORDS}}',
+' estado de señal: muy degradado',
+'╚═══════════════════════════════════════════════════════════════╝'
+];
+
+const finalCoords = '20° 08´30.68´´N / 99°22´06.01´´O';
+
+const message = `[INICIO DEL MENSAJE]
+
+Me infiltré en una empresa de nanotecnología
+llamada HuemaCartix 
+Está construida
+debajo de una zona industrial reconstruida.
+
+Trabajo como cocinero.
+
+Es pesado
+me recuerda cuando mi abuela cocinaba
+con sus manos resistentes al fuego.
+
+Un hombre me ayudó a entrar.
+No sé su nombre real.
+
+Solo sé que pertenece a la 
+División de Adaptación Biológica de Ambientes Contaminados (DABAC)
+De esta empresa y que quiere sabotear algo.
+
+Me deja códigos en servilletas usadas.
+
+Yo le respondo escondiendo mensajes
+en el menú del comedor. 
+
+Sus silencios son los de alguien que sabe demasiado.
+Como los tuyos.
+
+Fue él quien me mostró
+lo que esconden aquí.
+Una bacteria acuática termófila.
+
+La encontraron en un manantial caliente de un balneario del valle.
+
+La extrajeron del fondo mineral donde el agua hierve lentamente entre rocas volcánicas.
+La bacteria puede reparar cuerpos dañados por
+metales pesados
+venenos agrícolas
+polvos de caliza
+enfermedades crónico degenerativas.
+
+Pero el ejército la mantiene oculta.
+No para sanar.
+Sino para vender la cura.
+
+He robado algunas muestras.
+Pequeños fragmentos de su plásmido bacteriano.
+Los uso como tratamiento experimental.
+
+Los viajes en el tiempo d
+ejan marcas.
+Mis manos tiemblan
+cuando intento escribir.
+Los músculos a veces  olvidan obedecer.
+
+Y la memoria
+empieza a disolverse.
+
+Este plásmido ralentiza ese proceso.
+No me cura.
+Solo compra tiempo.
+El tiempo afecta más a unos que a otros.
+
+Entre salto y salto he entendido algo.
+El olvido
+no es natural.
+Nos lo sembraron.
+
+Como se siembra
+una 
+enfermedad.
+
+Hay algo profundamente 
+cruel 
+en ver cómo una mente 
+se deshace lentamente.
+Es una forma de desaparición.
+Primero se borran los nombres.
+Después los rostros.
+Después los lugares.
+Tus caricias
+
+
+Al final
+lo único que queda es una sensación vaga de haber amado algo.
+
+Viajar entre tiempos me hizo entender otra cosa.
+
+El valle también está perdiendo la memoria.
+Sus cerros ya no se reconocen.
+
+Sus ríos ya no saben por dónde corrían.
+Eso fue el desmantelamiento silencioso del territorio.
+Le arrancaron las neuronas a un cerebro sin dueño.
+
+Una lobotomía hecha con ductos, refinerías y aguas negras.
+Y mientras el valle olvida quién era,
+nosotros también nos estamos olvidando. 
+
+Por eso decidí dejar de escribirte.
+No porque no quiera encontrarte.
+Sino porque creo que mis mensajes
+llegaron 
+demasiado 
+tarde.
+
+Quizá ya me olvidaste.
+
+
+O quizá
+
+ya empezaste a olvidarme.
+
+A veces recuerdo
+cuando buscábamos lugares
+para sentarnos lejos de todos.
+Y pensar que podríamos escapar a tu pasado 
+En Miami
+Irnos al norte y cuidarnos 
+uno al otro al pasar por el desierto
+
+Recuerdo los atardeceres que veíamos 
+De la presa Endhó
+Convertida en un campo verde
+Cubierta de lirio.
+
+Recuerdo
+cuando no querías
+que tocara tus pies.
+Decías que podía enfermarme.
+
+Que metías los pies
+en el agua negra
+cuando regabas las milpas.
+
+
+
+Pero aun así
+yo quería besarlos.
+Decías que estaba loco.
+Que esas aguas
+estaban llenas de bacterias.
+
+Tal vez tenías razón.
+Tal vez siempre estuvimos enfermos desde entonces.
+O desde que nacimos inhalando aire refinero 
+
+Escuché algo sobre tu vida.
+No sé si es verdad.
+
+
+Te dicen 
+papá
+
+No sé si preguntarlo.
+
+Porque hay preguntas que cuando se responden terminan de romper lo que queda.
+
+
+
+Ya no voy a buscar cómo volver a tu tiempo.
+Voy a quedarme aquí.
+Entre archivos, códigos y bacterias robadas.
+
+
+Voy a convertirme
+en a 
+un espía.
+Alguien con una máscara 
+Siendo travesti de noche para besar a mis víctimas
+Uno que se mueve entre tiempos sin dejar rastro.
+
+
+Alguien que guarda secretos para que algún día
+alguien más pueda encontrarlos.
+
+Por eso
+escondí todos mis mensajes
+en los patrones
+de las aves.
+
+
+
+Ellas siempre llegaban
+a tus milpas.
+
+Sin pedir permiso.
+
+
+Se posaban
+sobre la tierra húmeda
+y cantaban
+aunque nadie las escuchara.
+
+Las máquinas fallan.
+Los archivos se corrompen.
+Las aves no.
+
+
+
+Ellas repiten el mismo canto generación tras generación.
+Espero que esos cantos me mantengan en ti
+Y 
+Te mantengan en mi
+
+Espero verte  
+
+Cuando vuelvan a brillar las luciérnagas
+cuando vuelvan a salir los manfes
+
+Cuando veas volar las libélulas 
+
+de cerro en cerro
+de mezquite en mezquite
+de valle en valle r
+
+recuerda
+
+que
+el canto del ave
+
+no miente
+
+si se escucha
+por todo 
+el valle.
+.
+.
+.
+(suena el croar
+de las ranas)
+.
+.
+.
+.
+.
+. 
+(suena
+la noche)
+.
+.
+.
+(música lejana 
+¿Donde están? 
+Esas cartas 
+Esas flores
+Detalles 
+Las llamadas 
+Las visitas normales
+Esos labios que mataban a besos
+Donde están?
+Promesas 
+¿donde están?
+)
+.
+.
+.
+.
+.
+.
+[FIN DEL MENSAJE]
+..
+....
+.....
+.......
+— señal residual detectada —
+canto de ave registrado
+en frecuencia desconocida
+.
+.
+.
+.
+.
+.`;
+
+const headerEl = document.getElementById("header");
+const loaderEl = document.getElementById("loader");
+const textEl = document.getElementById("text");
+const navEl = document.getElementById("nav");
+
+function randChar(){
+  const c="0123456789NSEO°´/";
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function scrambleCoords(){
+  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+}
+
+function drawHeader(coords){
+  headerEl.textContent = headerTemplate
+    .map(l=>l.replace("{{COORDS}}",coords))
+    .join("\n");
+}
+
+let s=0;
+function animateHeader(){
+  drawHeader(scrambleCoords());
+  s++;
+  if(s<20) setTimeout(animateHeader,80);
+  else startLoad();
+}
+
+function startLoad(p=0){
+  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
+  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+
+  if(p<100){
+    setTimeout(()=>startLoad(p+5),40);
+  }else{
+    drawHeader(finalCoords);
+    loaderEl.textContent="";
+    setTimeout(typeText,300);
+  }
+}
+
+function typeText(i=0){
+  if(i<message.length){
+    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
+    setTimeout(()=>typeText(i+1),18);
+  }else{
+    textEl.innerHTML=message + '<span class="cursor">_</span>';
+    navEl.classList.add("show");
+  }
+}
+
+animateHeader();
+</script>
+
+</body>
+</html>
