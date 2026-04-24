@@ -147,10 +147,11 @@
     }
 
     .glyph {
-      position: absolute;
-      color: rgba(0,0,0,0.94);
-      white-space: nowrap;
-      animation: glyphPulse linear forwards;
+  position: absolute;
+  color: rgba(0,0,0,0.96);
+  white-space: nowrap;
+  animation: glyphPulse linear forwards;
+  line-height: 0.85;
     }
 
     @keyframes blink {
@@ -294,33 +295,51 @@
         "[" + "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
     }
 
-    function createGlyph() {
-      const el = document.createElement("div");
-      el.className = "glyph";
-      el.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+    function createGlyph(x, y, size = 26) {
+  const el = document.createElement("div");
+  el.className = "glyph";
+  el.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
 
-      el.style.left = Math.random() * 100 + "vw";
-      el.style.top = Math.random() * 100 + "vh";
-      el.style.fontSize = (14 + Math.random() * 38) + "px";
-      el.style.animationDuration = (1.6 + Math.random() * 1.8) + "s";
+  el.style.left = x + "px";
+  el.style.top = y + "px";
+  el.style.fontSize = size + "px";
+  el.style.animationDuration = (2.2 + Math.random() * 2.2) + "s";
 
-      glyphLayer.appendChild(el);
-    }
+  glyphLayer.appendChild(el);
+}
 
-    function fillScreenWithGlyphs() {
-      glyphLayer.classList.add("visible");
+function fillScreenWithGlyphs() {
+  glyphLayer.classList.add("visible");
 
-      for (let i = 0; i < 260; i++) {
-        setTimeout(createGlyph, i * 8);
-      }
+  const spacingX = 24;
+  const spacingY = 24;
 
+  // 🧠 relleno estructurado (tipo tapiz)
+  for (let y = -10; y < window.innerHeight + 30; y += spacingY) {
+    for (let x = -10; x < window.innerWidth + 30; x += spacingX) {
       setTimeout(() => {
-        for (let i = 0; i < 140; i++) {
-          setTimeout(createGlyph, i * 12);
-        }
-      }, 900);
+        const jitterX = x + (Math.random() * 12 - 6);
+        const jitterY = y + (Math.random() * 12 - 6);
+        const size = 18 + Math.random() * 18;
+        createGlyph(jitterX, jitterY, size);
+      }, Math.random() * 1200);
     }
+  }
 
+  // 🧠 saturación final (caos)
+  setTimeout(() => {
+    for (let i = 0; i < 450; i++) {
+      setTimeout(() => {
+        createGlyph(
+          Math.random() * window.innerWidth,
+          Math.random() * window.innerHeight,
+          18 + Math.random() * 24
+        );
+      }, i * 4);
+    }
+  }, 900);
+}
+    
     function startLoadingSequence() {
       loader.classList.add("visible");
       title.classList.remove("idle");
