@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archivo Interceptado</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: #00ff66;
+  font-family: monospace;
+  overflow: hidden;
+}
+#terminal {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  padding: 24px;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  font-size: 24px;
+  line-height: 1.45;
+}
+.cursor {
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+</style>
+</head>
+<body>
+<div id="terminal"></div>
+<script>
+const texto = `
+ARCHIVO INTERCEPTADO
+registro: 04
+asunto: archivos de la misión gusano rojo
+[INICIO DEL MENSAJE]
+A veces quiero regresar.
+Mi cuerpo empieza a resentir los brincos temporales.
+Pero lo que descubrí es mucho más extraño.
+GUSANO ROJO no es un nombre.
+Es una misión.
+[FIN DEL MENSAJE]
+estado de señal: activo
+registro archivado
+`;
+const terminal = document.querySelector('#terminal');
+let indice = 0;
+let salida = '';
+let interferenciaMostrada = false;
+const TIEMPO_REINICIO = 300000;
+const corrupciones = {
+  o: '0',
+  O: '0',
+  a: '4',
+  A: '4',
+  e: '3',
+  E: '3',
+  i: '1',
+  I: '1'
+};
+function corromper(letra) {
+  if (
+    corrupciones[letra] &&
+    Math.random() < 0.04
+  ) {
+    return corrupciones[letra];
+  }
+  return letra;
+}
+function reiniciarSistema() {
+  terminal.innerHTML = '';
+  setTimeout(function() {
+    indice = 0;
+    salida = '';
+    interferenciaMostrada = false;
+    escribir();
+  }, 5000);
+}
+function escribir() {
+  if (indice >= texto.length) {
+    terminal.innerHTML = salida;
+    setTimeout(function() {
+      reiniciarSistema();
+    }, TIEMPO_REINICIO);
+    return;
+  }
+  if (
+    !interferenciaMostrada &&
+    indice > texto.length * 0.75
+  ) {
+    interferenciaMostrada = true;
+    terminal.innerHTML =
+      salida +
+      '\n\n[ SEÑAL INESTABLE ]\n';
+    terminal.scrollTop =
+      terminal.scrollHeight;
+    setTimeout(function() {
+      terminal.innerHTML =
+        salida +
+        '\n\n[ RECONECTANDO ]\n';
+      terminal.scrollTop =
+        terminal.scrollHeight;
+      setTimeout(escribir, 2500);
+    }, 1500);
+    return;
+  }
+  salida += corromper(texto[indice]);
+  terminal.innerHTML =
+    salida +
+    '<span class="cursor">█</span>';
+  terminal.scrollTop =
+    terminal.scrollHeight;
+  indice++;
+  let velocidad = 18;
+  if (Math.random() < 0.015) {
+    velocidad = 80;
+  }
+  setTimeout(escribir, velocidad);
+}
+escribir();
+</script>
+</body>
+</html>
