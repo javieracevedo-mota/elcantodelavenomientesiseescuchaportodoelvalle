@@ -1,391 +1,387 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>archivo de escucha</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>El canto del ave no miente si se escucha por todo el valle</title>
+
+<style>
+
+  * {
+
+    box-sizing: border-box;
+
+  }
+
+  html, body {
+
+    margin: 0;
+
+    padding: 0;
+
+    width: 100%;
+
+    min-height: 100%;
+
+    background: #000000;
+
+    color: #00ff66;
+
+    font-family: monospace;
+
+  }
+
+  body {
+
+    min-height: 100vh;
+
+    min-height: 100dvh;
+
+  }
+
+  .wrap {
+
+    min-height: 100vh;
+
+    min-height: 100dvh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 24px;
+
+  }
+
+  .title-wrap {
+
+    width: min(92vw, 900px);
+
+    cursor: pointer;
+
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
+
+  }
+
+  .title {
+
+    font-size: clamp(24px, 4.5vw, 52px);
+
+    line-height: 1.2;
+
+    letter-spacing: 0.02em;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: break-word;
+
+    text-transform: uppercase;
+
+    color: #00ff66;
+
+  }
+
+  .cursor {
+
+    animation: blink 1s steps(1) infinite;
+
+  }
+
+  @keyframes blink {
+
+    50% {
+
+      opacity: 0;
+
     }
 
-    :root {
-      --bg: #d6ef43;
-      --fg: #0b0b0b;
-      --ink-soft: rgba(0, 0, 0, 0.12);
-      --ink-mid: rgba(0, 0, 0, 0.22);
-    }
+  }
 
-    body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--fg);
-      overflow: hidden;
-      font-family: 'VT323', monospace;
-      position: relative;
-    }
+  .loader {
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(0,0,0,0.05) 0px,
-          rgba(0,0,0,0.05) 1px,
-          transparent 2px,
-          transparent 4px
-        );
-      opacity: 0.22;
-      pointer-events: none;
-      z-index: 1;
-      animation: flicker 4s infinite;
-    }
+    display: none;
 
-    .noise {
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(rgba(0,0,0,0.11) 0.7px, transparent 0.8px);
-      background-size: 7px 7px;
-      opacity: 0.08;
-      pointer-events: none;
-      z-index: 1;
-      mix-blend-mode: multiply;
-    }
+    margin-top: 28px;
 
-    .wrap {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px;
-      position: relative;
-      z-index: 3;
-    }
+    font-size: clamp(18px, 2.5vw, 24px);
 
-    .title-wrap {
-      cursor: pointer;
-      user-select: none;
-      text-align: left;
-      position: relative;
-      z-index: 4;
-      width: min(92vw, 900px);
-    }
+    line-height: 1.5;
+
+    color: #00ff66;
+
+  }
+
+  .loader.visible {
+
+    display: block;
+
+  }
+
+  .loader-bar {
+
+    display: block;
+
+    margin-top: 10px;
+
+    white-space: nowrap;
+
+  }
+
+  .hint {
+
+    margin-top: 30px;
+
+    font-size: 16px;
+
+    opacity: 0.65;
+
+    animation: blink 1.8s infinite;
+
+  }
+
+  @media (max-width: 640px) {
 
     .title {
-      font-size: clamp(2.2rem, 6vw, 5.6rem);
-      line-height: 0.98;
-      letter-spacing: 0.03em;
-      white-space: pre-line;
-      min-height: 5.8em;
-      color: var(--fg);
-      text-transform: uppercase;
-    }
 
-    .title.idle {
-      animation: breathe 2.8s ease-in-out infinite;
-    }
+      font-size: clamp(24px, 6vw, 36px);
 
-    .cursor {
-      display: inline-block;
-      width: 0.58em;
-      animation: blink 0.9s steps(1) infinite;
     }
 
     .loader {
-      margin-top: 18px;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      justify-content: flex-start;
-      font-size: clamp(1.3rem, 2vw, 1.9rem);
-      min-width: 320px;
-      color: var(--fg);
-      text-transform: uppercase;
+
+      font-size: 18px;
+
     }
 
-    .loader.visible {
-      opacity: 1;
-    }
+  }
 
-    .loader-label {
-      white-space: nowrap;
-    }
+</style>
 
-    .loader-percent {
-      width: 4ch;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .loader-bar {
-      width: 16ch;
-      display: inline-block;
-    }
-
-    .glyph-layer {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 2;
-      opacity: 0;
-    }
-
-    .glyph-layer.visible {
-      opacity: 1;
-    }
-
-    .glyph {
-  position: absolute;
-  color: rgba(0,0,0,0.96);
-  white-space: nowrap;
-  animation: glyphPulse linear forwards;
-  line-height: 0.85;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    @keyframes breathe {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.88; }
-    }
-
-    @keyframes flicker {
-      0%,100% { opacity: 0.22; }
-      48% { opacity: 0.24; }
-      49% { opacity: 0.18; }
-      50% { opacity: 0.26; }
-      51% { opacity: 0.19; }
-      52% { opacity: 0.23; }
-    }
-
-    @keyframes glyphPulse {
-      0% {
-        opacity: 0;
-        transform: scale(0.82) rotate(0deg);
-      }
-      20% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0.95;
-        transform: scale(1.08) rotate(0.6deg);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .title {
-        min-height: 6.8em;
-      }
-
-      .loader {
-        min-width: 0;
-        flex-wrap: wrap;
-        gap: 8px 12px;
-      }
-
-      .loader-bar {
-        width: 16ch;
-      }
-    }
-  </style>
 </head>
 
 <body>
-  <div class="noise"></div>
-  <div class="glyph-layer" id="glyphLayer"></div>
 
-  <main class="wrap">
-    <div class="title-wrap" id="titleWrap" aria-label="Abrir archivo">
-      <div class="title" id="title"></div>
-      <div class="loader" id="loader">
-        <span class="loader-label">cargando archivo</span>
-        <span class="loader-percent" id="loaderPercent">000%</span>
-        <span class="loader-bar" id="loaderBar">[··············]</span>
-      </div>
+<main class="wrap">
+
+  <div
+
+    class="title-wrap"
+
+    id="titleWrap"
+
+    role="button"
+
+    tabindex="0"
+
+    aria-label="Abrir archivo"
+
+  >
+
+    <div class="title" id="title"></div>
+
+    <div class="hint" id="hint" hidden>
+
+      [ TOCA PARA ACCEDER AL ARCHIVO ]
+
     </div>
-  </main>
 
-  <script>
-    const REPO_BASE = "/elcantodelavenomientesiseescuchaportodoelvalle";
+    <div class="loader" id="loader">
 
-    const finalLines = [
-      "el canto",
-      "del ave no miente",
-      "si se escucha",
-      "por todo",
-      "el valle"
-    ];
+      <div>ACCEDIENDO AL ARCHIVO...</div>
 
-    const fullText = finalLines.join("\n");
+      <div id="loaderPercent">000%</div>
 
-    const title = document.getElementById("title");
-    const titleWrap = document.getElementById("titleWrap");
-    const loader = document.getElementById("loader");
-    const glyphLayer = document.getElementById("glyphLayer");
+      <span class="loader-bar" id="loaderBar">
 
-    let i = 0;
-    let typingDone = false;
-    let locked = false;
+        [··············]
 
-    const glyphs = [
-      "𓅭","𓅯","𓅪","𓅬","𓅫",
-      "𓆙","𓆘","𓆚",
-      "𓆏","𓆉","𓆌",
-      "𓇢","𓇣","𓇩",
-      "≈","∿","⌇","○","°","∙",
-      "/","\\","|","_","=","+","#","@","0","1",":",";","::","//","[]"
-    ];
+      </span>
 
-    function render(text) {
-      title.innerHTML = text.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+
+  const REPO_BASE =
+
+    "/elcantodelavenomientesiseescuchaportodoelvalle";
+
+  const finalLines = [
+
+    "el canto",
+
+    "del ave no miente",
+
+    "si se escucha",
+
+    "por todo",
+
+    "el valle"
+
+  ];
+
+  const fullText = finalLines.join("\n");
+
+  const title = document.getElementById("title");
+
+  const titleWrap = document.getElementById("titleWrap");
+
+  const loader = document.getElementById("loader");
+
+  const hint = document.getElementById("hint");
+
+  const loaderPercent =
+
+    document.getElementById("loaderPercent");
+
+  const loaderBar =
+
+    document.getElementById("loaderBar");
+
+  let index = 0;
+
+  let typingDone = false;
+
+  let locked = false;
+
+  function renderTitle(text, cursor = true) {
+
+    title.textContent = text;
+
+    if (cursor) {
+
+      const span = document.createElement("span");
+
+      span.className = "cursor";
+
+      span.textContent = "█";
+
+      title.appendChild(span);
+
     }
 
-    function setFinalText() {
-      title.innerHTML = fullText.replace(/\n/g, "<br>") + '<span class="cursor">_</span>';
-      title.classList.add("idle");
-      typingDone = true;
-    }
-
-    function typeText() {
-      if (i < fullText.length) {
-        render(fullText.slice(0, i + 1));
-        i++;
-        setTimeout(typeText, 62);
-      } else {
-        setFinalText();
-      }
-    }
-
-    function randomChar() {
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&/=+*<>~?@";
-      return chars[Math.floor(Math.random() * chars.length)];
-    }
-
-    function scrambleCurrentText() {
-      const scrambled = [...finalLines, "_"].join("\n").split("\n").map(line =>
-        line.split("").map(c => c === " " ? " " : randomChar()).join("")
-      );
-      title.innerHTML = scrambled.join("<br>");
-    }
-
-    function updateLoader(percent) {
-      const percentEl = document.getElementById("loaderPercent");
-      const barEl = document.getElementById("loaderBar");
-
-      percentEl.textContent = String(percent).padStart(3, "0") + "%";
-
-      const totalBars = 14;
-      const filled = Math.round((percent / 100) * totalBars);
-
-      barEl.textContent =
-        "[" + "■".repeat(filled) + "·".repeat(totalBars - filled) + "]";
-    }
-
-    function createGlyph(x, y, size = 26) {
-  const el = document.createElement("div");
-  el.className = "glyph";
-  el.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-
-  el.style.left = x + "px";
-  el.style.top = y + "px";
-  el.style.fontSize = size + "px";
-  el.style.animationDuration = (2.2 + Math.random() * 2.2) + "s";
-
-  glyphLayer.appendChild(el);
-}
-
-function fillScreenWithGlyphs() {
-  glyphLayer.classList.add("visible");
-
-  const spacingX = 24;
-  const spacingY = 24;
-
-  // 🧠 relleno estructurado (tipo tapiz)
-  for (let y = -10; y < window.innerHeight + 30; y += spacingY) {
-    for (let x = -10; x < window.innerWidth + 30; x += spacingX) {
-      setTimeout(() => {
-        const jitterX = x + (Math.random() * 12 - 6);
-        const jitterY = y + (Math.random() * 12 - 6);
-        const size = 18 + Math.random() * 18;
-        createGlyph(jitterX, jitterY, size);
-      }, Math.random() * 1200);
-    }
   }
 
-  // 🧠 saturación final (caos)
-  setTimeout(() => {
-    for (let i = 0; i < 450; i++) {
-      setTimeout(() => {
-        createGlyph(
-          Math.random() * window.innerWidth,
-          Math.random() * window.innerHeight,
-          18 + Math.random() * 24
-        );
-      }, i * 4);
+  function typeText() {
+
+    if (index < fullText.length) {
+
+      index++;
+
+      renderTitle(fullText.slice(0, index));
+
+      setTimeout(typeText, 62);
+
+    } else {
+
+      renderTitle(fullText);
+
+      typingDone = true;
+
+      hint.hidden = false;
+
     }
-  }, 900);
-}
-    
-    function startLoadingSequence() {
-      loader.classList.add("visible");
-      title.classList.remove("idle");
 
-      let percent = 0;
+  }
 
-      function step() {
-        scrambleCurrentText();
-        updateLoader(percent);
+  function updateLoader(percent) {
 
-        if (percent < 89) {
-          percent += Math.floor(Math.random() * 8) + 4;
-          if (percent > 89) percent = 89;
-          setTimeout(step, 55);
-          return;
-        }
+    loaderPercent.textContent =
 
-        if (percent < 100) {
-          percent += 1;
-          setTimeout(step, percent < 95 ? 190 : 320);
-          return;
-        }
+      String(percent).padStart(3, "0") + "%";
 
-        finishSequence();
+    const total = 14;
+
+    const filled = Math.round(percent / 100 * total);
+
+    loaderBar.textContent =
+
+      "[" +
+
+      "■".repeat(filled) +
+
+      "·".repeat(total - filled) +
+
+      "]";
+
+  }
+
+  function startLoadingSequence() {
+
+    if (locked || !typingDone) return;
+
+    locked = true;
+
+    hint.hidden = true;
+
+    title.style.display = "none";
+
+    loader.classList.add("visible");
+
+    let percent = 0;
+
+    updateLoader(percent);
+
+    const interval = setInterval(() => {
+
+      percent = Math.min(percent + 5, 100);
+
+      updateLoader(percent);
+
+      if (percent >= 100) {
+
+        clearInterval(interval);
+
+        setTimeout(() => {
+
+          window.location.href =
+
+            REPO_BASE + "/cartas.html";
+
+        }, 500);
+
       }
 
-      step();
-    }
+    }, 65);
 
-    function finishSequence() {
-      title.style.opacity = "0";
-      loader.style.opacity = "0";
-      fillScreenWithGlyphs();
+  }
 
-      setTimeout(() => {
-        window.location.href = `${REPO_BASE}/cartas.html`;
-      }, 7500);
-    }
+  titleWrap.addEventListener(
 
-    titleWrap.addEventListener("click", () => {
-      if (locked || !typingDone) return;
-      locked = true;
+    "click",
+
+    startLoadingSequence
+
+  );
+
+  titleWrap.addEventListener("keydown", (event) => {
+
+    if (event.key === "Enter" || event.key === " ") {
+
+      event.preventDefault();
+
       startLoadingSequence();
-    });
 
-    typeText();
-  </script>
+    }
+
+  });
+
+  typeText();
+
+</script>
+
 </body>
+
 </html>
