@@ -1,211 +1,265 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>registro 01 — la noche del tsuru blanco</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      background:#d6ef43;
-      color:#0b0b0b;
-      font-family:'VT323', monospace;
-      padding:14px 18px 80px 18px;
-      min-height:100vh;
-      position:relative;
-      overflow-x:hidden;
-    }
+<title>registro 01 — la noche del tsuru blanco</title>
 
-    body::before {
-      content:"";
-      position:fixed;
-      inset:0;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(0,0,0,0.04) 0px,
-          rgba(0,0,0,0.04) 1px,
-          transparent 2px,
-          transparent 4px
-        );
-      pointer-events:none;
-      opacity:0.18;
-      z-index:10;
-    }
+<style>
 
-    .noise {
-      position:fixed;
-      inset:0;
-      background-image: radial-gradient(rgba(0,0,0,0.09) 0.7px, transparent 0.8px);
-      background-size:8px 8px;
-      opacity:0.08;
-      pointer-events:none;
-      z-index:9;
-    }
+* {
 
-    .page {
-      position:relative;
-      z-index:2;
-    }
+  box-sizing: border-box;
 
-    .header, .loader, .text {
-      white-space:pre-wrap;
-      font-size:1.6rem;
-      line-height:1.05;
-    }
-    .header {
-  background: #000;
-  color: #d6ef43;
-  padding: 12px;
-  display: inline-block;
-    }
+}
 
-    .loader {
-      margin:12px 0 18px 0;
-    }
+html, body {
 
-    .cursor {
-      animation: blink 0.9s steps(1) infinite;
-    }
+  margin: 0;
 
-    @keyframes blink {
-      50% { opacity:0; }
-    }
+  width: 100%;
 
-    .nav {
-      display:none;
-      margin-top:40px;
-      justify-content:space-between;
-      align-items:center;
-    }
+  min-height: 100%;
 
-    .nav.show {
-      display:flex;
-    }
+  background: #000000;
 
-    .nav a {
-      border:2px solid #000;
-      padding:6px 12px;
-      text-decoration:none;
-      color:#000;
-      font-size:2rem;
-      background:rgba(0,0,0,0.03);
-    }
+  color: #00ff66;
 
-    .nav a:hover {
-      background:rgba(0,0,0,0.08);
-    }
+  font-family: monospace;
 
-    @media (max-width:640px){
-      body {
-        padding:10px 12px 80px 12px;
-      }
+}
 
-      .header, .loader, .text {
-        font-size:1.28rem;
-      }
+#terminal {
 
-      .nav a {
-        font-size:1.6rem;
-        padding:5px 10px;
-      }
-    }
-  </style>
+  width: 100%;
+
+  height: 100vh;
+
+  height: 100dvh;
+
+  padding: 24px;
+
+  overflow-y: auto;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+
+  font-size: 24px;
+
+  line-height: 1.45;
+
+}
+
+.cursor {
+
+  animation: blink 1s steps(1) infinite;
+
+}
+
+@keyframes blink {
+
+  50% {
+
+    opacity: 0;
+
+  }
+
+}
+
+#nav {
+
+  display: none;
+
+  gap: 24px;
+
+  justify-content: space-between;
+
+  margin: 38px 0 20px;
+
+  white-space: normal;
+
+}
+
+#nav.show {
+
+  display: flex;
+
+}
+
+#nav a {
+
+  color: #00ff66;
+
+  text-decoration: none;
+
+  border: 1px solid #00ff66;
+
+  padding: 10px 14px;
+
+  font-size: 20px;
+
+}
+
+#nav a:hover,
+
+#nav a:focus-visible {
+
+  background: #003319;
+
+}
+
+@media (max-width: 640px) {
+
+  #terminal {
+
+    padding: 16px;
+
+    font-size: 20px;
+
+  }
+
+  #nav a {
+
+    font-size: 16px;
+
+  }
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<div class="noise"></div>
+<main id="terminal">
 
-<div class="page">
-  <div id="header" class="header"></div>
-  <div id="loader" class="loader"></div>
-  <div id="text" class="text"></div>
+  <span id="output"></span><span id="cursor" class="cursor">█</span>
 
-  <div id="nav" class="nav">
-    <a href="cartas.html">←</a>
-    <a href="carta2.html">→</a>
-  </div>
-</div>
+  <nav id="nav">
+
+    <a href="cartas.html">← ARCHIVOS</a>
+
+    <a href="carta2.html">REGISTRO 02 →</a>
+
+  </nav>
+
+</main>
+
 <script>
-const headerTemplate = [
-'╔═════════════════════════════════════════════════════════╗',
-' ARCHIVO INTERCEPTADO',
-' registro: 01',
-' asunto: la noche del tsuru blanco',
-' fecha de emisión: 19.07.2019',
-' ubicación aproximada: {{COORDS}}',
-' estado de señal: estable',
-'╚═════════════════════════════════════════════════════════╝'
-];
 
-const finalCoords = '20° 08´30.06´´N / 99°17´10.74´´O';
+const texto = `╔═════════════════════════════════════════════════════════╗
 
-const message = `[INICIO DEL MENSAJE]
+ ARCHIVO INTERCEPTADO
+
+ registro: 01
+
+ asunto: la noche del tsuru blanco
+
+ fecha de emisión: 19.07.2019
+
+ ubicación aproximada: 20° 08´30.06´´N / 99°17´10.74´´O
+
+ estado de señal: estable
+
+╚═════════════════════════════════════════════════════════╝
+
+[INICIO DEL MENSAJE]
 
 Me dijiste que pienso mucho en el futuro.
+
 En varias ocasiones 
+
 me pediste que dejara 
+
 de pensar en eso.
 
 Posiblemente alguno de los dos no llegará al final.
 
-
 Vivimos en un lugar 
+
 donde la nostalgia 
+
 de los errores
+
 cometidos 
+
 en el pasado
 
 borra todo rastro de curiosidad
+
 por cambiar 
+
 el rumbo de 
+
 las cosas.
 
 Pero a mí me intriga
+
 lo que nos deparará.
 
 Sé que debo explicaciones
+
 y espero algún día dártelas
+
 en persona.
 
-
 Descifré el mensaje 
+
 que estaba en el coche
+
 en las milpas cerca del Xicuco, 
+
 ¿recuerdas?
 
 Aquella noche que escuchamos 
+
 la explosión
+
 mientras mirábamos 
+
 el cielo anaranjado
+
 iluminado por la llama constante
+
 de la refinería de Tula.
 
 Estábamos sobre el cofre 
+
 de tu camioneta.
+
 Nos vestimos más rápido
+
 que cuando nos desvestimos
 
 y tratamos de huir
+
 porque pensamos que habían picado mal otra toma de huachicol.
 
 Pero nos topamos con el Tsuru blanco.
 
-
 Aunque no querías que bajara de tu camioneta
+
 la luz azul me hipnotizó 
+
 como 
+
 a 
+
 un 
+
 mosquito.
 
 eran unas coordenadas
+
 indicaban un cerro 
+
 en 
 
 Huichapan
@@ -213,66 +267,97 @@ Huichapan
 Decidí buscarlo.
 
 Quiero ver si existe 
+
 tal cosa
+
 y saber por qué
+
 a nosotros 
+
 se nos apareció.
 
-
 Sabes que el presente 
+
 no está bien.
 
 Debemos escondernos 
+
 en 
+
 la oscuridad 
+
 para poder 
+
 estar 
+
 juntos.
 
 De noche,
+
 como vampiros.
 
 Donde aprendimos a mirar 
+
 el valle
+
 sin que nadie 
+
 nos viera.
 
-
 Las balaceras que están ocurriendo
+
 entre bandas 
+
 huachicoleras
+
 refuerzan el rumor
+
 de que se están disputando 
+
 el territorio 
+
 por la gasolina.
 
 Pero sabes 
+
 que también 
+
 es por el agua.
+
 Incluso por el 
+
 agua negra.
 
 Por eso 
+
 quiero 
+
 ir a buscar 
+
 el garambullo.
 
 Tal vez sea un mensaje del futuro.
 
 Tal vez me ayude a descubrir 
+
 otro lugar 
+
 donde podamos 
+
 estar 
+
 felices.
 
-
 o tal vez pueda detener
+
 los problemas que se aproximan.
 
-
 ¿Qué haremos si vuelve a explotar
+
 una fábrica del parque industrial 
+
 de Atitalaquia
+
 y nos cubren sus venenos?
 
 ¿Qué haremos sin agua?
@@ -280,188 +365,293 @@ y nos cubren sus venenos?
 ¿Dónde nadaremos?
 
 Si el control por la gasolina 
-genera más balas
-¿a dónde escaparemos?
 
+genera más balas
+
+¿a dónde escaparemos?
 
 No quiero perder a más amigos.
 
 Hay algo en el aire.
+
 en el agua.
+
 en la tierra.
+
 Algo nos vigila.
 
 Nos somete silenciosamente.
 
 Algo que no vemos,
-pero que respira
-con nosotros.
 
+pero que respira
+
+con nosotros.
 
 ¿Será el diablo?
 
 ¿Será dios?
 
-
-
 A veces siento 
+
 que no pertenezco aquí.
 
 Nunca encajé del todo 
-en lo que esperan 
-de un hombre en este lugar.
-Amar a otro hombre 
-hace que automáticamente 
-seas inservible.
 
+en lo que esperan 
+
+de un hombre en este lugar.
+
+Amar a otro hombre 
+
+hace que automáticamente 
+
+seas inservible.
 
 Y no sólo eso.
 
-
 Hay algo en mí que todavía 
+
 no sé explicar bien.
+
 Algo que no cabe
+
 en las palabras
+
 que aprendimos.
 
 Tú también sabes lo que es amar distinto.
 
 Pero a ti
+
 te cuesta más aceptarlo.
 
-
 Lo veo en la forma en que bajas 
+
 la voz cuando 
+
 alguien se acerca.
+
 En la manera en que 
+
 nuestro amor solo 
+
 puede existir cuando 
+
 cae la noche.
 
 A veces pienso 
+
 que 
+
 yo 
+
 podría 
+
 ser un error 
+
 para 
+
 ti.
+
 Algo que algún día quieras borrar
+
 para que tu vida
+
 sea más 
+
 sencilla.
 
 Este valle enseña a tener miedo.
 
-
 Quiero encontrar respuestas
+
 al encuentro fortuito
+
 que tuvimos
+
 en nuestro 
+
 lugar nocturno.
 
 No te pude 
+
 decir 
+
 adiós.
 
 Pero trataré 
+
 de comunicarme.
 
 Para que cada vez 
+
 que salga 
+
 la luna
+
 y se 
+
 escuchen 
+
 las ranas
 
 sea un indicio
+
 de que 
+
 encontré 
+
 nuevas pistas
 
 para 
+
 descifrar
 
 por qué 
+
 nos quieren 
+
 quitar
 
 la 
+
 esperanza.
 
-
-
 [FIN DE MENSAJE]
+
 ...
+
 .....
+
 ........
+
 ..........
+
 estado de señal: activo`;
 
-const headerEl = document.getElementById("header");
-const loaderEl = document.getElementById("loader");
-const textEl = document.getElementById("text");
-const navEl = document.getElementById("nav");
+const terminal = document.getElementById("terminal");
 
-function randChar(){
-  const c = "0123456789NSEO°´/ .";
-  return c[Math.floor(Math.random() * c.length)];
+const output = document.getElementById("output");
+
+const cursor = document.getElementById("cursor");
+
+const nav = document.getElementById("nav");
+
+const cambios = {
+
+  o: "0",
+
+  O: "0",
+
+  a: "4",
+
+  A: "4",
+
+  e: "3",
+
+  E: "3",
+
+  i: "1",
+
+  I: "1"
+
+};
+
+let indice = 0;
+
+let interferenciaMostrada = false;
+
+let salida = "";
+
+function desplazar() {
+
+  terminal.scrollTop = terminal.scrollHeight;
+
 }
 
-function scrambleCoords(){
-  return finalCoords
-    .split('')
-    .map(x => x === " " ? " " : randChar())
-    .join('');
-}
+function corromper(c) {
 
-function drawHeader(coords){
-  headerEl.textContent = headerTemplate
-    .map(l => l.replace("{{COORDS}}", coords))
-    .join("\n");
-}
+  if (cambios[c] && Math.random() < 0.04) {
 
-let scrambleCount = 0;
+    return cambios[c];
 
-function animateHeader(){
-  drawHeader(scrambleCoords());
-  scrambleCount++;
-
-  if(scrambleCount < 20){
-    setTimeout(animateHeader, 80);
-  } else {
-    startLoad();
   }
+
+  return c;
+
 }
 
-function startLoad(p = 0){
-  const filled = Math.floor(p / 5);
-  const empty = 20 - filled;
-  const bar = "[" + "■".repeat(filled) + "·".repeat(empty) + "]";
-  loaderEl.textContent = `[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+function escribir() {
 
-  if(p < 100){
-    setTimeout(() => startLoad(p + 5), 40);
-  } else {
-    drawHeader(finalCoords);
+  if (indice >= texto.length) {
+
+    output.textContent = salida;
+
+    cursor.style.display = "none";
+
+    nav.classList.add("show");
+
+    desplazar();
+
+    return;
+
+  }
+
+  if (
+
+    !interferenciaMostrada &&
+
+    indice > texto.length * 0.75
+
+  ) {
+
+    interferenciaMostrada = true;
+
+    output.textContent =
+
+      salida + "\n\n[ SEÑAL INESTABLE ]\n";
+
+    desplazar();
+
     setTimeout(() => {
-      loaderEl.textContent = "";
-      typeText();
-    }, 300);
+
+      output.textContent =
+
+        salida + "\n\n[ RECONECTANDO ]\n";
+
+      desplazar();
+
+      setTimeout(() => {
+
+        output.textContent = salida;
+
+        escribir();
+
+      }, 2500);
+
+    }, 1500);
+
+    return;
+
   }
+
+  salida += corromper(texto[indice]);
+
+  indice++;
+
+  output.textContent = salida;
+
+  desplazar();
+
+  setTimeout(escribir, 30);
+
 }
 
-function typeText(i = 0){
-  if(i < message.length){
-    textEl.innerHTML = message.slice(0, i + 1) + '<span class="cursor">_</span>';
-    setTimeout(() => typeText(i + 1), 18);
-  } else {
-    textEl.innerHTML = message + '<span class="cursor">_</span>';
-    navEl.classList.add("show");
-  }
-}
+escribir();
 
-animateHeader();
 </script>
 
 </body>
+
 </html>
