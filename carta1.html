@@ -46,6 +46,8 @@ html, body {
 
   overflow-y: auto;
 
+  overflow-x: hidden;
+
   white-space: pre-wrap;
 
   overflow-wrap: anywhere;
@@ -53,6 +55,8 @@ html, body {
   font-size: 24px;
 
   line-height: 1.45;
+
+  overscroll-behavior: contain;
 
 }
 
@@ -154,368 +158,237 @@ html, body {
 
 <script>
 
-const texto = `╔═════════════════════════════════════════════════════════╗
+const texto = `
 
  ARCHIVO INTERCEPTADO
-
  registro: 01
-
  asunto: la noche del tsuru blanco
-
  fecha de emisión: 19.07.2019
-
  ubicación aproximada: 20° 08´30.06´´N / 99°17´10.74´´O
-
  estado de señal: estable
 
-╚═════════════════════════════════════════════════════════╝
 
 [INICIO DEL MENSAJE]
 
 Me dijiste que pienso mucho en el futuro.
-
 En varias ocasiones 
-
 me pediste que dejara 
-
 de pensar en eso.
 
 Posiblemente alguno de los dos no llegará al final.
 
 Vivimos en un lugar 
-
 donde la nostalgia 
-
 de los errores
-
 cometidos 
-
 en el pasado
-
 borra todo rastro de curiosidad
-
 por cambiar 
-
 el rumbo de 
-
 las cosas.
 
 Pero a mí me intriga
-
 lo que nos deparará.
-
 Sé que debo explicaciones
-
 y espero algún día dártelas
-
 en persona.
 
 Descifré el mensaje 
-
 que estaba en el coche
-
 en las milpas cerca del Xicuco, 
-
 ¿recuerdas?
 
 Aquella noche que escuchamos 
-
 la explosión
-
 mientras mirábamos 
-
 el cielo anaranjado
-
 iluminado por la llama constante
-
 de la refinería de Tula.
 
 Estábamos sobre el cofre 
-
 de tu camioneta.
 
 Nos vestimos más rápido
-
 que cuando nos desvestimos
-
 y tratamos de huir
-
 porque pensamos que habían picado mal otra toma de huachicol.
 
 Pero nos topamos con el Tsuru blanco.
 
 Aunque no querías que bajara de tu camioneta
-
 la luz azul me hipnotizó 
-
 como 
-
 a 
-
 un 
-
 mosquito.
 
-eran unas coordenadas
-
+Eran unas coordenadas
 indicaban un cerro 
-
 en 
-
 Huichapan
 
 Decidí buscarlo.
 
 Quiero ver si existe 
-
 tal cosa
-
 y saber por qué
-
 a nosotros 
-
 se nos apareció.
 
 Sabes que el presente 
-
 no está bien.
 
 Debemos escondernos 
-
 en 
-
 la oscuridad 
-
 para poder 
-
 estar 
-
 juntos.
 
 De noche,
-
 como vampiros.
 
 Donde aprendimos a mirar 
-
 el valle
-
 sin que nadie 
-
 nos viera.
 
 Las balaceras que están ocurriendo
-
 entre bandas 
-
 huachicoleras
-
 refuerzan el rumor
-
 de que se están disputando 
-
 el territorio 
-
 por la gasolina.
 
 Pero sabes 
-
 que también 
-
 es por el agua.
 
 Incluso por el 
-
 agua negra.
 
 Por eso 
-
 quiero 
-
 ir a buscar 
-
 el garambullo.
 
 Tal vez sea un mensaje del futuro.
-
 Tal vez me ayude a descubrir 
-
 otro lugar 
-
 donde podamos 
-
 estar 
-
+.
+.
+.
 felices.
 
 o tal vez pueda detener
-
 los problemas que se aproximan.
 
 ¿Qué haremos si vuelve a explotar
-
 una fábrica del parque industrial 
-
 de Atitalaquia
-
 y nos cubren sus venenos?
 
 ¿Qué haremos sin agua?
-
 ¿Dónde nadaremos?
 
 Si el control por la gasolina 
-
 genera más balas
-
 ¿a dónde escaparemos?
 
 No quiero perder a más amigos.
 
 Hay algo en el aire.
-
 en el agua.
-
 en la tierra.
 
 Algo nos vigila.
-
 Nos somete silenciosamente.
-
 Algo que no vemos,
-
 pero que respira
-
 con nosotros.
 
 ¿Será el diablo?
-
 ¿Será dios?
 
 A veces siento 
-
 que no pertenezco aquí.
 
 Nunca encajé del todo 
-
 en lo que esperan 
-
 de un hombre en este lugar.
 
 Amar a otro hombre 
-
 hace que automáticamente 
-
 seas inservible.
 
 Y no sólo eso.
-
 Hay algo en mí que todavía 
-
 no sé explicar bien.
 
 Algo que no cabe
-
 en las palabras
-
 que aprendimos.
 
 Tú también sabes lo que es amar distinto.
 
 Pero a ti
-
 te cuesta más aceptarlo.
-
 Lo veo en la forma en que bajas 
-
 la voz cuando 
-
 alguien se acerca.
 
 En la manera en que 
-
 nuestro amor solo 
-
 puede existir cuando 
-
 cae la noche.
 
 A veces pienso 
-
 que 
-
 yo 
-
 podría 
-
 ser un error 
-
 para 
-
 ti.
 
 Algo que algún día quieras borrar
-
 para que tu vida
-
 sea más 
-
 sencilla.
 
 Este valle enseña a tener miedo.
 
 Quiero encontrar respuestas
-
 al encuentro fortuito
-
 que tuvimos
-
 en nuestro 
-
 lugar nocturno.
 
 No te pude 
-
 decir 
-
 adiós.
 
 Pero trataré 
-
 de comunicarme.
 
 Para que cada vez 
-
 que salga 
-
 la luna
-
 y se 
-
 escuchen 
-
 las ranas
-
 sea un indicio
-
 de que 
-
 encontré 
-
 nuevas pistas
-
 para 
-
 descifrar
-
 por qué 
-
 nos quieren 
-
 quitar
-
 la 
-
 esperanza.
 
 [FIN DE MENSAJE]
@@ -537,6 +410,8 @@ const output = document.getElementById("output");
 const cursor = document.getElementById("cursor");
 
 const nav = document.getElementById("nav");
+
+const VELOCIDAD = 30;
 
 const cambios = {
 
@@ -564,11 +439,9 @@ let interferenciaMostrada = false;
 
 let salida = "";
 
-function desplazar() {
+// El desplazamiento es completamente manual.
 
-  terminal.scrollTop = terminal.scrollHeight;
-
-}
+// No se modifica scrollTop durante la escritura.
 
 function corromper(c) {
 
@@ -592,8 +465,6 @@ function escribir() {
 
     nav.classList.add("show");
 
-    desplazar();
-
     return;
 
   }
@@ -612,15 +483,11 @@ function escribir() {
 
       salida + "\n\n[ SEÑAL INESTABLE ]\n";
 
-    desplazar();
-
     setTimeout(() => {
 
       output.textContent =
 
         salida + "\n\n[ RECONECTANDO ]\n";
-
-      desplazar();
 
       setTimeout(() => {
 
@@ -642,9 +509,7 @@ function escribir() {
 
   output.textContent = salida;
 
-  desplazar();
-
-  setTimeout(escribir, 30);
+  setTimeout(escribir, VELOCIDAD);
 
 }
 
