@@ -1,303 +1,519 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>registro 03 — refinería miguel hidalgo</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      background:#d6ef43;
-      color:#0b0b0b;
-      font-family:'VT323', monospace;
-      padding:14px 18px 80px 18px;
-      min-height:100vh;
-    }
+<title>registro 03 — refinería miguel hidalgo</title>
 
-    body::before {
-      content:"";
-      position:fixed;
-      inset:0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.04) 0px,
-        rgba(0,0,0,0.04) 1px,
-        transparent 2px,
-        transparent 4px
-      );
-      pointer-events:none;
-      opacity:0.18;
-    }
+<style>
 
-    .header {
-      background:#000;
-      color:#d6ef43;
-      padding:12px;
-      display:inline-block;
-      white-space:pre-wrap;
-      font-size:1.6rem;
-      line-height:1.05;
-    }
+* {
 
-    .loader, .text {
-      white-space:pre-wrap;
-      font-size:1.6rem;
-      line-height:1.05;
-    }
+  box-sizing: border-box;
 
-    .loader { margin:12px 0 18px 0; }
+}
 
-    .cursor {
-      animation: blink 0.9s steps(1) infinite;
-    }
+html, body {
 
-    @keyframes blink {
-      50% { opacity:0; }
-    }
+  margin: 0;
 
-    .nav {
-      display:none;
-      margin-top:40px;
-      justify-content:space-between;
-    }
+  width: 100%;
 
-    .nav.show { display:flex; }
+  min-height: 100%;
 
-    .nav a {
-      border:2px solid #000;
-      padding:6px 12px;
-      text-decoration:none;
-      color:#000;
-      font-size:2rem;
-      background:rgba(0,0,0,0.03);
-    }
-  </style>
+  background: #000000;
+
+  color: #00ff66;
+
+  font-family: monospace;
+
+}
+
+#terminal {
+
+  width: 100%;
+
+  height: 100vh;
+
+  height: 100dvh;
+
+  padding: 24px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+
+  font-size: 24px;
+
+  line-height: 1.45;
+
+  overscroll-behavior: contain;
+
+}
+
+.cursor {
+
+  animation: blink 1s steps(1) infinite;
+
+}
+
+@keyframes blink {
+
+  50% {
+
+    opacity: 0;
+
+  }
+
+}
+
+#nav {
+
+  display: none;
+
+  gap: 24px;
+
+  justify-content: space-between;
+
+  margin: 38px 0 20px;
+
+  white-space: normal;
+
+}
+
+#nav.show {
+
+  display: flex;
+
+}
+
+#nav a {
+
+  color: #00ff66;
+
+  text-decoration: none;
+
+  border: 1px solid #00ff66;
+
+  padding: 10px 14px;
+
+  font-size: 20px;
+
+}
+
+#nav a:hover,
+
+#nav a:focus-visible {
+
+  background: #003319;
+
+}
+
+@media (max-width: 640px) {
+
+  #terminal {
+
+    padding: 16px;
+
+    font-size: 20px;
+
+  }
+
+  #nav a {
+
+    font-size: 16px;
+
+  }
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<div id="header" class="header"></div>
-<div id="loader" class="loader"></div>
-<div id="text" class="text"></div>
+<main id="terminal">
 
-<div id="nav" class="nav">
-  <a href="carta2.html">←</a>
-  <a href="carta4.html">→</a>
-</div>
+  <span id="output"></span><span id="cursor" class="cursor">█</span>
+
+  <nav id="nav">
+
+    <a href="carta2.html">← REGISTRO 02</a>
+
+    <a href="carta4.html">REGISTRO 04 →</a>
+
+  </nav>
+
+</main>
+
 <script>
-const headerTemplate = [
-'╔═════════════════════════════════════════════════════════╗',
-' ARCHIVO INTERCEPTADO',
-' registro: 03',
-' asunto: construcción de la refinería Miguel Hidalgo',
-' fecha de emisión: 03.1972',
-' ubicación aproximada: {{COORDS}}',
-' estado de señal: estable',
-'╚═════════════════════════════════════════════════════════╝'
-];
 
-const finalCoords = '20° 03´15.40´´N / 99°16´39.49´´O';
+// ENCABEZADO DEL ARCHIVO
 
-const message = `[INICIO DEL MENSAJE]
-
-
-Han pasado días 
-desde mi último mensaje que te envié.
-No sé si para ti son años.
-Pero el tiempo parece desdibujarse 
-para mí.
-
-Mis intentos por abrir otro portal 
-han sido una mezcla de fracasos y éxitos.
-
-Fui testigo del inicio de la construcción 
-de la refinería Miguel Hidalgo
-en Tula
-en el año 1972.
-
-Cientos de trabajadores 
-levantaban 
-estructuras metálicas
-en una extensión enorme de más 
-de 700 hectáreas.
-
-La magnitud del proyecto era imponente.
-
-Cuando alzaron las torretas de refinación sentí
-como si estuviera observando 
-a los toltecas alzar sus atlantes.
-
-Pero estos no sostenían el cielo.
-Sostenían otra cosa.
-
-
-En otra ocasión llegué a un cerro de Atotonilco.
-
-Presencié su detonación 
-para la extracción de materiales 
-destinados a las cementeras.
-
-La tierra temblaba bajo mis pies 
-mientras enormes máquinas 
-devoraban 
-montañas enteras.
-
-
-Durante uno de mis recorridos 
-para observar cómo se tritura la caliza
-Encontré un artefacto 
-casi enterrado en la tierra.
-
-
-Era un dispositivo electrónico.
-
-Posiblemente un viejo transmisor 
-de radiofrecuencia.
-Pero alguien lo había intervenido.
-
-Estaba cubierto de espinas.
-Parecían espinas de mezquite.
-
-En su superficie oxidada alguien había grabado las palabras:
-
-“GUSANO ROJO”
-
-
-Me costó mucho hacerlo encender.
-Pero cuando lo logré
-
-emitió una serie
-de sonidos
-y estática.
-
-
-Entre los ruidos pude distinguir 
-una voz susurrante que decía:
-
-“El gusano rojo se alimenta de la energía liberada.
-Busca las raíces donde el 
-tiempo se enreda.”
-
-
-Era la misma voz del Tsuru blanco.
-
-
-¿Quién ha estado enviando estos mensajes?
-¿Qué significa realmente el gusano rojo?
-
-Siento que apenas estoy desentrañando la superficie 
-de algo mucho más profundo
-y complejo.
-
-
-Aunque estos viajes me han 
-permitido ser testigo de eventos 
-significativos
-
-cada salto temporal conlleva riesgos.
-
-No siempre logro identificar 
-la época en la que me encuentro.
-Y regresar se vuelve muy complicado.
-
-
-Sin embargo
-
-la posibilidad de descubrir 
-la verdad detrás de estos cruces
-y su conexión con nuestra tierra
-me impulsa a continuar.
-
-
-Te extraño.
-
-
-<3
-
-A veces cuando el tiempo 
-se abre frente a mí
-lo primero que busco es 
-imaginar que en algún lugar 
-tú también 
-estás mirando las estrellas.
-
-
-Pienso que sí estos mensajes logran cruzar
-todas estas capas del tiempo
-
-quizá tu cuerpo y el mío 
-puedan rozarse
-aunque sea por un instante
-
-
-y por un momento
-el futuro deja de darme miedo.
+const encabezado =`ARCHIVO INTERCEPTADO
+ registro: 03
+ asunto: construcción de la refinería Miguel Hidalgo
+ fecha de emisión: 03.1972
+ ubicación aproximada: 20° 03´15.40´´N / 99°16´39.49´´O
+ estado de señal: estable
 
 
 
-[FIN DEL MENSAJE]
+`;
+
+// CONTENIDO DE LA CARTA
+
+const mensaje = `[INICIO DEL MENSAJE]
+
+No sé cómo empezar esto.
+Al principio 
+dudé de lo 
+que viví.
+
+Pensé que el cerro de Nopala juega con 
+las mentes de quienes lo pisan.
+La tierra guarda secretos 
+que nadie se atreve 
+a nombrar.
+
+Encontré el garambullo.
+Era el único en toda la ladera 
+como si lo hubieran colocado ahí a propósito.
+
+Cuando lo toqué 
+la piel se me enchinó. 
+Diferente a cuando nuestros 
+cuerpos se tocan.
+
+el aire cambió.
+
+Sentí que el mundo
+se desdoblaba.
+
+Un resplandor me envolvió.
+
+No fue un rayo
+ni un relámpago.
+
+Era algo más denso.
+Algo que parecía atravesar la materia.
+
+Sentí mis partículas dividirse.
+No dolía.
+Era una sensación extraña 
+como si mi cuerpo se deslizara 
+entre capas invisibles.
+
+No sé cuánto tiempo pasó antes de darme cuenta 
+de que ya no estaba en el cerro.
+
+Había llegado a otro lugar.
+Había retrocedido en el tiempo.
+
+Estaba en el momento en que la fábrica de agroquímicos ATC 
+en 
+Atitalaquia explotó.
+
+Lo supe porque frente a mí las llamas 
+cubrían los laboratorios.
+
+El humo lo cubría todo.
+
+Los trabajadores corrían en todas direcciones.
+
+Escapé del fuego buscando un lugar seguro.
+Algo dentro de mí me decía que 
+no había llegado ahí 
+por accidente.
+
+Entré en una oficina que aún seguía en pie.
+Las paredes tenían grietas.
+Parecían a punto de colapsar.
+Ahí encontré una libreta.
+
+Estaba tirada en el suelo.
+Le faltaban hojas.
+
+Tenía fotografías muy antiguas.
+En blanco y negro.
+Deslavadas por el tiempo.
+También había notas.
+Fórmulas químicas.
+Ecuaciones.
+
+"la energía es clave"
+"ciertas frecuencias abren las puertas" 
+"los garambullos son nodos naturales"
+
+Parecía pertenecer a un científico que 
+estaba investigando 
+la capacidad del 
+garambullo 
+para 
+hacer lo mismo 
+que me había pasado a mí.
+
+Viajar
+en el tiempo.
+
+Los garambullos 
+no eran sólo cactus.
+Eran puertas intertemporales.
+
+Al parecer no querían que se supiera.
+
+Las fotografías mostraban experimentos en distintos 
+lugares del Valle del Mezquital.
+Entonces lo entendí.
+Los garambullos no eran sólo cactus.
+
+Eran puertas intertemporales.
+¿Te imaginas cuántas 
+puertas se cerraron 
+cuando comenzaron a cortarlos?
+¿Por eso el cambio de uso de suelo?
+Por eso cada vez hay menos.
+
+Quise seguir leyendo.
+
+Pero el suelo tembló.
+La explosión me alcanzó.
+El aire volvió a cambiar.
+
+Aparecí en otro cerro.
+
+He llegado a Tenango.
+Creo que es el año 2040.
+
+Te q(███████████
+▓▓▓▓▓▓▓▓▓▓
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+█)
+
+[SEÑAL INTERRUMPIDA]
 ..
+...
 ....
-estado de señal: activo
+.....
+.............
+estado de señal: degradado
+fragmento incompleto
 registro archivado`;
 
-const headerEl = document.getElementById("header");
-const loaderEl = document.getElementById("loader");
-const textEl = document.getElementById("text");
-const navEl = document.getElementById("nav");
+// ELEMENTOS DE LA PÁGINA
 
-function randChar(){
-  const c="0123456789NSEO°´/";
-  return c[Math.floor(Math.random()*c.length)];
+const output = document.getElementById("output");
+
+const cursor = document.getElementById("cursor");
+
+const nav = document.getElementById("nav");
+
+// CONFIGURACIÓN
+
+const VELOCIDAD = 30;
+
+const DURACION_DESCIFRADO = 3000;
+
+const VELOCIDAD_DESCIFRADO = 55;
+
+const caracteresAleatorios =
+
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+
+  "abcdefghijklmnopqrstuvwxyz" +
+
+  "0123456789#$%&/=?+*<>@";
+
+const cambios = {
+
+  o: "0",
+
+  O: "0",
+
+  a: "4",
+
+  A: "4",
+
+  e: "3",
+
+  E: "3",
+
+  i: "1",
+
+  I: "1"
+
+};
+
+let indice = 0;
+
+let interferenciaMostrada = false;
+
+let salida = "";
+
+let intervaloDescifrado = null;
+
+// GENERAR UN CARÁCTER ALEATORIO
+
+function caracterAleatorio() {
+
+  const posicion = Math.floor(
+
+    Math.random() * caracteresAleatorios.length
+
+  );
+
+  return caracteresAleatorios[posicion];
+
 }
 
-function scrambleCoords(){
-  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+// ALTERAR LAS LETRAS DEL ENCABEZADO
+
+function generarEncabezadoAlterado() {
+
+  return Array.from(encabezado).map(caracter => {
+
+    if (/[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]/.test(caracter)) {
+
+      return caracterAleatorio();
+
+    }
+
+    return caracter;
+
+  }).join("");
+
 }
 
-function drawHeader(coords){
-  headerEl.textContent = headerTemplate
-    .map(l=>l.replace("{{COORDS}}",coords))
-    .join("\n");
+// DESCIFRAR EL ENCABEZADO DURANTE 3 SEGUNDOS
+
+function iniciarDescifrado() {
+
+  cursor.style.display = "none";
+
+  output.textContent = generarEncabezadoAlterado();
+
+  intervaloDescifrado = setInterval(() => {
+
+    output.textContent = generarEncabezadoAlterado();
+
+  }, VELOCIDAD_DESCIFRADO);
+
+  setTimeout(() => {
+
+    clearInterval(intervaloDescifrado);
+
+    output.textContent = encabezado;
+
+    salida = encabezado;
+
+    cursor.style.display = "inline";
+
+    setTimeout(escribir, 350);
+
+  }, DURACION_DESCIFRADO);
+
 }
 
-let s=0;
-function animateHeader(){
-  drawHeader(scrambleCoords());
-  s++;
-  if(s<20) setTimeout(animateHeader,80);
-  else startLoad();
-}
+// CORRUPCIÓN OCASIONAL DEL MENSAJE
 
-function startLoad(p=0){
-  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
-  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+function corromper(caracter) {
 
-  if(p<100){
-    setTimeout(()=>startLoad(p+5),40);
-  }else{
-    drawHeader(finalCoords);
-    loaderEl.textContent="";
-    setTimeout(typeText,300);
+  if (
+
+    cambios[caracter] &&
+
+    Math.random() < 0.04
+
+  ) {
+
+    return cambios[caracter];
+
   }
+
+  return caracter;
+
 }
 
-function typeText(i=0){
-  if(i<message.length){
-    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
-    setTimeout(()=>typeText(i+1),18);
-  }else{
-    textEl.innerHTML=message + '<span class="cursor">_</span>';
-    navEl.classList.add("show");
+// ESCRITURA PROGRESIVA DE LA CARTA
+
+function escribir() {
+
+  if (indice >= mensaje.length) {
+
+    output.textContent = salida;
+
+    cursor.style.display = "none";
+
+    nav.classList.add("show");
+
+    return;
+
   }
+
+  // INTERFERENCIA AL 75 % DEL MENSAJE
+
+  if (
+
+    !interferenciaMostrada &&
+
+    indice > mensaje.length * 0.75
+
+  ) {
+
+    interferenciaMostrada = true;
+
+    output.textContent =
+
+      salida + "\n\n[ SEÑAL INESTABLE ]\n";
+
+    setTimeout(() => {
+
+      output.textContent =
+
+        salida + "\n\n[ RECONECTANDO ]\n";
+
+      setTimeout(() => {
+
+        output.textContent = salida;
+
+        escribir();
+
+      }, 2500);
+
+    }, 1500);
+
+    return;
+
+  }
+
+  salida += corromper(mensaje[indice]);
+
+  indice++;
+
+  output.textContent = salida;
+
+  // SIN DESPLAZAMIENTO AUTOMÁTICO
+
+  setTimeout(escribir, VELOCIDAD);
+
 }
 
-animateHeader();
+// INICIAR EL SISTEMA
+
+iniciarDescifrado();
+
 </script>
 
 </body>
+
 </html>
