@@ -104,7 +104,7 @@ body::before {
 
 /* PANEL SUPERIOR IZQUIERDO */
 
-.top-left {
+.left-panel {
 
   position: fixed;
 
@@ -113,6 +113,18 @@ body::before {
   top: 16px;
 
   z-index: 50;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 8px;
+
+}
+
+.top-left {
 
   color: var(--fg);
 
@@ -130,8 +142,6 @@ body::before {
 
   align-items: center;
 
-  gap: 10px;
-
 }
 
 .top-left:hover,
@@ -139,6 +149,18 @@ body::before {
 .top-left:focus-visible {
 
   background: #003319;
+
+}
+
+.sector-info {
+
+  font-size: clamp(12px, 1.3vw, 18px);
+
+  line-height: 1.5;
+
+  color: var(--fg);
+
+  text-shadow: 0 1px 3px #000;
 
 }
 
@@ -204,23 +226,15 @@ body::before {
 
 }
 
-/*
-
-La imagen ocupa toda la pantalla.
-
-object-fit: cover elimina las franjas negras.
-
-*/
-
 .landscape-image {
 
   position: absolute;
 
+  inset: 0;
+
   width: 100%;
 
   height: 100%;
-
-  inset: 0;
 
   object-fit: cover;
 
@@ -284,13 +298,13 @@ object-fit: cover elimina las franjas negras.
 
   -webkit-tap-highlight-color: transparent;
 
+  touch-action: manipulation;
+
 }
 
 .point:hover,
 
-.point:focus-visible,
-
-.point.active {
+.point:focus-visible {
 
   background: var(--fg);
 
@@ -446,97 +460,35 @@ object-fit: cover elimina las franjas negras.
 
 }
 
-/* LLAMA DE LA REFINERÍA */
-
-.flame {
-
-  position: absolute;
-
-  left: 85.4%;
-
-  top: 44.5%;
-
-  width: 7px;
-
-  height: 20px;
-
-  transform: translate(-50%, -100%);
-
-  background: #00ff66;
-
-  box-shadow:
-
-    0 0 8px #00ff66,
-
-    0 0 18px rgba(0,255,102,0.5);
-
-  clip-path: polygon(
-
-    50% 0%,
-
-    85% 35%,
-
-    100% 65%,
-
-    70% 100%,
-
-    20% 100%,
-
-    0% 60%,
-
-    30% 35%
-
-  );
-
-  animation: flameMove 0.28s steps(2) infinite alternate;
-
-  z-index: 8;
-
-  pointer-events: none;
-
-}
-
-@keyframes flameMove {
-
-  from {
-
-    height: 15px;
-
-    opacity: 0.65;
-
-    transform: translate(-50%, -100%) rotate(-8deg);
-
-  }
-
-  to {
-
-    height: 27px;
-
-    opacity: 1;
-
-    transform: translate(-50%, -100%) rotate(9deg);
-
-  }
-
-}
-
 /* PANTALLAS PEQUEÑAS */
 
 @media (max-width: 700px) {
 
-  .top-left {
+  .left-panel {
 
     left: 10px;
 
     top: 10px;
 
+    max-width: 51%;
+
+    gap: 6px;
+
+  }
+
+  .top-left {
+
     padding: 7px 9px;
 
     font-size: 10px;
 
-    max-width: 51%;
-
     overflow-wrap: anywhere;
+
+  }
+
+  .sector-info {
+
+    font-size: 10px;
 
   }
 
@@ -594,13 +546,25 @@ object-fit: cover elimina las franjas negras.
 
 <div class="noise"></div>
 
-<!-- REGRESAR AL INICIO -->
+<!-- COORDENADAS Y SECTOR -->
 
-<a class="top-left" href="index.html">
+<div class="left-panel">
 
-  ← 20°07'40.65"N 99°17'51.44"W
+  <a class="top-left" href="index.html">
 
-</a>
+    ← 20°07'40.65"N 99°17'51.44"W
+
+  </a>
+
+  <div class="sector-info">
+
+    <div>sector xicuca</div>
+
+    <div>09 señales detectadas</div>
+
+  </div>
+
+</div>
 
 <!-- COORDENADAS CAMBIANTES -->
 
@@ -638,7 +602,7 @@ object-fit: cover elimina las franjas negras.
 
   >
 
-  <!-- AVES -->
+  <!-- AVES ANIMADAS -->
 
   <div class="bird"
 
@@ -688,17 +652,13 @@ object-fit: cover elimina las franjas negras.
 
   </div>
 
-  <!-- LLAMA ANIMADA -->
-
-  <div class="flame"></div>
-
   <!-- NUEVE CARTAS -->
 
   <div class="points" id="points"></div>
 
 </main>
 
-<!-- NOMBRE DE LA CARTA -->
+<!-- NOMBRE EMERGENTE DE LA CARTA -->
 
 <div
 
@@ -792,7 +752,9 @@ function makeBars(p) {
 
   const levels = [
 
-    "▁","▂","▃","▄","▅","▆","▇","█"
+    "▁", "▂", "▃", "▄",
+
+    "▅", "▆", "▇", "█"
 
   ];
 
@@ -900,9 +862,9 @@ const registros = [
 
     nombre: "refinería miguel hidalgo.xic",
 
-    x: 73,
+    x: 85.4,
 
-    y: 46
+    y: 44.5
 
   },
 
@@ -990,8 +952,6 @@ const points = document.getElementById("points");
 
 const tooltip = document.getElementById("tooltip");
 
-let puntoSeleccionado = null;
-
 function mostrarNombre(registro, enlace) {
 
   tooltip.textContent = registro.nombre;
@@ -1000,13 +960,9 @@ function mostrarNombre(registro, enlace) {
 
   const punto = enlace.getBoundingClientRect();
 
-  const centroX =
+  const centroX = punto.left + punto.width / 2;
 
-    punto.left + punto.width / 2;
-
-  const centroY =
-
-    punto.top + punto.height / 2;
+  const centroY = punto.top + punto.height / 2;
 
   const ancho = tooltip.offsetWidth;
 
@@ -1018,13 +974,7 @@ function mostrarNombre(registro, enlace) {
 
   let arriba = centroY - alto / 2;
 
-  if (
-
-    izquierda + ancho >
-
-    window.innerWidth - margen
-
-  ) {
+  if (izquierda + ancho > window.innerWidth - margen) {
 
     izquierda = centroX - ancho - 24;
 
@@ -1100,7 +1050,7 @@ registros.forEach(registro => {
 
   );
 
-  // COMPUTADORA
+  // Mostrar nombre al pasar el cursor
 
   enlace.addEventListener("mouseenter", () => {
 
@@ -1110,13 +1060,11 @@ registros.forEach(registro => {
 
   enlace.addEventListener("mouseleave", () => {
 
-    if (puntoSeleccionado !== enlace) {
-
-      ocultarNombre();
-
-    }
+    ocultarNombre();
 
   });
+
+  // Accesibilidad con teclado
 
   enlace.addEventListener("focus", () => {
 
@@ -1126,43 +1074,13 @@ registros.forEach(registro => {
 
   enlace.addEventListener("blur", () => {
 
-    if (puntoSeleccionado !== enlace) {
-
-      ocultarNombre();
-
-    }
+    ocultarNombre();
 
   });
 
-  // PANTALLAS TÁCTILES
+  // No se intercepta el clic.
 
-  enlace.addEventListener("click", event => {
-
-    if (
-
-      window.matchMedia("(hover: none)").matches &&
-
-      puntoSeleccionado !== enlace
-
-    ) {
-
-      event.preventDefault();
-
-      if (puntoSeleccionado) {
-
-        puntoSeleccionado.classList.remove("active");
-
-      }
-
-      puntoSeleccionado = enlace;
-
-      enlace.classList.add("active");
-
-      mostrarNombre(registro, enlace);
-
-    }
-
-  });
+  // Un solo toque abre directamente la carta.
 
   points.appendChild(enlace);
 
