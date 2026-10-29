@@ -24,7 +24,7 @@
 
 :root {
 
-  --bg: #000000;
+  --bg: #000;
 
   --fg: #00ff66;
 
@@ -32,7 +32,9 @@
 
 html, body {
 
-  min-height: 100%;
+  width: 100%;
+
+  height: 100%;
 
   background: var(--bg);
 
@@ -40,17 +42,7 @@ html, body {
 
   font-family: monospace;
 
-}
-
-body {
-
-  min-height: 100vh;
-
-  min-height: 100dvh;
-
-  overflow-x: hidden;
-
-  position: relative;
+  overflow: hidden;
 
 }
 
@@ -82,7 +74,7 @@ body::before {
 
   opacity: 0.18;
 
-  z-index: 20;
+  z-index: 40;
 
 }
 
@@ -106,7 +98,7 @@ body::before {
 
   pointer-events: none;
 
-  z-index: 19;
+  z-index: 39;
 
 }
 
@@ -120,13 +112,13 @@ body::before {
 
   top: 16px;
 
-  z-index: 30;
+  z-index: 50;
 
   color: var(--fg);
 
   text-decoration: none;
 
-  font-size: clamp(14px, 1.8vw, 22px);
+  font-size: clamp(12px, 1.5vw, 20px);
 
   border: 2px solid var(--fg);
 
@@ -160,11 +152,11 @@ body::before {
 
   right: 16px;
 
-  z-index: 30;
+  z-index: 50;
 
   text-align: right;
 
-  font-size: clamp(13px, 1.6vw, 20px);
+  font-size: clamp(12px, 1.4vw, 18px);
 
   line-height: 1.3;
 
@@ -175,6 +167,8 @@ body::before {
   gap: 2px;
 
   color: var(--fg);
+
+  text-shadow: 0 1px 3px #000;
 
 }
 
@@ -190,55 +184,53 @@ body::before {
 
 }
 
-/* PAISAJE */
+/* PAISAJE A PANTALLA COMPLETA */
 
-.page {
+.landscape-screen {
 
-  width: 100%;
+  position: fixed;
 
-  min-height: 100vh;
+  inset: 0;
 
-  min-height: 100dvh;
+  width: 100vw;
 
-  padding: 165px 20px 50px;
+  height: 100vh;
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-}
-
-.map-stage {
-
-  position: relative;
-
-  width: min(100%, 1100px);
-
-  aspect-ratio: 900 / 540;
-
-  background: #020b05;
-
-  border: 1px solid #176536;
+  height: 100dvh;
 
   overflow: hidden;
 
+  background: #020b05;
+
 }
 
-#landscape {
+/*
 
-  display: block;
+La imagen ocupa toda la pantalla.
+
+object-fit: cover elimina las franjas negras.
+
+*/
+
+.landscape-image {
+
+  position: absolute;
 
   width: 100%;
 
   height: 100%;
 
+  inset: 0;
+
+  object-fit: cover;
+
+  object-position: center center;
+
   image-rendering: pixelated;
 
 }
 
-/* PUNTOS DE LAS CARTAS */
+/* CAPA INTERACTIVA */
 
 .points {
 
@@ -246,7 +238,11 @@ body::before {
 
   inset: 0;
 
+  z-index: 10;
+
 }
+
+/* NÚMEROS DE LAS CARTAS */
 
 .point {
 
@@ -284,7 +280,7 @@ body::before {
 
   animation: pulse 2s steps(2) infinite;
 
-  z-index: 2;
+  z-index: 12;
 
   -webkit-tap-highlight-color: transparent;
 
@@ -316,19 +312,19 @@ body::before {
 
 }
 
-/* RECUADRO CON EL NOMBRE */
+/* NOMBRE EMERGENTE */
 
 .tooltip {
 
-  position: absolute;
+  position: fixed;
 
   display: none;
 
   width: max-content;
 
-  max-width: min(280px, 70vw);
+  max-width: min(300px, 75vw);
 
-  padding: 11px 14px;
+  padding: 12px 15px;
 
   background: #000;
 
@@ -338,7 +334,7 @@ body::before {
 
   font-family: monospace;
 
-  font-size: 13px;
+  font-size: 14px;
 
   line-height: 1.5;
 
@@ -346,9 +342,9 @@ body::before {
 
   pointer-events: none;
 
-  z-index: 10;
+  z-index: 60;
 
-  box-shadow: 0 0 18px rgba(0,255,102,0.15);
+  box-shadow: 0 0 20px rgba(0,255,102,0.15);
 
 }
 
@@ -358,7 +354,173 @@ body::before {
 
 }
 
-/* AJUSTES MÓVILES */
+/* AVES ANIMADAS */
+
+.bird {
+
+  position: absolute;
+
+  width: 15px;
+
+  height: 8px;
+
+  z-index: 5;
+
+  pointer-events: none;
+
+  animation: fly linear infinite;
+
+}
+
+.bird::before,
+
+.bird::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 8px;
+
+  height: 3px;
+
+  background: #00ff66;
+
+  top: 2px;
+
+}
+
+.bird::before {
+
+  left: 0;
+
+  transform: rotate(20deg);
+
+  transform-origin: right center;
+
+  animation: flapLeft 0.5s infinite alternate;
+
+}
+
+.bird::after {
+
+  right: 0;
+
+  transform: rotate(-20deg);
+
+  transform-origin: left center;
+
+  animation: flapRight 0.5s infinite alternate;
+
+}
+
+@keyframes flapLeft {
+
+  from { transform: rotate(25deg); }
+
+  to { transform: rotate(-30deg); }
+
+}
+
+@keyframes flapRight {
+
+  from { transform: rotate(-25deg); }
+
+  to { transform: rotate(30deg); }
+
+}
+
+@keyframes fly {
+
+  from {
+
+    transform: translateX(-15vw) translateY(0);
+
+  }
+
+  to {
+
+    transform: translateX(115vw) translateY(-25px);
+
+  }
+
+}
+
+/* LLAMA DE LA REFINERÍA */
+
+.flame {
+
+  position: absolute;
+
+  left: 85.4%;
+
+  top: 44.5%;
+
+  width: 7px;
+
+  height: 20px;
+
+  transform: translate(-50%, -100%);
+
+  background: #00ff66;
+
+  box-shadow:
+
+    0 0 8px #00ff66,
+
+    0 0 18px rgba(0,255,102,0.5);
+
+  clip-path: polygon(
+
+    50% 0%,
+
+    85% 35%,
+
+    100% 65%,
+
+    70% 100%,
+
+    20% 100%,
+
+    0% 60%,
+
+    30% 35%
+
+  );
+
+  animation: flameMove 0.28s steps(2) infinite alternate;
+
+  z-index: 8;
+
+  pointer-events: none;
+
+}
+
+@keyframes flameMove {
+
+  from {
+
+    height: 15px;
+
+    opacity: 0.65;
+
+    transform: translate(-50%, -100%) rotate(-8deg);
+
+  }
+
+  to {
+
+    height: 27px;
+
+    opacity: 1;
+
+    transform: translate(-50%, -100%) rotate(9deg);
+
+  }
+
+}
+
+/* PANTALLAS PEQUEÑAS */
 
 @media (max-width: 700px) {
 
@@ -370,9 +532,9 @@ body::before {
 
     padding: 7px 9px;
 
-    font-size: 11px;
+    font-size: 10px;
 
-    max-width: 52%;
+    max-width: 51%;
 
     overflow-wrap: anywhere;
 
@@ -404,23 +566,11 @@ body::before {
 
   }
 
-  .page {
-
-    padding: 135px 10px 30px;
-
-  }
-
-  .map-stage {
-
-    aspect-ratio: 4 / 5;
-
-  }
-
   .point {
 
-    width: 30px;
+    width: 29px;
 
-    height: 30px;
+    height: 29px;
 
     font-size: 11px;
 
@@ -444,7 +594,7 @@ body::before {
 
 <div class="noise"></div>
 
-<!-- COORDENADAS PARA VOLVER AL INICIO -->
+<!-- REGRESAR AL INICIO -->
 
 <a class="top-left" href="index.html">
 
@@ -474,47 +624,99 @@ body::before {
 
 </div>
 
-<!-- ÚNICAMENTE EL PAISAJE -->
+<!-- PAISAJE -->
 
-<main class="page">
+<main class="landscape-screen" id="landscapeScreen">
 
-  <div class="map-stage" id="mapStage">
+  <img
 
-    <canvas
+    class="landscape-image"
 
-      id="landscape"
+    src="paisaje-xicuco.png"
 
-      width="450"
+    alt="Paisaje pixelado del cerro del Xicuco"
 
-      height="270"
+  >
 
-      aria-label="Paisaje pixelado del Valle del Mezquital"
+  <!-- AVES -->
 
-    ></canvas>
+  <div class="bird"
 
-    <div class="points" id="points"></div>
+       style="top:20%; left:-10%;
 
-    <div
-
-      class="tooltip"
-
-      id="tooltip"
-
-      role="status"
-
-      aria-live="polite"
-
-    ></div>
+              animation-duration:18s;">
 
   </div>
 
+  <div class="bird"
+
+       style="top:24%; left:-20%;
+
+              animation-duration:22s;
+
+              animation-delay:-6s;">
+
+  </div>
+
+  <div class="bird"
+
+       style="top:18%; left:-30%;
+
+              animation-duration:26s;
+
+              animation-delay:-12s;">
+
+  </div>
+
+  <div class="bird"
+
+       style="top:28%; left:-15%;
+
+              animation-duration:20s;
+
+              animation-delay:-9s;">
+
+  </div>
+
+  <div class="bird"
+
+       style="top:22%; left:-25%;
+
+              animation-duration:24s;
+
+              animation-delay:-16s;">
+
+  </div>
+
+  <!-- LLAMA ANIMADA -->
+
+  <div class="flame"></div>
+
+  <!-- NUEVE CARTAS -->
+
+  <div class="points" id="points"></div>
+
 </main>
+
+<!-- NOMBRE DE LA CARTA -->
+
+<div
+
+  class="tooltip"
+
+  id="tooltip"
+
+  role="status"
+
+  aria-live="polite"
+
+></div>
 
 <script>
 
 // =====================================
 
-// MUNICIPIOS Y COORDENADAS
+// MUNICIPIOS DEL VALLE DEL MEZQUITAL
 
 // =====================================
 
@@ -588,15 +790,29 @@ let municipalityIndex = 0;
 
 function makeBars(p) {
 
-  const levels = ["▁","▂","▃","▄","▅","▆","▇","█"];
+  const levels = [
+
+    "▁","▂","▃","▄","▅","▆","▇","█"
+
+  ];
 
   let bars = "";
 
   for (let i = 0; i < 16; i++) {
 
-    const v = Math.abs(Math.sin((p / 10) + i * 0.5));
+    const v = Math.abs(
 
-    const idx = Math.min(7, Math.floor(v * 8));
+      Math.sin((p / 10) + i * 0.5)
+
+    );
+
+    const idx = Math.min(
+
+      7,
+
+      Math.floor(v * 8)
+
+    );
 
     bars += levels[idx];
 
@@ -648,7 +864,7 @@ setInterval(updateStatus, 1000);
 
 // =====================================
 
-// REGISTROS DE LAS NUEVE CARTAS
+// NUEVE CARTAS
 
 // =====================================
 
@@ -660,9 +876,9 @@ const registros = [
 
     nombre: "la noche del tsuru blanco.xic",
 
-    x: 17,
+    x: 46,
 
-    y: 68
+    y: 27
 
   },
 
@@ -672,9 +888,9 @@ const registros = [
 
     nombre: "explosión planta agroquímica.xic",
 
-    x: 71,
+    x: 74,
 
-    y: 55
+    y: 62
 
   },
 
@@ -684,9 +900,9 @@ const registros = [
 
     nombre: "refinería miguel hidalgo.xic",
 
-    x: 83,
+    x: 73,
 
-    y: 40
+    y: 46
 
   },
 
@@ -696,9 +912,9 @@ const registros = [
 
     nombre: "misión gusano rojo.xic",
 
-    x: 31,
+    x: 19,
 
-    y: 77
+    y: 73
 
   },
 
@@ -708,7 +924,7 @@ const registros = [
 
     nombre: "experimento biotecnológico territorial.xic",
 
-    x: 56,
+    x: 40,
 
     y: 76
 
@@ -720,9 +936,9 @@ const registros = [
 
     nombre: "plaga patronal.xic",
 
-    x: 42,
+    x: 46,
 
-    y: 46
+    y: 57
 
   },
 
@@ -732,9 +948,9 @@ const registros = [
 
     nombre: "culebra tormenta.xic",
 
-    x: 22,
+    x: 31,
 
-    y: 29
+    y: 42
 
   },
 
@@ -744,9 +960,9 @@ const registros = [
 
     nombre: "diablito robot.xic",
 
-    x: 64,
+    x: 56,
 
-    y: 33
+    y: 43
 
   },
 
@@ -756,327 +972,13 @@ const registros = [
 
     nombre: "las máquinas interceptan frecuencias digitales, pero nadie intercepta el canto de un ave.xic",
 
-    x: 90,
+    x: 95,
 
-    y: 76
+    y: 78
 
   }
 
 ];
-
-// =====================================
-
-// PAISAJE PIXELADO ORIGINAL
-
-// =====================================
-
-const canvas = document.getElementById("landscape");
-
-const ctx = canvas.getContext("2d");
-
-ctx.imageSmoothingEnabled = false;
-
-const W = canvas.width;
-
-const H = canvas.height;
-
-function rect(x, y, w, h, color) {
-
-  ctx.fillStyle = color;
-
-  ctx.fillRect(
-
-    Math.round(x),
-
-    Math.round(y),
-
-    Math.round(w),
-
-    Math.round(h)
-
-  );
-
-}
-
-function dibujarCielo() {
-
-  rect(0, 0, W, H, "#020b05");
-
-  for (let i = 0; i < 65; i++) {
-
-    const x = (i * 79 + 17) % W;
-
-    const y = (i * 37 + 11) % 115;
-
-    rect(
-
-      x, y, 1, 1,
-
-      i % 3 === 0 ? "#00ff66" : "#185d33"
-
-    );
-
-  }
-
-  // Luna fragmentada
-
-  rect(346, 20, 22, 22, "#124a28");
-
-  rect(350, 16, 14, 30, "#176c35");
-
-  rect(354, 20, 10, 22, "#00a846");
-
-  rect(360, 16, 13, 30, "#020b05");
-
-}
-
-function dibujarCerros() {
-
-  const montanas = [
-
-    [0,160], [25,144], [50,130],
-
-    [70,102], [90,92], [110,118],
-
-    [137,147], [165,156],
-
-    [190,137], [215,112],
-
-    [238,130], [265,153],
-
-    [295,139], [320,112],
-
-    [350,123], [380,145],
-
-    [410,128], [450,151]
-
-  ];
-
-  ctx.fillStyle = "#06351a";
-
-  ctx.beginPath();
-
-  ctx.moveTo(0, H);
-
-  montanas.forEach(p => {
-
-    ctx.lineTo(p[0], p[1]);
-
-  });
-
-  ctx.lineTo(W, H);
-
-  ctx.fill();
-
-  for (let i = 0; i < 38; i++) {
-
-    const x = (i * 41) % W;
-
-    const y = 135 + (i * 19) % 65;
-
-    rect(x, y, 10, 2, "#0d4a25");
-
-  }
-
-}
-
-function dibujarTerreno() {
-
-  rect(0, 205, W, 65, "#082a15");
-
-  for (let i = 0; i < 90; i++) {
-
-    const x = (i * 53) % W;
-
-    const y = 205 + (i * 23) % 65;
-
-    rect(x, y, 5, 2, "#15552d");
-
-  }
-
-}
-
-function dibujarAgua() {
-
-  const puntos = [
-
-    [0,225], [50,218], [100,230],
-
-    [160,220], [220,237],
-
-    [275,230], [335,242],
-
-    [390,233], [450,248]
-
-  ];
-
-  ctx.beginPath();
-
-  ctx.moveTo(0, 225);
-
-  puntos.forEach(p => {
-
-    ctx.lineTo(p[0], p[1]);
-
-  });
-
-  ctx.lineTo(450, 270);
-
-  ctx.lineTo(0, 270);
-
-  ctx.closePath();
-
-  ctx.fillStyle = "#0a5530";
-
-  ctx.fill();
-
-  for (let i = 0; i < 26; i++) {
-
-    const x = (i * 47) % W;
-
-    const y = 240 + (i * 11) % 25;
-
-    rect(x, y, 14, 2, "#00a852");
-
-  }
-
-  rect(250, 206, 125, 5, "#176c35");
-
-  rect(250, 212, 125, 4, "#003d20");
-
-}
-
-function maguey(x, y, escala = 1) {
-
-  const s = escala;
-
-  rect(x, y - 12*s, 3*s, 15*s, "#00a846");
-
-  rect(x - 6*s, y - 8*s, 4*s, 9*s, "#176c35");
-
-  rect(x + 5*s, y - 9*s, 4*s, 10*s, "#176c35");
-
-  rect(x - 11*s, y - 4*s, 6*s, 3*s, "#00a846");
-
-  rect(x + 8*s, y - 5*s, 6*s, 3*s, "#00a846");
-
-  rect(x - 3*s, y, 9*s, 4*s, "#0d5e2e");
-
-}
-
-function dibujarVegetacion() {
-
-  maguey(35, 207, 1.2);
-
-  maguey(83, 215, 0.8);
-
-  maguey(139, 205, 1.1);
-
-  maguey(202, 216, 0.8);
-
-  maguey(408, 218, 1.3);
-
-  maguey(438, 207, 0.7);
-
-  // Mezquite pixelado
-
-  rect(168, 179, 5, 35, "#176c35");
-
-  rect(153, 174, 33, 8, "#0d5e2e");
-
-  rect(148, 181, 43, 8, "#176c35");
-
-  rect(157, 165, 25, 10, "#0d5e2e");
-
-}
-
-function dibujarRefineria() {
-
-  const x = 315;
-
-  const y = 168;
-
-  rect(x, y, 104, 48, "#0a321b");
-
-  rect(x + 7, y - 32, 11, 78, "#176c35");
-
-  rect(x + 11, y - 42, 4, 10, "#00a846");
-
-  rect(x + 33, y - 17, 13, 62, "#0d5e2e");
-
-  rect(x + 38, y - 30, 4, 13, "#00a846");
-
-  rect(x + 65, y - 50, 9, 95, "#176c35");
-
-  rect(x + 68, y - 58, 3, 8, "#00ff66");
-
-  rect(x + 84, y - 10, 13, 55, "#0d5e2e");
-
-  rect(x, y + 19, 104, 5, "#00a846");
-
-  rect(x + 25, y + 8, 5, 35, "#176c35");
-
-  rect(x + 51, y + 6, 5, 37, "#176c35");
-
-  for (let i = 0; i < 6; i++) {
-
-    rect(
-
-      x + 8 + i * 16,
-
-      y + 32,
-
-      5, 5,
-
-      "#00ff66"
-
-    );
-
-  }
-
-}
-
-function dibujarAves(t) {
-
-  const desplazamiento = Math.sin(t * 0.001) * 8;
-
-  for (let i = 0; i < 5; i++) {
-
-    const x = 90 + i * 36 + desplazamiento;
-
-    const y = 38 + (i % 3) * 13;
-
-    rect(x, y, 3, 2, "#00ff66");
-
-    rect(x - 4, y - 2, 4, 2, "#00a846");
-
-    rect(x + 3, y - 2, 4, 2, "#00a846");
-
-  }
-
-}
-
-function dibujar(t = 0) {
-
-  ctx.clearRect(0, 0, W, H);
-
-  dibujarCielo();
-
-  dibujarCerros();
-
-  dibujarTerreno();
-
-  dibujarAgua();
-
-  dibujarVegetacion();
-
-  dibujarRefineria();
-
-  dibujarAves(t);
-
-  requestAnimationFrame(dibujar);
-
-}
 
 // =====================================
 
@@ -1088,31 +990,23 @@ const points = document.getElementById("points");
 
 const tooltip = document.getElementById("tooltip");
 
-const mapStage = document.getElementById("mapStage");
-
 let puntoSeleccionado = null;
 
-function mostrarNombre(registro, boton) {
+function mostrarNombre(registro, enlace) {
 
   tooltip.textContent = registro.nombre;
 
   tooltip.classList.add("visible");
 
-  const mapa = mapStage.getBoundingClientRect();
-
-  const punto = boton.getBoundingClientRect();
+  const punto = enlace.getBoundingClientRect();
 
   const centroX =
 
-    punto.left - mapa.left + punto.width / 2;
+    punto.left + punto.width / 2;
 
   const centroY =
 
-    punto.top - mapa.top + punto.height / 2;
-
-  // Primero medimos el recuadro
-
-  // para impedir que salga del paisaje.
+    punto.top + punto.height / 2;
 
   const ancho = tooltip.offsetWidth;
 
@@ -1120,13 +1014,19 @@ function mostrarNombre(registro, boton) {
 
   const margen = 8;
 
-  let izquierda = centroX + 22;
+  let izquierda = centroX + 24;
 
   let arriba = centroY - alto / 2;
 
-  if (izquierda + ancho > mapa.width - margen) {
+  if (
 
-    izquierda = centroX - ancho - 22;
+    izquierda + ancho >
+
+    window.innerWidth - margen
+
+  ) {
+
+    izquierda = centroX - ancho - 24;
 
   }
 
@@ -1138,7 +1038,7 @@ function mostrarNombre(registro, boton) {
 
       izquierda,
 
-      mapa.width - ancho - margen
+      window.innerWidth - ancho - margen
 
     )
 
@@ -1152,7 +1052,7 @@ function mostrarNombre(registro, boton) {
 
       arriba,
 
-      mapa.height - alto - margen
+      window.innerHeight - alto - margen
 
     )
 
@@ -1200,9 +1100,7 @@ registros.forEach(registro => {
 
   );
 
-  // En computadora: mostrar el nombre
-
-  // cuando el cursor pasa por encima.
+  // COMPUTADORA
 
   enlace.addEventListener("mouseenter", () => {
 
@@ -1236,11 +1134,7 @@ registros.forEach(registro => {
 
   });
 
-  // En pantallas táctiles:
-
-  // primer toque = nombre
-
-  // segundo toque = abrir carta.
+  // PANTALLAS TÁCTILES
 
   enlace.addEventListener("click", event => {
 
@@ -1273,360 +1167,6 @@ registros.forEach(registro => {
   points.appendChild(enlace);
 
 });
-
-// =====================================
-
-// SONIDOS DIGITALES DE AVES
-
-// SISTEMA WAV COMPATIBLE CON SAFARI
-
-// =====================================
-
-const SAMPLE_RATE = 22050;
-
-function escribirTexto(view, offset, texto) {
-
-  for (let i = 0; i < texto.length; i++) {
-
-    view.setUint8(
-
-      offset + i,
-
-      texto.charCodeAt(i)
-
-    );
-
-  }
-
-}
-
-function crearWAV(muestras) {
-
-  const cantidad = muestras.length;
-
-  const buffer = new ArrayBuffer(
-
-    44 + cantidad * 2
-
-  );
-
-  const view = new DataView(buffer);
-
-  escribirTexto(view, 0, "RIFF");
-
-  view.setUint32(4, 36 + cantidad * 2, true);
-
-  escribirTexto(view, 8, "WAVE");
-
-  escribirTexto(view, 12, "fmt ");
-
-  view.setUint32(16, 16, true);
-
-  view.setUint16(20, 1, true);
-
-  view.setUint16(22, 1, true);
-
-  view.setUint32(24, SAMPLE_RATE, true);
-
-  view.setUint32(28, SAMPLE_RATE * 2, true);
-
-  view.setUint16(32, 2, true);
-
-  view.setUint16(34, 16, true);
-
-  escribirTexto(view, 36, "data");
-
-  view.setUint32(40, cantidad * 2, true);
-
-  for (let i = 0; i < cantidad; i++) {
-
-    const muestra = Math.max(
-
-      -1,
-
-      Math.min(1, muestras[i])
-
-    );
-
-    view.setInt16(
-
-      44 + i * 2,
-
-      Math.round(muestra * 32767),
-
-      true
-
-    );
-
-  }
-
-  return new Blob(
-
-    [buffer],
-
-    { type: "audio/wav" }
-
-  );
-
-}
-
-function crearCantoAve(variacion = 0) {
-
-  const duracion = 1.25;
-
-  const cantidad = Math.floor(
-
-    SAMPLE_RATE * duracion
-
-  );
-
-  const muestras = new Float32Array(cantidad);
-
-  const base = 850 + variacion * 180;
-
-  const notas = [
-
-    [0.08, 0.28, 1.0, 1.5],
-
-    [0.36, 0.56, 1.4, 0.95],
-
-    [0.68, 0.91, 1.1, 1.75],
-
-    [1.00, 1.17, 1.5, 1.2]
-
-  ];
-
-  for (const nota of notas) {
-
-    const [inicio, fin, f1, f2] = nota;
-
-    const iInicio = Math.floor(
-
-      inicio * SAMPLE_RATE
-
-    );
-
-    const iFin = Math.floor(
-
-      fin * SAMPLE_RATE
-
-    );
-
-    let fase = 0;
-
-    for (let i = iInicio; i < iFin; i++) {
-
-      const progreso =
-
-        (i - iInicio) / (iFin - iInicio);
-
-      const frecuencia =
-
-        base * (f1 + (f2 - f1) * progreso);
-
-      fase +=
-
-        2 * Math.PI *
-
-        frecuencia / SAMPLE_RATE;
-
-      const envolvente = Math.pow(
-
-        Math.sin(Math.PI * progreso),
-
-        1.4
-
-      );
-
-      // Volumen suave directamente
-
-      // en las muestras WAV.
-
-      muestras[i] +=
-
-        Math.sin(fase) *
-
-        envolvente *
-
-        0.10;
-
-    }
-
-  }
-
-  return crearWAV(muestras);
-
-}
-
-const cantos = [
-
-  crearCantoAve(0),
-
-  crearCantoAve(1),
-
-  crearCantoAve(2),
-
-  crearCantoAve(3)
-
-];
-
-const reproductor = document.createElement("audio");
-
-reproductor.preload = "auto";
-
-reproductor.playsInline = true;
-
-reproductor.setAttribute("playsinline", "");
-
-let audioIniciado = false;
-
-let urlActual = null;
-
-let indiceCanto = 0;
-
-let intervaloAves = null;
-
-function reproducirCanto() {
-
-  if (!audioIniciado) return;
-
-  // No interrumpir un canto en reproducción.
-
-  if (
-
-    !reproductor.paused &&
-
-    !reproductor.ended
-
-  ) {
-
-    return;
-
-  }
-
-  if (urlActual) {
-
-    URL.revokeObjectURL(urlActual);
-
-  }
-
-  const canto = cantos[indiceCanto % cantos.length];
-
-  indiceCanto++;
-
-  urlActual = URL.createObjectURL(canto);
-
-  reproductor.src = urlActual;
-
-  // El volumen suave está incorporado
-
-  // en el WAV para funcionar en iOS.
-
-  const resultado = reproductor.play();
-
-  if (
-
-    resultado &&
-
-    typeof resultado.catch === "function"
-
-  ) {
-
-    resultado.catch(error => {
-
-      console.warn(
-
-        "Audio pendiente de interacción:",
-
-        error
-
-      );
-
-    });
-
-  }
-
-}
-
-function iniciarSonidos() {
-
-  if (audioIniciado) return;
-
-  audioIniciado = true;
-
-  // El primer canto comienza durante
-
-  // una interacción directa del usuario.
-
-  reproducirCanto();
-
-  // Cantos espaciados para crear
-
-  // un ambiente discreto.
-
-  intervaloAves = setInterval(() => {
-
-    if (document.hidden) return;
-
-    reproducirCanto();
-
-  }, 2800);
-
-}
-
-// Safari y otros navegadores móviles
-
-// requieren una interacción inicial.
-
-document.addEventListener(
-
-  "pointerdown",
-
-  iniciarSonidos,
-
-  { once: true }
-
-);
-
-document.addEventListener(
-
-  "keydown",
-
-  iniciarSonidos,
-
-  { once: true }
-
-);
-
-// Pausar cuando la pestaña no esté visible.
-
-document.addEventListener(
-
-  "visibilitychange",
-
-  () => {
-
-    if (document.hidden) {
-
-      reproductor.pause();
-
-    } else if (audioIniciado) {
-
-      reproducirCanto();
-
-    }
-
-  }
-
-);
-
-// =====================================
-
-// INICIAR PAISAJE
-
-// =====================================
-
-dibujar();
 
 </script>
 
