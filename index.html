@@ -96,7 +96,7 @@ body::before {
 
 }
 
-/* PRIMERA PANTALLA */
+/* PANTALLA DEL TÍTULO */
 
 .intro {
 
@@ -134,11 +134,9 @@ body::before {
 
   text-decoration: none !important;
 
-  border: none;
-
 }
 
-/* CURSOR ANCHO, SIN SUBRAYADO */
+/* CURSOR ANCHO SIN GUION */
 
 .cursor {
 
@@ -152,11 +150,11 @@ body::before {
 
   vertical-align: -0.08em;
 
-  background-color: var(--verde);
+  background: var(--verde);
+
+  border: 0;
 
   text-decoration: none !important;
-
-  border: none;
 
   animation: blink 1s steps(1) infinite;
 
@@ -164,11 +162,7 @@ body::before {
 
 @keyframes blink {
 
-  50% {
-
-    opacity: 0;
-
-  }
+  50% { opacity: 0; }
 
 }
 
@@ -186,11 +180,7 @@ body::before {
 
 @keyframes hintBlink {
 
-  50% {
-
-    opacity: 0.3;
-
-  }
+  50% { opacity: 0.3; }
 
 }
 
@@ -200,7 +190,7 @@ body::before {
 
 }
 
-/* TRANSICIÓN */
+/* TRANSICIONES */
 
 .intro.exit {
 
@@ -356,7 +346,7 @@ input[type="range"]:disabled {
 
 }
 
-/* AUDIO */
+/* CONTROL DE AUDIO */
 
 .audio-control {
 
@@ -376,7 +366,7 @@ input[type="range"]:disabled {
 
   background: transparent;
 
-  padding: 8px 12px;
+  padding: 10px 12px;
 
   font: inherit;
 
@@ -394,7 +384,7 @@ input[type="range"]:disabled {
 
 }
 
-/* REGISTRO */
+/* REGISTRO DEL SISTEMA */
 
 .system-log {
 
@@ -678,11 +668,11 @@ input[type="range"]:disabled {
 
 <script>
 
-// ====================================
+// ========================================
 
 // CONFIGURACIÓN
 
-// ====================================
+// ========================================
 
 const TITULO = [
 
@@ -706,7 +696,7 @@ const title = document.getElementById("title");
 
 const hint = document.getElementById("hint");
 
-const interfaceElement = document.getElementById("interface");
+const interfaz = document.getElementById("interface");
 
 const frequency = document.getElementById("frequency");
 
@@ -730,7 +720,7 @@ let transicionIniciada = false;
 
 let interfazAbierta = false;
 
-let señalEncontrada = false;
+let senalEncontrada = false;
 
 let signalStrength = 0;
 
@@ -738,15 +728,17 @@ let sonidoActivado = true;
 
 let audioContext = null;
 
+let masterGain = null;
+
 let ultimoCanto = 0;
 
 let temporizadorAves = null;
 
-// ====================================
+// ========================================
 
-// TÍTULO CARÁCTER POR CARÁCTER
+// ESCRITURA DEL TÍTULO
 
-// ====================================
+// ========================================
 
 let titleIndex = 0;
 
@@ -754,15 +746,13 @@ function renderizarTitulo() {
 
   title.textContent = TITULO.slice(0, titleIndex);
 
-  // El cursor es un bloque CSS vacío.
-
-  // No se agrega ningún carácter de texto.
-
   const cursor = document.createElement("span");
 
   cursor.className = "cursor";
 
   cursor.setAttribute("aria-hidden", "true");
+
+  // Sin caracteres ni guiones
 
   title.appendChild(cursor);
 
@@ -790,95 +780,89 @@ function escribirTitulo() {
 
 }
 
-// ====================================
+// ========================================
 
-// TRANSICIÓN ENTRE PANTALLAS
+// SISTEMA DE AUDIO
 
-// ====================================
+// ========================================
 
-function abrirInterfaz() {
+// IMPORTANTE:
 
-  if (!escrituraTerminada || transicionIniciada) {
+// Crear y reanudar el AudioContext directamente
 
-    return;
-
-  }
-
-  transicionIniciada = true;
-
-  hint.hidden = true;
-
-  intro.classList.add("exit");
-
-  // Activar audio mediante el toque del usuario
-
-  activarAudio();
-
-  setTimeout(() => {
-
-    intro.hidden = true;
-
-    interfaceElement.classList.add("visible");
-
-    interfazAbierta = true;
-
-    iniciarAmbienteSonoro();
-
-  }, 450);
-
-}
-
-intro.addEventListener("click", abrirInterfaz);
-
-intro.addEventListener("keydown", event => {
-
-  if (event.key === "Enter" || event.key === " ") {
-
-    event.preventDefault();
-
-    abrirInterfaz();
-
-  }
-
-});
-
-// ====================================
-
-// SONIDOS DIGITALES DE AVES
-
-// ====================================
+// desde una interacción del usuario.
 
 function activarAudio() {
 
-  if (!sonidoActivado) return;
+  if (!sonidoActivado) {
+
+    return Promise.resolve(false);
+
+  }
 
   const AudioContextClass =
 
-    window.AudioContext || window.webkitAudioContext;
+    window.AudioContext ||
 
-  if (!AudioContextClass) return;
+    window.webkitAudioContext;
+
+  if (!AudioContextClass) {
+
+    tunerStatus.textContent =
+
+      "> AUDIO NO COMPATIBLE CON ESTE NAVEGADOR";
+
+    return Promise.resolve(false);
+
+  }
 
   try {
 
-    if (!audioContext) {
+    if (!audioContext || audioContext.state === "closed") {
 
       audioContext = new AudioContextClass();
 
+      masterGain = audioContext.createGain();
+
+      masterGain.gain.value = 0.8;
+
+      masterGain.connect(audioContext.destination);
+
     }
 
-    if (audioContext.state === "suspended") {
+    if (audioContext.state === "running") {
 
-      audioContext.resume();
+      return Promise.resolve(true);
 
     }
+
+    return audioContext.resume()
+
+      .then(() => audioContext.state === "running")
+
+      .catch(error => {
+
+        console.warn("No se pudo iniciar audio:", error);
+
+        return false;
+
+      });
 
   } catch (error) {
 
-    console.warn("Audio no disponible:", error);
+    console.warn("Error de audio:", error);
+
+    return Promise.resolve(false);
 
   }
 
 }
+
+// ========================================
+
+// GENERADOR DE CANTOS DE AVES
+
+// ========================================
 
 function notaAve(
 
@@ -890,19 +874,33 @@ function notaAve(
 
   frecuenciaFinal,
 
-  volumenMaximo
+  volumen
 
 ) {
 
-  if (!audioContext || !sonidoActivado) return;
+  if (
 
-  const osc = audioContext.createOscillator();
+    !audioContext ||
 
-  const gain = audioContext.createGain();
+    !masterGain ||
 
-  osc.type = "sine";
+    !sonidoActivado ||
 
-  osc.frequency.setValueAtTime(
+    audioContext.state !== "running"
+
+  ) {
+
+    return;
+
+  }
+
+  const oscilador = audioContext.createOscillator();
+
+  const ganancia = audioContext.createGain();
+
+  oscilador.type = "sine";
+
+  oscilador.frequency.setValueAtTime(
 
     frecuenciaInicial,
 
@@ -910,7 +908,7 @@ function notaAve(
 
   );
 
-  osc.frequency.exponentialRampToValueAtTime(
+  oscilador.frequency.exponentialRampToValueAtTime(
 
     frecuenciaFinal,
 
@@ -918,17 +916,17 @@ function notaAve(
 
   );
 
-  gain.gain.setValueAtTime(0.0001, inicio);
+  ganancia.gain.setValueAtTime(0.0001, inicio);
 
-  gain.gain.exponentialRampToValueAtTime(
+  ganancia.gain.exponentialRampToValueAtTime(
 
-    Math.max(0.0002, volumenMaximo),
+    Math.max(volumen, 0.0002),
 
-    inicio + duracion * 0.2
+    inicio + duracion * 0.18
 
   );
 
-  gain.gain.exponentialRampToValueAtTime(
+  ganancia.gain.exponentialRampToValueAtTime(
 
     0.0001,
 
@@ -936,39 +934,57 @@ function notaAve(
 
   );
 
-  osc.connect(gain);
+  oscilador.connect(ganancia);
 
-  gain.connect(audioContext.destination);
+  ganancia.connect(masterGain);
 
-  osc.start(inicio);
+  oscilador.start(inicio);
 
-  osc.stop(inicio + duracion + 0.01);
+  oscilador.stop(inicio + duracion + 0.02);
+
+  oscilador.onended = () => {
+
+    oscilador.disconnect();
+
+    ganancia.disconnect();
+
+  };
 
 }
 
 function cantarAve(intensidad = 0.5) {
 
-  if (!sonidoActivado || !audioContext) return;
+  if (
 
-  if (audioContext.state !== "running") return;
+    !sonidoActivado ||
 
-  const t = audioContext.currentTime + 0.01;
+    !audioContext ||
 
-  const volumen = 0.008 + intensidad * 0.026;
+    audioContext.state !== "running"
 
-  const base = 1100 + intensidad * 650;
+  ) {
 
-  // TRINO DE TRES NOTAS
+    return;
+
+  }
+
+  const t = audioContext.currentTime + 0.025;
+
+  // Mayor intensidad = sonido más definido
+
+  const volumen = 0.045 + intensidad * 0.09;
+
+  const base = 850 + intensidad * 650;
 
   notaAve(
 
     t,
 
-    0.10,
+    0.14,
 
     base,
 
-    base * 1.45,
+    base * 1.5,
 
     volumen
 
@@ -976,25 +992,25 @@ function cantarAve(intensidad = 0.5) {
 
   notaAve(
 
-    t + 0.13,
+    t + 0.16,
 
-    0.09,
+    0.12,
 
-    base * 1.3,
+    base * 1.35,
 
     base * 0.95,
 
-    volumen
+    volumen * 0.85
 
   );
 
   notaAve(
 
-    t + 0.26,
+    t + 0.31,
 
-    0.16,
+    0.19,
 
-    base * 1.1,
+    base * 1.05,
 
     base * 1.7,
 
@@ -1003,6 +1019,30 @@ function cantarAve(intensidad = 0.5) {
   );
 
 }
+
+// Canto breve de prueba al acceder
+
+function cantoDeBienvenida() {
+
+  if (!audioContext || !sonidoActivado) return;
+
+  cantarAve(0.85);
+
+  // Segunda llamada para que sea perceptible
+
+  setTimeout(() => {
+
+    if (sonidoActivado) {
+
+      cantarAve(0.65);
+
+    }
+
+  }, 600);
+
+}
+
+// Sonidos intermitentes al sintonizar
 
 function iniciarAmbienteSonoro() {
 
@@ -1016,7 +1056,7 @@ function iniciarAmbienteSonoro() {
 
       !sonidoActivado ||
 
-      señalEncontrada
+      senalEncontrada
 
     ) {
 
@@ -1026,7 +1066,7 @@ function iniciarAmbienteSonoro() {
 
     const probabilidad =
 
-      0.18 + signalStrength * 0.65;
+      0.25 + signalStrength * 0.7;
 
     if (Math.random() < probabilidad) {
 
@@ -1034,15 +1074,27 @@ function iniciarAmbienteSonoro() {
 
     }
 
-  }, 650);
+  }, 850);
 
 }
 
+// Canto al encontrar la frecuencia
+
 function cantoFinal() {
 
-  if (!sonidoActivado || !audioContext) return;
+  if (
 
-  if (audioContext.state !== "running") return;
+    !audioContext ||
+
+    !sonidoActivado ||
+
+    audioContext.state !== "running"
+
+  ) {
+
+    return;
+
+  }
 
   const t = audioContext.currentTime + 0.03;
 
@@ -1068,13 +1120,13 @@ function cantoFinal() {
 
       t + desfase,
 
-      0.15,
+      0.16,
 
       inicial,
 
       final,
 
-      0.035
+      0.14
 
     );
 
@@ -1082,21 +1134,175 @@ function cantoFinal() {
 
 }
 
-// ====================================
+// ========================================
+
+// TRANSICIÓN ENTRE PANTALLAS
+
+// ========================================
+
+function abrirInterfaz() {
+
+  if (!escrituraTerminada || transicionIniciada) {
+
+    return;
+
+  }
+
+  transicionIniciada = true;
+
+  // La activación ocurre dentro del clic.
+
+  // Esto es importante para Safari.
+
+  const audioListo = activarAudio();
+
+  hint.hidden = true;
+
+  intro.classList.add("exit");
+
+  setTimeout(() => {
+
+    intro.hidden = true;
+
+    interfaz.classList.add("visible");
+
+    interfazAbierta = true;
+
+    iniciarAmbienteSonoro();
+
+  }, 450);
+
+  audioListo.then(funciona => {
+
+    if (funciona) {
+
+      cantoDeBienvenida();
+
+    } else {
+
+      // El botón de sonido permite
+
+      // volver a intentar la activación.
+
+      audioButton.textContent = "TOCAR PARA ACTIVAR SONIDO";
+
+      audioButton.setAttribute("aria-pressed", "false");
+
+    }
+
+  });
+
+}
+
+intro.addEventListener("click", abrirInterfaz);
+
+intro.addEventListener("keydown", event => {
+
+  if (event.key === "Enter" || event.key === " ") {
+
+    event.preventDefault();
+
+    abrirInterfaz();
+
+  }
+
+});
+
+// ========================================
+
+// CONTROL DE SONIDO
+
+// ========================================
+
+audioButton.addEventListener("click", () => {
+
+  // Si el contexto no está funcionando,
+
+  // el toque intenta iniciarlo.
+
+  if (
+
+    !audioContext ||
+
+    audioContext.state !== "running"
+
+  ) {
+
+    sonidoActivado = true;
+
+    audioButton.textContent = "ACTIVANDO SONIDO...";
+
+    activarAudio().then(funciona => {
+
+      if (funciona) {
+
+        audioButton.textContent = "SONIDO: ACTIVADO";
+
+        audioButton.setAttribute("aria-pressed", "true");
+
+        cantarAve(1);
+
+      } else {
+
+        audioButton.textContent =
+
+          "TOCAR PARA ACTIVAR SONIDO";
+
+        audioButton.setAttribute("aria-pressed", "false");
+
+      }
+
+    });
+
+    return;
+
+  }
+
+  sonidoActivado = !sonidoActivado;
+
+  audioButton.textContent = sonidoActivado
+
+    ? "SONIDO: ACTIVADO"
+
+    : "SONIDO: DESACTIVADO";
+
+  audioButton.setAttribute(
+
+    "aria-pressed",
+
+    String(sonidoActivado)
+
+  );
+
+  if (sonidoActivado) {
+
+    masterGain.gain.value = 0.8;
+
+    cantarAve(1);
+
+  } else {
+
+    masterGain.gain.value = 0;
+
+  }
+
+});
+
+// ========================================
 
 // SINTONIZADOR
 
-// ====================================
+// ========================================
 
 function actualizarFrecuencia() {
 
-  if (señalEncontrada) return;
-
-  activarAudio();
+  if (senalEncontrada) return;
 
   const valor = Number(frequency.value);
 
-  frequencyValue.textContent = valor.toFixed(1);
+  frequencyValue.textContent =
+
+    valor.toFixed(1);
 
   const distancia = Math.abs(
 
@@ -1112,6 +1318,24 @@ function actualizarFrecuencia() {
 
   );
 
+  // Reintentar desbloqueo desde
+
+  // la interacción con el deslizador.
+
+  if (
+
+    sonidoActivado &&
+
+    (!audioContext ||
+
+     audioContext.state !== "running")
+
+  ) {
+
+    activarAudio();
+
+  }
+
   const ahora = performance.now();
 
   if (ahora - ultimoCanto > 280) {
@@ -1126,7 +1350,7 @@ function actualizarFrecuencia() {
 
     signalStrength = 1;
 
-    señalEncontrada = true;
+    senalEncontrada = true;
 
     frequency.disabled = true;
 
@@ -1174,11 +1398,11 @@ function actualizarFrecuencia() {
 
 }
 
-// ====================================
+// ========================================
 
-// REGISTRO DEL SISTEMA
+// DESCIFRADO DE ARCHIVOS
 
-// ====================================
+// ========================================
 
 function esperar(ms) {
 
@@ -1224,53 +1448,11 @@ async function iniciarDescifrado() {
 
 }
 
-// ====================================
+// ========================================
 
-// CONTROL DE SONIDO
+// VISUALIZACIÓN DE ONDA
 
-// ====================================
-
-audioButton.addEventListener("click", () => {
-
-  sonidoActivado = !sonidoActivado;
-
-  audioButton.textContent = sonidoActivado
-
-    ? "SONIDO: ACTIVADO"
-
-    : "SONIDO: DESACTIVADO";
-
-  audioButton.setAttribute(
-
-    "aria-pressed",
-
-    String(sonidoActivado)
-
-  );
-
-  if (sonidoActivado) {
-
-    activarAudio();
-
-    if (!señalEncontrada) {
-
-      cantarAve(signalStrength);
-
-    }
-
-  } else if (audioContext) {
-
-    audioContext.suspend();
-
-  }
-
-});
-
-// ====================================
-
-// ONDA ANIMADA
-
-// ====================================
+// ========================================
 
 const canvas = document.getElementById("wave");
 
@@ -1420,11 +1602,11 @@ function dibujarOnda() {
 
 }
 
-// ====================================
+// ========================================
 
 // INICIAR
 
-// ====================================
+// ========================================
 
 frequency.addEventListener(
 
