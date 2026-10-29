@@ -96,7 +96,7 @@ body::before {
 
 }
 
-/* PANTALLA DEL TÍTULO */
+/* PANTALLA INICIAL */
 
 .intro {
 
@@ -132,7 +132,7 @@ body::before {
 
   overflow-wrap: anywhere;
 
-  text-decoration: none !important;
+  text-decoration: none;
 
 }
 
@@ -154,7 +154,7 @@ body::before {
 
   border: 0;
 
-  text-decoration: none !important;
+  text-decoration: none;
 
   animation: blink 1s steps(1) infinite;
 
@@ -346,7 +346,7 @@ input[type="range"]:disabled {
 
 }
 
-/* CONTROL DE AUDIO */
+/* SONIDO */
 
 .audio-control {
 
@@ -528,7 +528,7 @@ input[type="range"]:disabled {
 
 <main class="terminal">
 
-  <!-- PANTALLA 1 -->
+  <!-- PANTALLA 1: TÍTULO -->
 
   <div
 
@@ -554,7 +554,7 @@ input[type="range"]:disabled {
 
   </div>
 
-  <!-- PANTALLA 2 -->
+  <!-- PANTALLA 2: SINTONIZADOR -->
 
   <div class="interface" id="interface">
 
@@ -640,6 +640,8 @@ input[type="range"]:disabled {
 
     </section>
 
+    <!-- DESCIFRADO -->
+
     <section class="system-log" id="systemLog">
 
       <h2 class="screen-heading">
@@ -668,11 +670,11 @@ input[type="range"]:disabled {
 
 <script>
 
-// ========================================
+// =====================================
 
-// CONFIGURACIÓN
+// CONFIGURACIÓN GENERAL
 
-// ========================================
+// =====================================
 
 const TITULO = [
 
@@ -726,19 +728,15 @@ let signalStrength = 0;
 
 let sonidoActivado = true;
 
-let audioContext = null;
-
-let masterGain = null;
-
 let ultimoCanto = 0;
 
 let temporizadorAves = null;
 
-// ========================================
+// =====================================
 
 // ESCRITURA DEL TÍTULO
 
-// ========================================
+// =====================================
 
 let titleIndex = 0;
 
@@ -751,8 +749,6 @@ function renderizarTitulo() {
   cursor.className = "cursor";
 
   cursor.setAttribute("aria-hidden", "true");
-
-  // Sin caracteres ni guiones
 
   title.appendChild(cursor);
 
@@ -780,269 +776,455 @@ function escribirTitulo() {
 
 }
 
-// ========================================
+// =====================================
 
-// SISTEMA DE AUDIO
+// AUDIO WAV
 
-// ========================================
+// =====================================
 
-// IMPORTANTE:
+// Genera archivos WAV válidos directamente
 
-// Crear y reanudar el AudioContext directamente
+// en el navegador, sin Web Audio API.
 
-// desde una interacción del usuario.
+const SAMPLE_RATE = 22050;
 
-function activarAudio() {
+function escribirTexto(view, offset, texto) {
 
-  if (!sonidoActivado) {
+  for (let i = 0; i < texto.length; i++) {
 
-    return Promise.resolve(false);
+    view.setUint8(
 
-  }
+      offset + i,
 
-  const AudioContextClass =
+      texto.charCodeAt(i)
 
-    window.AudioContext ||
-
-    window.webkitAudioContext;
-
-  if (!AudioContextClass) {
-
-    tunerStatus.textContent =
-
-      "> AUDIO NO COMPATIBLE CON ESTE NAVEGADOR";
-
-    return Promise.resolve(false);
-
-  }
-
-  try {
-
-    if (!audioContext || audioContext.state === "closed") {
-
-      audioContext = new AudioContextClass();
-
-      masterGain = audioContext.createGain();
-
-      masterGain.gain.value = 0.8;
-
-      masterGain.connect(audioContext.destination);
-
-    }
-
-    if (audioContext.state === "running") {
-
-      return Promise.resolve(true);
-
-    }
-
-    return audioContext.resume()
-
-      .then(() => audioContext.state === "running")
-
-      .catch(error => {
-
-        console.warn("No se pudo iniciar audio:", error);
-
-        return false;
-
-      });
-
-  } catch (error) {
-
-    console.warn("Error de audio:", error);
-
-    return Promise.resolve(false);
+    );
 
   }
 
 }
 
-// ========================================
+function crearWAV(muestras) {
 
-// GENERADOR DE CANTOS DE AVES
+  const cantidad = muestras.length;
 
-// ========================================
+  const buffer = new ArrayBuffer(
 
-function notaAve(
+    44 + cantidad * 2
 
-  inicio,
+  );
 
-  duracion,
+  const view = new DataView(buffer);
 
-  frecuenciaInicial,
+  escribirTexto(view, 0, "RIFF");
 
-  frecuenciaFinal,
+  view.setUint32(
 
-  volumen
+    4,
 
-) {
+    36 + cantidad * 2,
 
-  if (
+    true
 
-    !audioContext ||
+  );
 
-    !masterGain ||
+  escribirTexto(view, 8, "WAVE");
 
-    !sonidoActivado ||
+  escribirTexto(view, 12, "fmt ");
 
-    audioContext.state !== "running"
+  view.setUint32(16, 16, true);
 
-  ) {
+  view.setUint16(20, 1, true);
 
-    return;
+  view.setUint16(22, 1, true);
+
+  view.setUint32(24, SAMPLE_RATE, true);
+
+  view.setUint32(28, SAMPLE_RATE * 2, true);
+
+  view.setUint16(32, 2, true);
+
+  view.setUint16(34, 16, true);
+
+  escribirTexto(view, 36, "data");
+
+  view.setUint32(
+
+    40,
+
+    cantidad * 2,
+
+    true
+
+  );
+
+  for (let i = 0; i < cantidad; i++) {
+
+    const muestra = Math.max(
+
+      -1,
+
+      Math.min(1, muestras[i])
+
+    );
+
+    view.setInt16(
+
+      44 + i * 2,
+
+      Math.round(muestra * 32767),
+
+      true
+
+    );
 
   }
 
-  const oscilador = audioContext.createOscillator();
+  return new Blob(
 
-  const ganancia = audioContext.createGain();
+    [buffer],
 
-  oscilador.type = "sine";
-
-  oscilador.frequency.setValueAtTime(
-
-    frecuenciaInicial,
-
-    inicio
+    { type: "audio/wav" }
 
   );
-
-  oscilador.frequency.exponentialRampToValueAtTime(
-
-    frecuenciaFinal,
-
-    inicio + duracion
-
-  );
-
-  ganancia.gain.setValueAtTime(0.0001, inicio);
-
-  ganancia.gain.exponentialRampToValueAtTime(
-
-    Math.max(volumen, 0.0002),
-
-    inicio + duracion * 0.18
-
-  );
-
-  ganancia.gain.exponentialRampToValueAtTime(
-
-    0.0001,
-
-    inicio + duracion
-
-  );
-
-  oscilador.connect(ganancia);
-
-  ganancia.connect(masterGain);
-
-  oscilador.start(inicio);
-
-  oscilador.stop(inicio + duracion + 0.02);
-
-  oscilador.onended = () => {
-
-    oscilador.disconnect();
-
-    ganancia.disconnect();
-
-  };
 
 }
+
+// =====================================
+
+// SÍNTESIS DE CANTOS DIGITALES
+
+// =====================================
+
+function crearCantoAve(intensidad = 0.5) {
+
+  const duracion = 0.9;
+
+  const cantidad = Math.floor(
+
+    SAMPLE_RATE * duracion
+
+  );
+
+  const muestras = new Float32Array(cantidad);
+
+  const base = 700 + intensidad * 850;
+
+  const volumen = 0.18 + intensidad * 0.20;
+
+  const notas = [
+
+    { inicio: 0.04, fin: 0.18, f1: 1.0, f2: 1.65 },
+
+    { inicio: 0.23, fin: 0.36, f1: 1.45, f2: 0.90 },
+
+    { inicio: 0.43, fin: 0.67, f1: 1.10, f2: 1.85 },
+
+    { inicio: 0.70, fin: 0.84, f1: 1.50, f2: 1.15 }
+
+  ];
+
+  for (const nota of notas) {
+
+    const inicio = Math.floor(
+
+      nota.inicio * SAMPLE_RATE
+
+    );
+
+    const fin = Math.floor(
+
+      nota.fin * SAMPLE_RATE
+
+    );
+
+    let fase = 0;
+
+    for (let i = inicio; i < fin; i++) {
+
+      const progreso =
+
+        (i - inicio) / (fin - inicio);
+
+      const frecuencia =
+
+        base *
+
+        (
+
+          nota.f1 +
+
+          (nota.f2 - nota.f1) *
+
+          progreso
+
+        );
+
+      fase +=
+
+        2 * Math.PI *
+
+        frecuencia / SAMPLE_RATE;
+
+      // Envolvente para evitar clics
+
+      const envolvente = Math.pow(
+
+        Math.sin(Math.PI * progreso),
+
+        1.3
+
+      );
+
+      const vibrato =
+
+        Math.sin(progreso * Math.PI * 18) *
+
+        0.12;
+
+      muestras[i] +=
+
+        Math.sin(fase + vibrato) *
+
+        envolvente *
+
+        volumen;
+
+    }
+
+  }
+
+  return crearWAV(muestras);
+
+}
+
+// Canto especial al encontrar la señal
+
+function crearCantoFinal() {
+
+  const duracion = 2.3;
+
+  const cantidad = Math.floor(
+
+    SAMPLE_RATE * duracion
+
+  );
+
+  const muestras = new Float32Array(cantidad);
+
+  const notas = [
+
+    [0.05, 0.28, 950, 1450],
+
+    [0.36, 0.56, 1250, 1900],
+
+    [0.67, 0.91, 1100, 1700],
+
+    [1.02, 1.27, 1450, 2250],
+
+    [1.40, 1.65, 1300, 1950],
+
+    [1.80, 2.17, 1650, 2600]
+
+  ];
+
+  for (const nota of notas) {
+
+    const [inicio, fin, f1, f2] = nota;
+
+    const iInicio = Math.floor(
+
+      inicio * SAMPLE_RATE
+
+    );
+
+    const iFin = Math.floor(
+
+      fin * SAMPLE_RATE
+
+    );
+
+    let fase = 0;
+
+    for (let i = iInicio; i < iFin; i++) {
+
+      const progreso =
+
+        (i - iInicio) / (iFin - iInicio);
+
+      const frecuencia =
+
+        f1 + (f2 - f1) * progreso;
+
+      fase +=
+
+        2 * Math.PI *
+
+        frecuencia / SAMPLE_RATE;
+
+      const envolvente = Math.sin(
+
+        Math.PI * progreso
+
+      );
+
+      muestras[i] +=
+
+        Math.sin(fase) *
+
+        envolvente *
+
+        0.4;
+
+    }
+
+  }
+
+  return crearWAV(muestras);
+
+}
+
+// =====================================
+
+// REPRODUCTOR HTML
+
+// =====================================
+
+// Un único elemento de audio evita
+
+// acumular reproductores en el navegador.
+
+const reproductor = document.createElement("audio");
+
+reproductor.preload = "auto";
+
+reproductor.playsInline = true;
+
+reproductor.setAttribute("playsinline", "");
+
+let urlAudioActual = null;
+
+let generacionAudio = 0;
+
+function detenerAudio() {
+
+  generacionAudio++;
+
+  reproductor.pause();
+
+  if (urlAudioActual) {
+
+    URL.revokeObjectURL(urlAudioActual);
+
+    urlAudioActual = null;
+
+  }
+
+  reproductor.removeAttribute("src");
+
+  reproductor.load();
+
+}
+
+function reproducirWAV(blob) {
+
+  if (!sonidoActivado) return;
+
+  const generacion = ++generacionAudio;
+
+  reproductor.pause();
+
+  if (urlAudioActual) {
+
+    URL.revokeObjectURL(urlAudioActual);
+
+  }
+
+  urlAudioActual = URL.createObjectURL(blob);
+
+  reproductor.src = urlAudioActual;
+
+  reproductor.volume = 1;
+
+  const resultado = reproductor.play();
+
+  if (resultado && typeof resultado.catch === "function") {
+
+    resultado.catch(error => {
+
+      if (generacion !== generacionAudio) return;
+
+      console.warn(
+
+        "No se pudo reproducir el canto:",
+
+        error
+
+      );
+
+      audioButton.textContent =
+
+        "TOCAR PARA ACTIVAR SONIDO";
+
+    });
+
+  }
+
+}
+
+// Preparamos tres variaciones para
+
+// no generar archivos en cada intervalo.
+
+const cantos = [
+
+  crearCantoAve(0.15),
+
+  crearCantoAve(0.55),
+
+  crearCantoAve(1)
+
+];
+
+const cantoDescifrado = crearCantoFinal();
 
 function cantarAve(intensidad = 0.5) {
 
-  if (
-
-    !sonidoActivado ||
-
-    !audioContext ||
-
-    audioContext.state !== "running"
-
-  ) {
+  if (!sonidoActivado || senalEncontrada) {
 
     return;
 
   }
 
-  const t = audioContext.currentTime + 0.025;
+  let indice = 0;
 
-  // Mayor intensidad = sonido más definido
+  if (intensidad >= 0.75) {
 
-  const volumen = 0.045 + intensidad * 0.09;
+    indice = 2;
 
-  const base = 850 + intensidad * 650;
+  } else if (intensidad >= 0.35) {
 
-  notaAve(
+    indice = 1;
 
-    t,
+  }
 
-    0.14,
-
-    base,
-
-    base * 1.5,
-
-    volumen
-
-  );
-
-  notaAve(
-
-    t + 0.16,
-
-    0.12,
-
-    base * 1.35,
-
-    base * 0.95,
-
-    volumen * 0.85
-
-  );
-
-  notaAve(
-
-    t + 0.31,
-
-    0.19,
-
-    base * 1.05,
-
-    base * 1.7,
-
-    volumen
-
-  );
+  reproducirWAV(cantos[indice]);
 
 }
 
-// Canto breve de prueba al acceder
+function cantoFinal() {
 
-function cantoDeBienvenida() {
+  if (!sonidoActivado) return;
 
-  if (!audioContext || !sonidoActivado) return;
-
-  cantarAve(0.85);
-
-  // Segunda llamada para que sea perceptible
-
-  setTimeout(() => {
-
-    if (sonidoActivado) {
-
-      cantarAve(0.65);
-
-    }
-
-  }, 600);
+  reproducirWAV(cantoDescifrado);
 
 }
 
-// Sonidos intermitentes al sintonizar
+// =====================================
+
+// AMBIENTE SONORO
+
+// =====================================
 
 function iniciarAmbienteSonoro() {
 
@@ -1064,9 +1246,21 @@ function iniciarAmbienteSonoro() {
 
     }
 
+    // Evitar interrumpir cantos
+
+    // que todavía se están reproduciendo.
+
+    if (!reproductor.paused &&
+
+        !reproductor.ended) {
+
+      return;
+
+    }
+
     const probabilidad =
 
-      0.25 + signalStrength * 0.7;
+      0.24 + signalStrength * 0.70;
 
     if (Math.random() < probabilidad) {
 
@@ -1074,21 +1268,23 @@ function iniciarAmbienteSonoro() {
 
     }
 
-  }, 850);
+  }, 1100);
 
 }
 
-// Canto al encontrar la frecuencia
+// =====================================
 
-function cantoFinal() {
+// TRANSICIÓN DE PANTALLAS
+
+// =====================================
+
+function abrirInterfaz() {
 
   if (
 
-    !audioContext ||
+    !escrituraTerminada ||
 
-    !sonidoActivado ||
-
-    audioContext.state !== "running"
+    transicionIniciada
 
   ) {
 
@@ -1096,65 +1292,13 @@ function cantoFinal() {
 
   }
 
-  const t = audioContext.currentTime + 0.03;
-
-  const notas = [
-
-    [0.00, 1200, 1800],
-
-    [0.18, 1600, 2300],
-
-    [0.37, 1400, 2100],
-
-    [0.60, 1800, 2700],
-
-    [0.84, 1500, 2200],
-
-    [1.08, 2100, 3000]
-
-  ];
-
-  notas.forEach(([desfase, inicial, final]) => {
-
-    notaAve(
-
-      t + desfase,
-
-      0.16,
-
-      inicial,
-
-      final,
-
-      0.14
-
-    );
-
-  });
-
-}
-
-// ========================================
-
-// TRANSICIÓN ENTRE PANTALLAS
-
-// ========================================
-
-function abrirInterfaz() {
-
-  if (!escrituraTerminada || transicionIniciada) {
-
-    return;
-
-  }
-
   transicionIniciada = true;
 
-  // La activación ocurre dentro del clic.
+  // Iniciamos el WAV durante el toque,
 
-  // Esto es importante para Safari.
+  // tal como en la prueba que funcionó.
 
-  const audioListo = activarAudio();
+  cantarAve(0.85);
 
   hint.hidden = true;
 
@@ -1172,33 +1316,19 @@ function abrirInterfaz() {
 
   }, 450);
 
-  audioListo.then(funciona => {
-
-    if (funciona) {
-
-      cantoDeBienvenida();
-
-    } else {
-
-      // El botón de sonido permite
-
-      // volver a intentar la activación.
-
-      audioButton.textContent = "TOCAR PARA ACTIVAR SONIDO";
-
-      audioButton.setAttribute("aria-pressed", "false");
-
-    }
-
-  });
-
 }
 
 intro.addEventListener("click", abrirInterfaz);
 
 intro.addEventListener("keydown", event => {
 
-  if (event.key === "Enter" || event.key === " ") {
+  if (
+
+    event.key === "Enter" ||
+
+    event.key === " "
+
+  ) {
 
     event.preventDefault();
 
@@ -1208,91 +1338,67 @@ intro.addEventListener("keydown", event => {
 
 });
 
-// ========================================
+// =====================================
 
-// CONTROL DE SONIDO
+// BOTÓN DE SONIDO
 
-// ========================================
+// =====================================
 
 audioButton.addEventListener("click", () => {
 
-  // Si el contexto no está funcionando,
-
-  // el toque intenta iniciarlo.
-
-  if (
-
-    !audioContext ||
-
-    audioContext.state !== "running"
-
-  ) {
-
-    sonidoActivado = true;
-
-    audioButton.textContent = "ACTIVANDO SONIDO...";
-
-    activarAudio().then(funciona => {
-
-      if (funciona) {
-
-        audioButton.textContent = "SONIDO: ACTIVADO";
-
-        audioButton.setAttribute("aria-pressed", "true");
-
-        cantarAve(1);
-
-      } else {
-
-        audioButton.textContent =
-
-          "TOCAR PARA ACTIVAR SONIDO";
-
-        audioButton.setAttribute("aria-pressed", "false");
-
-      }
-
-    });
-
-    return;
-
-  }
-
-  sonidoActivado = !sonidoActivado;
-
-  audioButton.textContent = sonidoActivado
-
-    ? "SONIDO: ACTIVADO"
-
-    : "SONIDO: DESACTIVADO";
-
-  audioButton.setAttribute(
-
-    "aria-pressed",
-
-    String(sonidoActivado)
-
-  );
-
   if (sonidoActivado) {
 
-    masterGain.gain.value = 0.8;
+    sonidoActivado = false;
 
-    cantarAve(1);
+    detenerAudio();
+
+    audioButton.textContent =
+
+      "SONIDO: DESACTIVADO";
+
+    audioButton.setAttribute(
+
+      "aria-pressed",
+
+      "false"
+
+    );
 
   } else {
 
-    masterGain.gain.value = 0;
+    sonidoActivado = true;
+
+    audioButton.textContent =
+
+      "SONIDO: ACTIVADO";
+
+    audioButton.setAttribute(
+
+      "aria-pressed",
+
+      "true"
+
+    );
+
+    if (senalEncontrada) {
+
+      cantoFinal();
+
+    } else {
+
+      cantarAve(signalStrength);
+
+    }
 
   }
 
 });
 
-// ========================================
+// =====================================
 
 // SINTONIZADOR
 
-// ========================================
+// =====================================
 
 function actualizarFrecuencia() {
 
@@ -1318,27 +1424,21 @@ function actualizarFrecuencia() {
 
   );
 
-  // Reintentar desbloqueo desde
+  const ahora = performance.now();
 
-  // la interacción con el deslizador.
+  // Sonido durante la búsqueda.
+
+  // Se limita la frecuencia de reproducción.
 
   if (
 
     sonidoActivado &&
 
-    (!audioContext ||
+    ahora - ultimoCanto > 1100 &&
 
-     audioContext.state !== "running")
+    (reproductor.paused || reproductor.ended)
 
   ) {
-
-    activarAudio();
-
-  }
-
-  const ahora = performance.now();
-
-  if (ahora - ultimoCanto > 280) {
 
     ultimoCanto = ahora;
 
@@ -1398,11 +1498,11 @@ function actualizarFrecuencia() {
 
 }
 
-// ========================================
+// =====================================
 
-// DESCIFRADO DE ARCHIVOS
+// REGISTRO DEL SISTEMA
 
-// ========================================
+// =====================================
 
 function esperar(ms) {
 
@@ -1448,11 +1548,11 @@ async function iniciarDescifrado() {
 
 }
 
-// ========================================
+// =====================================
 
-// VISUALIZACIÓN DE ONDA
+// ONDA ANIMADA
 
-// ========================================
+// =====================================
 
 const canvas = document.getElementById("wave");
 
@@ -1536,7 +1636,7 @@ function dibujarOnda() {
 
   }
 
-  // ONDA
+  // ONDA DE SEÑAL
 
   ctx.beginPath();
 
@@ -1602,11 +1702,11 @@ function dibujarOnda() {
 
 }
 
-// ========================================
+// =====================================
 
 // INICIAR
 
-// ========================================
+// =====================================
 
 frequency.addEventListener(
 
