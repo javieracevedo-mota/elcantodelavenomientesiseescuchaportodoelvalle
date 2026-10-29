@@ -1,127 +1,177 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>registro 09 — canto de las aves</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      background:#d6ef43;
-      color:#0b0b0b;
-      font-family:'VT323', monospace;
-      padding:14px 18px 80px 18px;
-      min-height:100vh;
-    }
+<title>registro 09 — canto de las aves</title>
 
-    body::before {
-      content:"";
-      position:fixed;
-      inset:0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.04) 0px,
-        rgba(0,0,0,0.04) 1px,
-        transparent 2px,
-        transparent 4px
-      );
-      pointer-events:none;
-      opacity:0.18;
-    }
+<style>
 
-    .header {
-      background:#000;
-      color:#d6ef43;
-      padding:12px;
-      display:inline-block;
-      white-space:pre-wrap;
-      font-size:1.6rem;
-      line-height:1.05;
-    }
+* {
 
-    .loader, .text {
-      white-space:pre-wrap;
-      font-size:1.6rem;
-      line-height:1.05;
-    }
+  box-sizing: border-box;
 
-    .text {
-      animation: degradedText 3.2s infinite;
-    }
+}
 
-    .loader { margin:12px 0 18px 0; }
+html, body {
 
-    .cursor {
-      animation: blink 0.9s steps(1) infinite;
-    }
+  margin: 0;
 
-    @keyframes blink {
-      50% { opacity:0; }
-    }
+  width: 100%;
 
-    @keyframes degradedText {
-      0%, 100% { opacity:1; transform:translateX(0); }
-      28% { opacity:0.92; }
-      29% { opacity:1; }
-      61% { transform:translateX(0); }
-      62% { transform:translateX(1px); opacity:0.82; }
-      63% { transform:translateX(0); opacity:1; }
-      87% { opacity:0.9; }
-      88% { opacity:1; }
-    }
+  min-height: 100%;
 
-    .nav {
-      display:none;
-      margin-top:40px;
-      justify-content:space-between;
-    }
+  background: #000000;
 
-    .nav.show { display:flex; }
+  color: #00ff66;
 
-    .nav a {
-      border:2px solid #000;
-      padding:6px 12px;
-      text-decoration:none;
-      color:#000;
-      font-size:2rem;
-      background:rgba(0,0,0,0.03);
-    }
+  font-family: monospace;
 
-    .nav a:hover {
-      background:rgba(0,0,0,0.08);
-    }
-  </style>
+}
+
+#terminal {
+
+  width: 100%;
+
+  height: 100vh;
+
+  height: 100dvh;
+
+  padding: 24px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+
+  font-size: 24px;
+
+  line-height: 1.45;
+
+  overscroll-behavior: contain;
+
+}
+
+.cursor {
+
+  animation: blink 1s steps(1) infinite;
+
+}
+
+@keyframes blink {
+
+  50% {
+
+    opacity: 0;
+
+  }
+
+}
+
+#nav {
+
+  display: none;
+
+  gap: 24px;
+
+  justify-content: space-between;
+
+  margin: 38px 0 20px;
+
+  white-space: normal;
+
+}
+
+#nav.show {
+
+  display: flex;
+
+}
+
+#nav a {
+
+  color: #00ff66;
+
+  text-decoration: none;
+
+  border: 1px solid #00ff66;
+
+  padding: 10px 14px;
+
+  font-size: 20px;
+
+}
+
+#nav a:hover,
+
+#nav a:focus-visible {
+
+  background: #003319;
+
+}
+
+@media (max-width: 640px) {
+
+  #terminal {
+
+    padding: 16px;
+
+    font-size: 20px;
+
+  }
+
+  #nav a {
+
+    font-size: 16px;
+
+  }
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<div id="header" class="header"></div>
-<div id="loader" class="loader"></div>
-<div id="text" class="text"></div>
+<main id="terminal">
 
-<div id="nav" class="nav">
-  <a href="carta8.html">←</a>
-  <a href="cartas.html">→</a>
-</div>
+  <span id="output"></span><span id="cursor" class="cursor">█</span>
+
+  <nav id="nav">
+
+    <a href="carta8.html">← REGISTRO 08</a>
+
+    <a href="index.html">INICIO →</a>
+
+  </nav>
+
+</main>
+
 <script>
-const headerTemplate = [
-'╔═════════════════════════════════════════════════════════╗',
-' ARCHIVO INTERCEPTADO',
-' registro: 09',
-' asunto: canto de las aves',
-' fecha: indeterminada',
-' ubicación aproximada: {{COORDS}}',
-' estado de señal: muy degradado',
-'╚═════════════════════════════════════════════════════════╝'
-];
+// ENCABEZADO DEL ARCHIVO
+const encabezado =`ARCHIVO INTERCEPTADO
+ registro: 09
+ asunto: canto de las aves
+ fecha: indeterminada
+ ubicación aproximada: 20°08´30.68´´N / 99°22´06.01´´O
+ estado de señal: muy degradado
 
-const finalCoords = '20° 08´30.68´´N / 99°22´06.01´´O';
+ 
 
-const message = `[INICIO DEL MENSAJE]
+`;
+
+// CONTENIDO DE LA CARTA
+
+const mensaje = `[INICIO DEL MENSAJE]
 
 Me infiltré en una empresa de nanotecnología
 llamada HuemaCartix 
@@ -205,7 +255,6 @@ Después los rostros.
 Después los lugares.
 Tus caricias
 
-
 Al final
 lo único que queda es una sensación vaga de haber amado algo.
 
@@ -230,7 +279,6 @@ demasiado
 tarde.
 
 Quizá ya me olvidaste.
-
 
 O quizá
 
@@ -258,8 +306,6 @@ Que metías los pies
 en el agua negra
 cuando regabas las milpas.
 
-
-
 Pero aun así
 yo quería besarlos.
 Decías que estaba loco.
@@ -273,7 +319,6 @@ O desde que nacimos inhalando aire refinero
 Escuché algo sobre tu vida.
 No sé si es verdad.
 
-
 Te dicen 
 papá
 
@@ -281,12 +326,9 @@ No sé si preguntarlo.
 
 Porque hay preguntas que cuando se responden terminan de romper lo que queda.
 
-
-
 Ya no voy a buscar cómo volver a tu tiempo.
 Voy a quedarme aquí.
 Entre archivos, códigos y bacterias robadas.
-
 
 Voy a convertirme
 en a 
@@ -295,7 +337,6 @@ Alguien con una máscara
 Siendo travesti de noche para besar a mis víctimas
 Uno que se mueve entre tiempos sin dejar rastro.
 
-
 Alguien que guarda secretos para que algún día
 alguien más pueda encontrarlos.
 
@@ -303,7 +344,6 @@ Por eso
 escondí todos mis mensajes
 en los patrones
 de las aves.
-
 
 Ellas siempre llegaban
 a tus milpas.
@@ -388,59 +428,210 @@ Promesas
 canto de ave registrado
 en frecuencia desconocida`;
 
-const headerEl = document.getElementById("header");
-const loaderEl = document.getElementById("loader");
-const textEl = document.getElementById("text");
-const navEl = document.getElementById("nav");
+// ELEMENTOS DE LA PÁGINA
 
-function randChar(){
-  const c="0123456789NSEO°´/";
-  return c[Math.floor(Math.random()*c.length)];
+const output = document.getElementById("output");
+
+const cursor = document.getElementById("cursor");
+
+const nav = document.getElementById("nav");
+
+// CONFIGURACIÓN
+
+const VELOCIDAD = 30;
+
+const DURACION_DESCIFRADO = 3000;
+
+const VELOCIDAD_DESCIFRADO = 55;
+
+const caracteresAleatorios =
+
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+
+  "abcdefghijklmnopqrstuvwxyz" +
+
+  "0123456789#$%&/=?+*<>@";
+
+const cambios = {
+
+  o: "0",
+
+  O: "0",
+
+  a: "4",
+
+  A: "4",
+
+  e: "3",
+
+  E: "3",
+
+  i: "1",
+
+  I: "1"
+
+};
+
+let indice = 0;
+
+let interferenciaMostrada = false;
+
+let salida = "";
+
+let intervaloDescifrado = null;
+
+// GENERAR UN CARÁCTER ALEATORIO
+
+function caracterAleatorio() {
+
+  const posicion = Math.floor(
+
+    Math.random() * caracteresAleatorios.length
+
+  );
+
+  return caracteresAleatorios[posicion];
+
 }
 
-function scrambleCoords(){
-  return finalCoords.split('').map(x=>x===" "?" ":randChar()).join('');
+// ALTERAR LAS LETRAS DEL ENCABEZADO
+
+function generarEncabezadoAlterado() {
+
+  return Array.from(encabezado).map(caracter => {
+
+    if (/[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]/.test(caracter)) {
+
+      return caracterAleatorio();
+
+    }
+
+    return caracter;
+
+  }).join("");
+
 }
 
-function drawHeader(coords){
-  headerEl.textContent = headerTemplate
-    .map(l=>l.replace("{{COORDS}}",coords))
-    .join("\n");
+// DESCIFRAR EL ENCABEZADO DURANTE 3 SEGUNDOS
+
+function iniciarDescifrado() {
+
+  cursor.style.display = "none";
+
+  output.textContent = generarEncabezadoAlterado();
+
+  intervaloDescifrado = setInterval(() => {
+
+    output.textContent = generarEncabezadoAlterado();
+
+  }, VELOCIDAD_DESCIFRADO);
+
+  setTimeout(() => {
+
+    clearInterval(intervaloDescifrado);
+
+    output.textContent = encabezado;
+
+    salida = encabezado;
+
+    cursor.style.display = "inline";
+
+    setTimeout(escribir, 350);
+
+  }, DURACION_DESCIFRADO);
+
 }
 
-let s=0;
-function animateHeader(){
-  drawHeader(scrambleCoords());
-  s++;
-  if(s<20) setTimeout(animateHeader,80);
-  else startLoad();
-}
+// CORRUPCIÓN OCASIONAL DEL MENSAJE
 
-function startLoad(p=0){
-  const bar="["+"■".repeat(p/5)+"·".repeat(20-p/5)+"]";
-  loaderEl.textContent=`[INICIO DEL MENSAJE] ${String(p).padStart(3,"0")}% ${bar}`;
+function corromper(caracter) {
 
-  if(p<100){
-    setTimeout(()=>startLoad(p+5),40);
-  }else{
-    drawHeader(finalCoords);
-    loaderEl.textContent="";
-    setTimeout(typeText,300);
+  if (
+
+    cambios[caracter] &&
+
+    Math.random() < 0.04
+
+  ) {
+
+    return cambios[caracter];
+
   }
+
+  return caracter;
+
 }
 
-function typeText(i=0){
-  if(i<message.length){
-    textEl.innerHTML=message.slice(0,i+1)+'<span class="cursor">_</span>';
-    setTimeout(()=>typeText(i+1),18);
-  }else{
-    textEl.innerHTML=message + '<span class="cursor">_</span>';
-    navEl.classList.add("show");
+// ESCRITURA PROGRESIVA DE LA CARTA
+
+function escribir() {
+
+  if (indice >= mensaje.length) {
+
+    output.textContent = salida;
+
+    cursor.style.display = "none";
+
+    nav.classList.add("show");
+
+    return;
+
   }
+
+  // INTERFERENCIA AL 75 % DEL MENSAJE
+
+  if (
+
+    !interferenciaMostrada &&
+
+    indice > mensaje.length * 0.75
+
+  ) {
+
+    interferenciaMostrada = true;
+
+    output.textContent =
+
+      salida + "\n\n[ SEÑAL INESTABLE ]\n";
+
+    setTimeout(() => {
+
+      output.textContent =
+
+        salida + "\n\n[ RECONECTANDO ]\n";
+
+      setTimeout(() => {
+
+        output.textContent = salida;
+
+        escribir();
+
+      }, 2500);
+
+    }, 1500);
+
+    return;
+
+  }
+
+  salida += corromper(mensaje[indice]);
+
+  indice++;
+
+  output.textContent = salida;
+
+  // SIN DESPLAZAMIENTO AUTOMÁTICO
+
+  setTimeout(escribir, VELOCIDAD);
+
 }
 
-animateHeader();
+// INICIAR EL SISTEMA
+
+iniciarDescifrado();
+
 </script>
 
 </body>
+
 </html>
