@@ -12,157 +12,461 @@
 
 <style>
 
-  * {
+* {
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-  }
+}
 
-  html, body {
+:root {
 
-    margin: 0;
+  --verde: #00ff66;
 
-    padding: 0;
+  --verde-oscuro: #164b29;
 
-    width: 100%;
+  --fondo: #000000;
 
-    min-height: 100%;
+  --verde-suave: #8bd9a2;
 
-    background: #000000;
+}
 
-    color: #00ff66;
+html, body {
 
-    font-family: monospace;
+  margin: 0;
 
-  }
+  min-height: 100%;
 
-  body {
+  background: var(--fondo);
 
-    min-height: 100vh;
+  color: var(--verde);
 
-    min-height: 100dvh;
+  font-family: monospace;
 
-  }
+}
 
-  .wrap {
+body {
 
-    min-height: 100vh;
+  min-height: 100vh;
 
-    min-height: 100dvh;
+  min-height: 100dvh;
 
-    display: flex;
+}
 
-    align-items: center;
+/* EFECTO DE PANTALLA ANTIGUA */
 
-    justify-content: center;
+body::before {
 
-    padding: 24px;
+  content: "";
 
-  }
+  position: fixed;
 
-  .title-wrap {
+  inset: 0;
 
-    width: min(92vw, 900px);
+  background: repeating-linear-gradient(
 
-    cursor: pointer;
+    to bottom,
 
-    user-select: none;
+    transparent 0px,
 
-    -webkit-tap-highlight-color: transparent;
+    transparent 3px,
+
+    rgba(0, 255, 102, 0.035) 4px
+
+  );
+
+  pointer-events: none;
+
+  z-index: 10;
+
+}
+
+.terminal {
+
+  width: min(100%, 950px);
+
+  min-height: 100vh;
+
+  min-height: 100dvh;
+
+  margin: auto;
+
+  padding: 26px 24px 50px;
+
+}
+
+.topbar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border-bottom: 1px solid var(--verde-oscuro);
+
+  padding-bottom: 12px;
+
+  font-size: 12px;
+
+  letter-spacing: 0.05em;
+
+}
+
+.title {
+
+  margin: 42px 0 28px;
+
+  font-size: clamp(24px, 5vw, 48px);
+
+  font-weight: normal;
+
+  line-height: 1.15;
+
+  text-transform: uppercase;
+
+  white-space: pre-line;
+
+  overflow-wrap: anywhere;
+
+}
+
+.cursor {
+
+  animation: blink 1s steps(1) infinite;
+
+}
+
+@keyframes blink {
+
+  50% { opacity: 0; }
+
+}
+
+.meta {
+
+  display: grid;
+
+  gap: 7px;
+
+  margin-bottom: 30px;
+
+  color: var(--verde-suave);
+
+  font-size: 14px;
+
+}
+
+.screen {
+
+  border: 1px solid var(--verde-oscuro);
+
+  padding: 18px;
+
+  margin: 22px 0;
+
+}
+
+.screen-heading {
+
+  margin: 0 0 16px;
+
+  font-size: 14px;
+
+  font-weight: normal;
+
+  letter-spacing: 0.08em;
+
+}
+
+#wave {
+
+  width: 100%;
+
+  height: 125px;
+
+  display: block;
+
+}
+
+.signal-label {
+
+  margin-top: 10px;
+
+  font-size: 12px;
+
+  text-align: center;
+
+  letter-spacing: 0.08em;
+
+}
+
+.log {
+
+  min-height: 90px;
+
+  white-space: pre-wrap;
+
+  line-height: 1.7;
+
+  font-size: 14px;
+
+}
+
+.controls {
+
+  margin-top: 26px;
+
+}
+
+button {
+
+  font: inherit;
+
+  cursor: pointer;
+
+  color: var(--verde);
+
+  background: transparent;
+
+  border: 1px solid var(--verde);
+
+  padding: 12px 16px;
+
+  font-size: 16px;
+
+}
+
+button:hover,
+
+button:focus-visible {
+
+  background: #003319;
+
+}
+
+button:disabled {
+
+  opacity: 0.4;
+
+  cursor: not-allowed;
+
+}
+
+.primary {
+
+  width: 100%;
+
+}
+
+.tuner {
+
+  display: none;
+
+  margin-top: 24px;
+
+}
+
+.tuner.visible {
+
+  display: block;
+
+}
+
+.tuner-title {
+
+  font-size: 14px;
+
+  margin-bottom: 16px;
+
+}
+
+.tuner-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+}
+
+input[type="range"] {
+
+  width: 100%;
+
+  accent-color: var(--verde);
+
+  cursor: pointer;
+
+}
+
+.frequency {
+
+  min-width: 75px;
+
+  font-size: 16px;
+
+  text-align: right;
+
+}
+
+.tuner-status {
+
+  min-height: 38px;
+
+  margin-top: 15px;
+
+  color: var(--verde-suave);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+}
+
+.archive {
+
+  display: none;
+
+  margin-top: 32px;
+
+}
+
+.archive.visible {
+
+  display: block;
+
+}
+
+.archive-title {
+
+  padding-bottom: 12px;
+
+  border-bottom: 1px solid var(--verde-oscuro);
+
+  font-size: 15px;
+
+}
+
+.archive-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin-top: 18px;
+
+}
+
+.file {
+
+  display: block;
+
+  min-height: 100px;
+
+  border: 1px solid var(--verde-oscuro);
+
+  padding: 14px 12px;
+
+  color: var(--verde);
+
+  text-decoration: none;
+
+  transition: background 0.15s;
+
+}
+
+.file:hover,
+
+.file:focus-visible {
+
+  background: #003319;
+
+  border-color: var(--verde);
+
+}
+
+.file-number {
+
+  font-size: 12px;
+
+  opacity: 0.7;
+
+}
+
+.file-name {
+
+  margin-top: 12px;
+
+  font-size: 15px;
+
+  line-height: 1.35;
+
+  overflow-wrap: anywhere;
+
+}
+
+.file-status {
+
+  margin-top: 12px;
+
+  font-size: 11px;
+
+  color: var(--verde-suave);
+
+}
+
+.footer {
+
+  margin-top: 44px;
+
+  padding-top: 14px;
+
+  border-top: 1px solid var(--verde-oscuro);
+
+  font-size: 11px;
+
+  color: var(--verde-suave);
+
+  line-height: 1.6;
+
+}
+
+@media (max-width: 640px) {
+
+  .terminal {
+
+    padding: 18px 16px 40px;
 
   }
 
   .title {
 
-    font-size: clamp(24px, 4.5vw, 52px);
-
-    line-height: 1.2;
-
-    letter-spacing: 0.02em;
-
-    white-space: pre-wrap;
-
-    overflow-wrap: break-word;
-
-    text-transform: uppercase;
-
-    color: #00ff66;
+    margin-top: 34px;
 
   }
 
-  .cursor {
+  .archive-grid {
 
-    animation: blink 1s steps(1) infinite;
-
-  }
-
-  @keyframes blink {
-
-    50% {
-
-      opacity: 0;
-
-    }
+    grid-template-columns: repeat(2, 1fr);
 
   }
 
-  .loader {
+  .screen {
 
-    display: none;
-
-    margin-top: 28px;
-
-    font-size: clamp(18px, 2.5vw, 24px);
-
-    line-height: 1.5;
-
-    color: #00ff66;
+    padding: 12px;
 
   }
 
-  .loader.visible {
+  .file {
 
-    display: block;
-
-  }
-
-  .loader-bar {
-
-    display: block;
-
-    margin-top: 10px;
-
-    white-space: nowrap;
+    min-height: 115px;
 
   }
 
-  .hint {
-
-    margin-top: 30px;
-
-    font-size: 16px;
-
-    opacity: 0.65;
-
-    animation: blink 1.8s infinite;
-
-  }
-
-  @media (max-width: 640px) {
-
-    .title {
-
-      font-size: clamp(24px, 6vw, 36px);
-
-    }
-
-    .loader {
-
-      font-size: 18px;
-
-    }
-
-  }
+}
 
 </style>
 
@@ -170,215 +474,545 @@
 
 <body>
 
-<main class="wrap">
+<main class="terminal">
 
-  <div
+  <header class="topbar">
 
-    class="title-wrap"
+    <span>SISTEMA DE INTERCEPCIÓN TEMPORAL</span>
 
-    id="titleWrap"
+    <span>V. 0.9</span>
 
-    role="button"
+  </header>
 
-    tabindex="0"
+  <h1 class="title" id="title"></h1>
 
-    aria-label="Abrir archivo"
+  <section class="meta">
 
-  >
+    <div>ARCHIVO: VALLE DEL MEZQUITAL</div>
 
-    <div class="title" id="title"></div>
+    <div>ORIGEN: DESCONOCIDO</div>
 
-    <div class="hint" id="hint" hidden>
+    <div>REGISTROS DETECTADOS: 09</div>
 
-      [ TOCA PARA ACCEDER ]
+    <div>ESTADO: <span id="systemStatus">INACTIVO</span></div>
 
-    </div>
+  </section>
 
-    <div class="loader" id="loader">
+  <section class="screen">
 
-      <div>ACCEDIENDO AL ARCHIVO...</div>
+    <h2 class="screen-heading">[ RECEPTOR DE SEÑALES BIOLÓGICAS ]</h2>
 
-      <div id="loaderPercent">000%</div>
+    <canvas id="wave"></canvas>
 
-      <span class="loader-bar" id="loaderBar">
+    <div class="signal-label" id="signalLabel">
 
-        [··············]
-
-      </span>
+      SIN SEÑAL
 
     </div>
 
-  </div>
+  </section>
+
+  <section class="screen">
+
+    <h2 class="screen-heading">[ REGISTRO DEL SISTEMA ]</h2>
+
+    <div class="log" id="log">
+
+> ESPERANDO INSTRUCCIÓN_
+
+    </div>
+
+    <div class="controls">
+
+      <button
+
+        class="primary"
+
+        id="startButton"
+
+        type="button"
+
+      >
+
+        INICIAR DESCIFRADO
+
+      </button>
+
+    </div>
+
+    <div class="tuner" id="tuner">
+
+      <div class="tuner-title">
+
+        [ SINTONIZAR FRECUENCIA ]
+
+      </div>
+
+      <div class="tuner-row">
+
+        <input
+
+          id="frequency"
+
+          type="range"
+
+          min="0"
+
+          max="100"
+
+          value="12"
+
+          aria-label="Frecuencia de señal"
+
+        >
+
+        <span class="frequency" id="frequencyValue">
+
+          12.0
+
+        </span>
+
+      </div>
+
+      <div class="tuner-status" id="tunerStatus">
+
+        Buscando transmisión...
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="archive" id="archive">
+
+    <div class="archive-title">
+
+      [ ARCHIVOS TEMPORALES RECUPERADOS ]
+
+    </div>
+
+    <div class="archive-grid" id="archiveGrid"></div>
+
+  </section>
+
+  <footer class="footer">
+
+    MEMORIA TERRITORIAL / SISTEMA DE ARCHIVOS INTERCEPTADOS
+
+    <div>LAS MÁQUINAS FALLAN. LOS ARCHIVOS SE CORROMPEN. LAS AVES NO.</div>
+
+  </footer>
 
 </main>
 
 <script>
 
-  const REPO_BASE =
+// CONFIGURACIÓN GENERAL
 
-    "/elcantodelavenomientesiseescuchaportodoelvalle";
+const TITULO = [
 
-  const finalLines = [
+  "EL CANTO",
 
-    "el canto",
+  "DEL AVE NO MIENTE",
 
-    "del ave no miente",
+  "SI SE ESCUCHA",
 
-    "si se escucha",
+  "POR TODO",
 
-    "por todo",
+  "EL VALLE"
 
-    "el valle"
+].join("\n");
+
+const archivos = [
+
+  "la noche del tsuru blanco",
+
+  "explosión planta agroquímica",
+
+  "refinería miguel hidalgo",
+
+  "misión gusano rojo",
+
+  "experimento biotecnológico territorial",
+
+  "plaga patronal",
+
+  "culebra tormenta",
+
+  "diablito robot",
+
+  "canto de las aves"
+
+];
+
+const title = document.getElementById("title");
+
+const log = document.getElementById("log");
+
+const startButton = document.getElementById("startButton");
+
+const tuner = document.getElementById("tuner");
+
+const frequency = document.getElementById("frequency");
+
+const frequencyValue = document.getElementById("frequencyValue");
+
+const tunerStatus = document.getElementById("tunerStatus");
+
+const archive = document.getElementById("archive");
+
+const archiveGrid = document.getElementById("archiveGrid");
+
+const systemStatus = document.getElementById("systemStatus");
+
+const signalLabel = document.getElementById("signalLabel");
+
+let sistemaIniciado = false;
+
+let archivosDesbloqueados = false;
+
+let signalStrength = 0;
+
+// TÍTULO CON ESCRITURA PROGRESIVA
+
+let titleIndex = 0;
+
+function escribirTitulo() {
+
+  if (titleIndex < TITULO.length) {
+
+    titleIndex++;
+
+    title.textContent = TITULO.slice(0, titleIndex);
+
+    const cursor = document.createElement("span");
+
+    cursor.className = "cursor";
+
+    cursor.textContent = "█";
+
+    title.appendChild(cursor);
+
+    setTimeout(escribirTitulo, 45);
+
+  } else {
+
+    title.textContent = TITULO;
+
+  }
+
+}
+
+// MENSAJES DEL SISTEMA
+
+function esperar(ms) {
+
+  return new Promise(resolve => setTimeout(resolve, ms));
+
+}
+
+async function iniciarSistema() {
+
+  if (sistemaIniciado) return;
+
+  sistemaIniciado = true;
+
+  startButton.disabled = true;
+
+  systemStatus.textContent = "INICIANDO";
+
+  log.textContent = "";
+
+  const mensajes = [
+
+    "> INICIANDO SISTEMA...",
+
+    "> BUSCANDO ARCHIVOS PERDIDOS...",
+
+    "> RECONSTRUYENDO MEMORIA TERRITORIAL...",
+
+    "> ANALIZANDO PATRONES BIOLÓGICOS...",
+
+    "> 09 REGISTROS ENCONTRADOS",
+
+    "> ARCHIVOS ENCRIPTADOS",
+
+    "> SE REQUIERE SEÑAL DE DESBLOQUEO"
 
   ];
 
-  const fullText = finalLines.join("\n");
+  for (const mensaje of mensajes) {
 
-  const title = document.getElementById("title");
+    log.textContent += mensaje + "\n";
 
-  const titleWrap = document.getElementById("titleWrap");
-
-  const loader = document.getElementById("loader");
-
-  const hint = document.getElementById("hint");
-
-  const loaderPercent =
-
-    document.getElementById("loaderPercent");
-
-  const loaderBar =
-
-    document.getElementById("loaderBar");
-
-  let index = 0;
-
-  let typingDone = false;
-
-  let locked = false;
-
-  function renderTitle(text, cursor = true) {
-
-    title.textContent = text;
-
-    if (cursor) {
-
-      const span = document.createElement("span");
-
-      span.className = "cursor";
-
-      span.textContent = "█";
-
-      title.appendChild(span);
-
-    }
+    await esperar(450);
 
   }
 
-  function typeText() {
+  systemStatus.textContent = "ESPERANDO SEÑAL";
 
-    if (index < fullText.length) {
+  signalLabel.textContent = "FRECUENCIA NO IDENTIFICADA";
 
-      index++;
+  startButton.style.display = "none";
 
-      renderTitle(fullText.slice(0, index));
+  tuner.classList.add("visible");
 
-      setTimeout(typeText, 62);
+}
 
-    } else {
+// RECEPTOR DE FRECUENCIAS
 
-      renderTitle(fullText);
+function actualizarFrecuencia() {
 
-      typingDone = true;
+  const valor = Number(frequency.value);
 
-      hint.hidden = false;
+  frequencyValue.textContent = valor.toFixed(1);
 
-    }
+  // FRECUENCIA SECRETA: 73
 
-  }
+  const distancia = Math.abs(valor - 73);
 
-  function updateLoader(percent) {
+  signalStrength = Math.max(0, 1 - distancia / 35);
 
-    loaderPercent.textContent =
+  if (distancia <= 3) {
 
-      String(percent).padStart(3, "0") + "%";
+    tunerStatus.textContent =
 
-    const total = 14;
+      "SEÑAL ESTABLE / TRANSMISIÓN IDENTIFICADA";
 
-    const filled = Math.round(percent / 100 * total);
+    signalLabel.textContent =
 
-    loaderBar.textContent =
+      "CANTO DE AVE DETECTADO";
 
-      "[" +
+    desbloquearArchivos();
 
-      "■".repeat(filled) +
+  } else if (distancia < 15) {
 
-      "·".repeat(total - filled) +
+    tunerStatus.textContent =
 
-      "]";
+      "SEÑAL PARCIAL / ACÉRCATE A LA FRECUENCIA";
 
-  }
+    signalLabel.textContent =
 
-  function startLoadingSequence() {
+      "TRANSMISIÓN FRAGMENTADA";
 
-    if (locked || !typingDone) return;
+  } else {
 
-    locked = true;
+    tunerStatus.textContent =
 
-    hint.hidden = true;
+      "INTERFERENCIA / BUSCANDO TRANSMISIÓN";
 
-    title.style.display = "none";
+    signalLabel.textContent =
 
-    loader.classList.add("visible");
-
-    let percent = 0;
-
-    updateLoader(percent);
-
-    const interval = setInterval(() => {
-
-      percent = Math.min(percent + 5, 100);
-
-      updateLoader(percent);
-
-      if (percent >= 100) {
-
-        clearInterval(interval);
-
-        setTimeout(() => {
-
-          window.location.href =
-
-            REPO_BASE + "/cartas.html";
-
-        }, 500);
-
-      }
-
-    }, 65);
+      "SEÑAL DESCONOCIDA";
 
   }
 
-  titleWrap.addEventListener(
+}
 
-    "click",
+// DESBLOQUEAR REGISTROS
 
-    startLoadingSequence
+async function desbloquearArchivos() {
 
-  );
+  if (archivosDesbloqueados) return;
 
-  titleWrap.addEventListener("keydown", (event) => {
+  archivosDesbloqueados = true;
 
-    if (event.key === "Enter" || event.key === " ") {
+  frequency.disabled = true;
 
-      event.preventDefault();
+  systemStatus.textContent = "ACCESO AUTORIZADO";
 
-      startLoadingSequence();
+  log.textContent += "\n> SEÑAL BIOLÓGICA CONFIRMADA\n";
 
-    }
+  await esperar(400);
+
+  log.textContent += "> DESCIFRANDO REGISTROS...\n";
+
+  await esperar(700);
+
+  log.textContent += "> ACCESO CONCEDIDO\n";
+
+  archive.classList.add("visible");
+
+  archivos.forEach((nombre, indice) => {
+
+    const enlace = document.createElement("a");
+
+    enlace.className = "file";
+
+    enlace.href = "carta" + (indice + 1) + ".html";
+
+    const numero = document.createElement("div");
+
+    numero.className = "file-number";
+
+    numero.textContent =
+
+      "REGISTRO " + String(indice + 1).padStart(2, "0");
+
+    const titulo = document.createElement("div");
+
+    titulo.className = "file-name";
+
+    titulo.textContent = nombre + ".xic";
+
+    const estado = document.createElement("div");
+
+    estado.className = "file-status";
+
+    estado.textContent = "[ RECUPERADO ]";
+
+    enlace.appendChild(numero);
+
+    enlace.appendChild(titulo);
+
+    enlace.appendChild(estado);
+
+    archiveGrid.appendChild(enlace);
 
   });
 
-  typeText();
+}
+
+// ONDA DE SEÑAL ANIMADA
+
+const canvas = document.getElementById("wave");
+
+const ctx = canvas.getContext("2d");
+
+let tiempo = 0;
+
+function dibujarOnda() {
+
+  const rect = canvas.getBoundingClientRect();
+
+  const dpr = window.devicePixelRatio || 1;
+
+  const ancho = Math.max(1, rect.width);
+
+  const alto = Math.max(1, rect.height);
+
+  const pixelWidth = Math.round(ancho * dpr);
+
+  const pixelHeight = Math.round(alto * dpr);
+
+  if (
+
+    canvas.width !== pixelWidth ||
+
+    canvas.height !== pixelHeight
+
+  ) {
+
+    canvas.width = pixelWidth;
+
+    canvas.height = pixelHeight;
+
+  }
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  ctx.clearRect(0, 0, ancho, alto);
+
+  // CUADRÍCULA
+
+  ctx.strokeStyle = "#164b29";
+
+  ctx.lineWidth = 0.5;
+
+  for (let x = 0; x < ancho; x += 35) {
+
+    ctx.beginPath();
+
+    ctx.moveTo(x, 0);
+
+    ctx.lineTo(x, alto);
+
+    ctx.stroke();
+
+  }
+
+  for (let y = 0; y < alto; y += 25) {
+
+    ctx.beginPath();
+
+    ctx.moveTo(0, y);
+
+    ctx.lineTo(ancho, y);
+
+    ctx.stroke();
+
+  }
+
+  // ONDA
+
+  ctx.beginPath();
+
+  ctx.strokeStyle = "#00ff66";
+
+  ctx.lineWidth = 1.8;
+
+  for (let x = 0; x < ancho; x++) {
+
+    const centro = alto / 2;
+
+    const amplitud = 3 + signalStrength * 40;
+
+    const onda1 = Math.sin(x * 0.08 + tiempo);
+
+    const onda2 = Math.sin(x * 0.21 - tiempo * 1.5);
+
+    const envolvente =
+
+      0.35 + 0.65 * Math.pow(
+
+        Math.sin(x * 0.017),
+
+        2
+
+      );
+
+    const y =
+
+      centro +
+
+      (onda1 * 0.7 + onda2 * 0.3) *
+
+      amplitud *
+
+      envolvente;
+
+    if (x === 0) {
+
+      ctx.moveTo(x, y);
+
+    } else {
+
+      ctx.lineTo(x, y);
+
+    }
+
+  }
+
+  ctx.stroke();
+
+  tiempo += 0.035;
+
+  requestAnimationFrame(dibujarOnda);
+
+}
+
+// EVENTOS
+
+startButton.addEventListener("click", iniciarSistema);
+
+frequency.addEventListener("input", actualizarFrecuencia);
+
+// INICIAR INTERFAZ
+
+escribirTitulo();
+
+dibujarOnda();
 
 </script>
 
