@@ -52,8 +52,6 @@ body {
 
 }
 
-/* EFECTO DE PANTALLA ANTIGUA */
-
 body::before {
 
   content: "";
@@ -92,29 +90,35 @@ body::before {
 
   padding: 26px 24px 50px;
 
-}
-
-.topbar {
-
   display: flex;
 
-  justify-content: space-between;
+  flex-direction: column;
 
-  gap: 12px;
+  justify-content: center;
 
-  border-bottom: 1px solid var(--verde-oscuro);
+}
 
-  padding-bottom: 12px;
+.title-wrap {
 
-  font-size: 12px;
+  cursor: pointer;
 
-  letter-spacing: 0.05em;
+  user-select: none;
+
+  -webkit-tap-highlight-color: transparent;
+
+}
+
+.title-wrap:focus-visible {
+
+  outline: 1px solid var(--verde);
+
+  outline-offset: 8px;
 
 }
 
 .title {
 
-  margin: 42px 0 28px;
+  margin: 0;
 
   font-size: clamp(24px, 5vw, 48px);
 
@@ -124,35 +128,97 @@ body::before {
 
   text-transform: uppercase;
 
-  white-space: pre-line;
+  white-space: pre-wrap;
 
   overflow-wrap: anywhere;
+
+  text-decoration: none;
 
 }
 
 .cursor {
 
+  display: inline;
+
   animation: blink 1s steps(1) infinite;
+
+  text-decoration: none;
 
 }
 
 @keyframes blink {
 
-  50% { opacity: 0; }
+  50% {
+
+    opacity: 0;
+
+  }
 
 }
 
-.meta {
+.hint {
 
-  display: grid;
+  margin-top: 30px;
 
-  gap: 7px;
-
-  margin-bottom: 30px;
+  font-size: 15px;
 
   color: var(--verde-suave);
 
-  font-size: 14px;
+  animation: hintBlink 1.8s infinite;
+
+}
+
+@keyframes hintBlink {
+
+  50% {
+
+    opacity: 0.35;
+
+  }
+
+}
+
+[hidden] {
+
+  display: none !important;
+
+}
+
+/* SEGUNDA PANTALLA */
+
+.interface {
+
+  display: none;
+
+  margin-top: 38px;
+
+  animation: appear 0.5s ease-out;
+
+}
+
+.interface.visible {
+
+  display: block;
+
+}
+
+@keyframes appear {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(12px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+  }
 
 }
 
@@ -160,21 +226,9 @@ body::before {
 
   border: 1px solid var(--verde-oscuro);
 
-  padding: 18px;
+  padding: 20px;
 
-  margin: 22px 0;
-
-}
-
-.screen-heading {
-
-  margin: 0 0 16px;
-
-  font-size: 14px;
-
-  font-weight: normal;
-
-  letter-spacing: 0.08em;
+  margin-bottom: 22px;
 
 }
 
@@ -182,7 +236,7 @@ body::before {
 
   width: 100%;
 
-  height: 125px;
+  height: 140px;
 
   display: block;
 
@@ -190,7 +244,7 @@ body::before {
 
 .signal-label {
 
-  margin-top: 10px;
+  margin-top: 14px;
 
   font-size: 12px;
 
@@ -198,77 +252,13 @@ body::before {
 
   letter-spacing: 0.08em;
 
-}
-
-.log {
-
-  min-height: 90px;
-
-  white-space: pre-wrap;
-
-  line-height: 1.7;
-
-  font-size: 14px;
-
-}
-
-.controls {
-
-  margin-top: 26px;
-
-}
-
-button {
-
-  font: inherit;
-
-  cursor: pointer;
-
-  color: var(--verde);
-
-  background: transparent;
-
-  border: 1px solid var(--verde);
-
-  padding: 12px 16px;
-
-  font-size: 16px;
-
-}
-
-button:hover,
-
-button:focus-visible {
-
-  background: #003319;
-
-}
-
-button:disabled {
-
-  opacity: 0.4;
-
-  cursor: not-allowed;
-
-}
-
-.primary {
-
-  width: 100%;
+  color: var(--verde-suave);
 
 }
 
 .tuner {
 
-  display: none;
-
-  margin-top: 24px;
-
-}
-
-.tuner.visible {
-
-  display: block;
+  margin-top: 28px;
 
 }
 
@@ -300,11 +290,17 @@ input[type="range"] {
 
 }
 
+input[type="range"]:disabled {
+
+  opacity: 0.6;
+
+}
+
 .frequency {
 
-  min-width: 75px;
+  min-width: 65px;
 
-  font-size: 16px;
+  font-size: 17px;
 
   text-align: right;
 
@@ -314,123 +310,131 @@ input[type="range"] {
 
   min-height: 38px;
 
-  margin-top: 15px;
+  margin-top: 16px;
 
   color: var(--verde-suave);
 
   font-size: 13px;
 
-  line-height: 1.5;
+  line-height: 1.6;
 
 }
 
-.archive {
+.audio-control {
 
-  display: none;
+  margin-top: 14px;
 
-  margin-top: 32px;
+  display: flex;
 
-}
-
-.archive.visible {
-
-  display: block;
+  justify-content: flex-end;
 
 }
 
-.archive-title {
-
-  padding-bottom: 12px;
-
-  border-bottom: 1px solid var(--verde-oscuro);
-
-  font-size: 15px;
-
-}
-
-.archive-grid {
-
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 10px;
-
-  margin-top: 18px;
-
-}
-
-.file {
-
-  display: block;
-
-  min-height: 100px;
+.audio-control button {
 
   border: 1px solid var(--verde-oscuro);
 
-  padding: 14px 12px;
+  color: var(--verde-suave);
 
-  color: var(--verde);
+  background: transparent;
 
-  text-decoration: none;
+  padding: 7px 10px;
 
-  transition: background 0.15s;
+  font: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
 
 }
 
-.file:hover,
+.audio-control button:hover,
 
-.file:focus-visible {
-
-  background: #003319;
+.audio-control button:focus-visible {
 
   border-color: var(--verde);
 
 }
 
-.file-number {
+.system-log {
 
-  font-size: 12px;
+  display: none;
 
-  opacity: 0.7;
+  border: 1px solid var(--verde-oscuro);
 
-}
+  padding: 20px;
 
-.file-name {
-
-  margin-top: 12px;
-
-  font-size: 15px;
-
-  line-height: 1.35;
-
-  overflow-wrap: anywhere;
+  margin-bottom: 20px;
 
 }
 
-.file-status {
+.system-log.visible {
 
-  margin-top: 12px;
-
-  font-size: 11px;
-
-  color: var(--verde-suave);
+  display: block;
 
 }
 
-.footer {
+.screen-heading {
 
-  margin-top: 44px;
+  margin: 0 0 20px;
 
-  padding-top: 14px;
+  font-size: 14px;
 
-  border-top: 1px solid var(--verde-oscuro);
+  font-weight: normal;
 
-  font-size: 11px;
+  letter-spacing: 0.08em;
 
-  color: var(--verde-suave);
+}
 
-  line-height: 1.6;
+.log {
+
+  min-height: 80px;
+
+  white-space: pre-wrap;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+}
+
+.access {
+
+  display: none;
+
+  margin-top: 24px;
+
+}
+
+.access.visible {
+
+  display: block;
+
+}
+
+.access a {
+
+  display: block;
+
+  border: 1px solid var(--verde);
+
+  color: var(--verde);
+
+  text-decoration: none;
+
+  padding: 15px 18px;
+
+  font-size: 16px;
+
+  text-align: center;
+
+}
+
+.access a:hover,
+
+.access a:focus-visible {
+
+  background: #003319;
 
 }
 
@@ -438,31 +442,47 @@ input[type="range"] {
 
   .terminal {
 
-    padding: 18px 16px 40px;
+    padding: 25px 16px 40px;
 
   }
 
   .title {
 
-    margin-top: 34px;
+    font-size: clamp(24px, 6vw, 36px);
 
   }
 
-  .archive-grid {
+  .interface {
 
-    grid-template-columns: repeat(2, 1fr);
-
-  }
-
-  .screen {
-
-    padding: 12px;
+    margin-top: 30px;
 
   }
 
-  .file {
+  .screen,
 
-    min-height: 115px;
+  .system-log {
+
+    padding: 14px;
+
+  }
+
+  #wave {
+
+    height: 110px;
+
+  }
+
+  .tuner-title {
+
+    font-size: 12px;
+
+  }
+
+  .frequency {
+
+    font-size: 15px;
+
+    min-width: 55px;
 
   }
 
@@ -476,139 +496,139 @@ input[type="range"] {
 
 <main class="terminal">
 
-  <header class="topbar">
+  <!-- PRIMER MOMENTO: TÍTULO -->
 
-    <span>SISTEMA DE INTERCEPCIÓN TEMPORAL</span>
+  <div
 
-    <span>V. 0.9</span>
+    class="title-wrap"
 
-  </header>
+    id="titleWrap"
 
-  <h1 class="title" id="title"></h1>
+    role="button"
 
-  <section class="meta">
+    tabindex="0"
 
-    <div>ARCHIVO: VALLE DEL MEZQUITAL</div>
+    aria-label="Acceder al sistema"
 
-    <div>ORIGEN: DESCONOCIDO</div>
+    aria-expanded="false"
 
-    <div>REGISTROS DETECTADOS: 09</div>
+  >
 
-    <div>ESTADO: <span id="systemStatus">INACTIVO</span></div>
+    <h1 class="title" id="title"></h1>
 
-  </section>
+    <div class="hint" id="hint" hidden>
 
-  <section class="screen">
-
-    <h2 class="screen-heading">[ RECEPTOR DE SEÑALES BIOLÓGICAS ]</h2>
-
-    <canvas id="wave"></canvas>
-
-    <div class="signal-label" id="signalLabel">
-
-      SIN SEÑAL
+      [ TOCA PARA ACCEDER ]
 
     </div>
 
-  </section>
+  </div>
 
-  <section class="screen">
+  <!-- SEGUNDO MOMENTO: SINTONIZADOR -->
 
-    <h2 class="screen-heading">[ REGISTRO DEL SISTEMA ]</h2>
+  <div class="interface" id="interface">
 
-    <div class="log" id="log">
+    <section class="screen">
 
-> ESPERANDO INSTRUCCIÓN_
+      <canvas id="wave"></canvas>
 
-    </div>
+      <div class="signal-label" id="signalLabel">
 
-    <div class="controls">
-
-      <button
-
-        class="primary"
-
-        id="startButton"
-
-        type="button"
-
-      >
-
-        INICIAR DESCIFRADO
-
-      </button>
-
-    </div>
-
-    <div class="tuner" id="tuner">
-
-      <div class="tuner-title">
-
-        [ SINTONIZAR FRECUENCIA ]
+        FRECUENCIA NO IDENTIFICADA
 
       </div>
 
-      <div class="tuner-row">
+      <div class="tuner">
 
-        <input
+        <div class="tuner-title">
 
-          id="frequency"
+          [ SINTONIZAR FRECUENCIA ]
 
-          type="range"
+        </div>
 
-          min="0"
+        <div class="tuner-row">
 
-          max="100"
+          <input
 
-          value="12"
+            id="frequency"
 
-          aria-label="Frecuencia de señal"
+            type="range"
 
-        >
+            min="0"
 
-        <span class="frequency" id="frequencyValue">
+            max="100"
 
-          12.0
+            value="12"
 
-        </span>
+            step="1"
+
+            aria-label="Sintonizar frecuencia"
+
+          >
+
+          <span class="frequency" id="frequencyValue">
+
+            12.0
+
+          </span>
+
+        </div>
+
+        <div class="tuner-status" id="tunerStatus">
+
+          &gt; BUSCANDO TRANSMISIÓN...
+
+        </div>
+
+        <div class="audio-control">
+
+          <button id="audioButton" type="button">
+
+            SONIDO: ACTIVADO
+
+          </button>
+
+        </div>
 
       </div>
 
-      <div class="tuner-status" id="tunerStatus">
+    </section>
 
-        Buscando transmisión...
+    <!-- REGISTRO DEL SISTEMA -->
+
+    <section class="system-log" id="systemLog">
+
+      <h2 class="screen-heading">
+
+        [ REGISTRO DEL SISTEMA ]
+
+      </h2>
+
+      <div class="log" id="log" aria-live="polite"></div>
+
+      <div class="access" id="access">
+
+        <a href="cartas.html">
+
+          [ ACCEDER A LOS ARCHIVOS → ]
+
+        </a>
 
       </div>
 
-    </div>
+    </section>
 
-  </section>
-
-  <section class="archive" id="archive">
-
-    <div class="archive-title">
-
-      [ ARCHIVOS TEMPORALES RECUPERADOS ]
-
-    </div>
-
-    <div class="archive-grid" id="archiveGrid"></div>
-
-  </section>
-
-  <footer class="footer">
-
-    MEMORIA TERRITORIAL / SISTEMA DE ARCHIVOS INTERCEPTADOS
-
-    <div>LAS MÁQUINAS FALLAN. LOS ARCHIVOS SE CORROMPEN. LAS AVES NO.</div>
-
-  </footer>
+  </div>
 
 </main>
 
 <script>
 
-// CONFIGURACIÓN GENERAL
+// ====================================
+
+// CONFIGURACIÓN
+
+// ====================================
 
 const TITULO = [
 
@@ -624,35 +644,15 @@ const TITULO = [
 
 ].join("\n");
 
-const archivos = [
-
-  "la noche del tsuru blanco",
-
-  "explosión planta agroquímica",
-
-  "refinería miguel hidalgo",
-
-  "misión gusano rojo",
-
-  "experimento biotecnológico territorial",
-
-  "plaga patronal",
-
-  "culebra tormenta",
-
-  "diablito robot",
-
-  "canto de las aves"
-
-];
+const FRECUENCIA_SECRETA = 73;
 
 const title = document.getElementById("title");
 
-const log = document.getElementById("log");
+const titleWrap = document.getElementById("titleWrap");
 
-const startButton = document.getElementById("startButton");
+const hint = document.getElementById("hint");
 
-const tuner = document.getElementById("tuner");
+const interfaceElement = document.getElementById("interface");
 
 const frequency = document.getElementById("frequency");
 
@@ -660,23 +660,53 @@ const frequencyValue = document.getElementById("frequencyValue");
 
 const tunerStatus = document.getElementById("tunerStatus");
 
-const archive = document.getElementById("archive");
-
-const archiveGrid = document.getElementById("archiveGrid");
-
-const systemStatus = document.getElementById("systemStatus");
-
 const signalLabel = document.getElementById("signalLabel");
 
-let sistemaIniciado = false;
+const systemLog = document.getElementById("systemLog");
 
-let archivosDesbloqueados = false;
+const log = document.getElementById("log");
+
+const access = document.getElementById("access");
+
+const audioButton = document.getElementById("audioButton");
+
+let escrituraTerminada = false;
+
+let interfazAbierta = false;
+
+let señalEncontrada = false;
 
 let signalStrength = 0;
 
-// TÍTULO CON ESCRITURA PROGRESIVA
+let sonidoActivado = true;
+
+let audioContext = null;
+
+let ultimoCanto = 0;
+
+// ====================================
+
+// ESCRITURA DEL TÍTULO
+
+// ====================================
 
 let titleIndex = 0;
+
+function renderizarTitulo() {
+
+  title.textContent = TITULO.slice(0, titleIndex);
+
+  // CURSOR DE BLOQUE, SIN GUIONES BAJOS
+
+  const cursor = document.createElement("span");
+
+  cursor.className = "cursor";
+
+  cursor.textContent = "█";
+
+  title.appendChild(cursor);
+
+}
 
 function escribirTitulo() {
 
@@ -684,113 +714,247 @@ function escribirTitulo() {
 
     titleIndex++;
 
-    title.textContent = TITULO.slice(0, titleIndex);
+    renderizarTitulo();
 
-    const cursor = document.createElement("span");
-
-    cursor.className = "cursor";
-
-    cursor.textContent = "█";
-
-    title.appendChild(cursor);
-
-    setTimeout(escribirTitulo, 45);
+    setTimeout(escribirTitulo, 62);
 
   } else {
 
-    title.textContent = TITULO;
+    // EL CURSOR PERMANECE AL FINAL
+
+    renderizarTitulo();
+
+    escrituraTerminada = true;
+
+    hint.hidden = false;
 
   }
 
 }
 
-// MENSAJES DEL SISTEMA
+// ====================================
 
-function esperar(ms) {
+// ABRIR INTERFAZ
 
-  return new Promise(resolve => setTimeout(resolve, ms));
+// ====================================
+
+function abrirInterfaz() {
+
+  if (!escrituraTerminada || interfazAbierta) return;
+
+  interfazAbierta = true;
+
+  hint.hidden = true;
+
+  interfaceElement.classList.add("visible");
+
+  titleWrap.setAttribute("aria-expanded", "true");
+
+  titleWrap.removeAttribute("role");
+
+  titleWrap.removeAttribute("tabindex");
+
+  titleWrap.style.cursor = "default";
+
+  activarAudio();
+
+  setTimeout(() => {
+
+    interfaceElement.scrollIntoView({
+
+      behavior: "smooth",
+
+      block: "nearest"
+
+    });
+
+  }, 200);
 
 }
 
-async function iniciarSistema() {
+titleWrap.addEventListener("click", abrirInterfaz);
 
-  if (sistemaIniciado) return;
+titleWrap.addEventListener("keydown", event => {
 
-  sistemaIniciado = true;
+  if (event.key === "Enter" || event.key === " ") {
 
-  startButton.disabled = true;
+    event.preventDefault();
 
-  systemStatus.textContent = "INICIANDO";
-
-  log.textContent = "";
-
-  const mensajes = [
-
-    "> INICIANDO SISTEMA...",
-
-    "> BUSCANDO ARCHIVOS PERDIDOS...",
-
-    "> RECONSTRUYENDO MEMORIA TERRITORIAL...",
-
-    "> ANALIZANDO PATRONES BIOLÓGICOS...",
-
-    "> 09 REGISTROS ENCONTRADOS",
-
-    "> ARCHIVOS ENCRIPTADOS",
-
-    "> SE REQUIERE SEÑAL DE DESBLOQUEO"
-
-  ];
-
-  for (const mensaje of mensajes) {
-
-    log.textContent += mensaje + "\n";
-
-    await esperar(450);
+    abrirInterfaz();
 
   }
 
-  systemStatus.textContent = "ESPERANDO SEÑAL";
+});
 
-  signalLabel.textContent = "FRECUENCIA NO IDENTIFICADA";
+// ====================================
 
-  startButton.style.display = "none";
+// AUDIO DE AVES SINTETIZADO
 
-  tuner.classList.add("visible");
+// ====================================
+
+function activarAudio() {
+
+  if (!sonidoActivado) return;
+
+  const AudioContextClass =
+
+    window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextClass) return;
+
+  if (!audioContext) {
+
+    audioContext = new AudioContextClass();
+
+  }
+
+  if (audioContext.state === "suspended") {
+
+    audioContext.resume();
+
+  }
 
 }
 
-// RECEPTOR DE FRECUENCIAS
+function cantarAve(intensidad = 0.5) {
+
+  if (!sonidoActivado || !audioContext) return;
+
+  if (audioContext.state !== "running") return;
+
+  const ahora = audioContext.currentTime;
+
+  const oscilador = audioContext.createOscillator();
+
+  const volumen = audioContext.createGain();
+
+  oscilador.type = "sine";
+
+  const frecuenciaBase = 950 + intensidad * 900;
+
+  oscilador.frequency.setValueAtTime(
+
+    frecuenciaBase,
+
+    ahora
+
+  );
+
+  oscilador.frequency.exponentialRampToValueAtTime(
+
+    frecuenciaBase * 1.6,
+
+    ahora + 0.08
+
+  );
+
+  oscilador.frequency.exponentialRampToValueAtTime(
+
+    frecuenciaBase * 0.8,
+
+    ahora + 0.2
+
+  );
+
+  volumen.gain.setValueAtTime(0.0001, ahora);
+
+  volumen.gain.exponentialRampToValueAtTime(
+
+    0.045,
+
+    ahora + 0.02
+
+  );
+
+  volumen.gain.exponentialRampToValueAtTime(
+
+    0.0001,
+
+    ahora + 0.23
+
+  );
+
+  oscilador.connect(volumen);
+
+  volumen.connect(audioContext.destination);
+
+  oscilador.start(ahora);
+
+  oscilador.stop(ahora + 0.24);
+
+}
+
+// ====================================
+
+// SINTONIZAR FRECUENCIA
+
+// ====================================
 
 function actualizarFrecuencia() {
+
+  if (señalEncontrada) return;
+
+  activarAudio();
 
   const valor = Number(frequency.value);
 
   frequencyValue.textContent = valor.toFixed(1);
 
-  // FRECUENCIA SECRETA: 73
+  const distancia = Math.abs(
 
-  const distancia = Math.abs(valor - 73);
+    valor - FRECUENCIA_SECRETA
 
-  signalStrength = Math.max(0, 1 - distancia / 35);
+  );
+
+  signalStrength = Math.max(
+
+    0,
+
+    1 - distancia / 35
+
+  );
+
+  const ahora = performance.now();
+
+  const intervalo = 550 - signalStrength * 400;
+
+  if (ahora - ultimoCanto > intervalo) {
+
+    ultimoCanto = ahora;
+
+    cantarAve(signalStrength);
+
+  }
 
   if (distancia <= 3) {
 
+    signalStrength = 1;
+
+    señalEncontrada = true;
+
+    frequency.disabled = true;
+
     tunerStatus.textContent =
 
-      "SEÑAL ESTABLE / TRANSMISIÓN IDENTIFICADA";
+      "> SEÑAL ESTABLE / TRANSMISIÓN IDENTIFICADA";
 
     signalLabel.textContent =
 
       "CANTO DE AVE DETECTADO";
 
-    desbloquearArchivos();
+    cantarAve(1);
+
+    setTimeout(() => cantarAve(0.9), 250);
+
+    setTimeout(() => cantarAve(1), 550);
+
+    iniciarDescifrado();
 
   } else if (distancia < 15) {
 
     tunerStatus.textContent =
 
-      "SEÑAL PARCIAL / ACÉRCATE A LA FRECUENCIA";
+      "> SEÑAL PARCIAL / INTERFERENCIA REDUCIDA";
 
     signalLabel.textContent =
 
@@ -800,81 +964,95 @@ function actualizarFrecuencia() {
 
     tunerStatus.textContent =
 
-      "INTERFERENCIA / BUSCANDO TRANSMISIÓN";
+      "> INTERFERENCIA / BUSCANDO TRANSMISIÓN";
 
     signalLabel.textContent =
 
-      "SEÑAL DESCONOCIDA";
+      "FRECUENCIA NO IDENTIFICADA";
 
   }
 
 }
 
-// DESBLOQUEAR REGISTROS
+// ====================================
 
-async function desbloquearArchivos() {
+// REGISTRO DEL SISTEMA
 
-  if (archivosDesbloqueados) return;
+// ====================================
 
-  archivosDesbloqueados = true;
+function esperar(ms) {
 
-  frequency.disabled = true;
-
-  systemStatus.textContent = "ACCESO AUTORIZADO";
-
-  log.textContent += "\n> SEÑAL BIOLÓGICA CONFIRMADA\n";
-
-  await esperar(400);
-
-  log.textContent += "> DESCIFRANDO REGISTROS...\n";
-
-  await esperar(700);
-
-  log.textContent += "> ACCESO CONCEDIDO\n";
-
-  archive.classList.add("visible");
-
-  archivos.forEach((nombre, indice) => {
-
-    const enlace = document.createElement("a");
-
-    enlace.className = "file";
-
-    enlace.href = "carta" + (indice + 1) + ".html";
-
-    const numero = document.createElement("div");
-
-    numero.className = "file-number";
-
-    numero.textContent =
-
-      "REGISTRO " + String(indice + 1).padStart(2, "0");
-
-    const titulo = document.createElement("div");
-
-    titulo.className = "file-name";
-
-    titulo.textContent = nombre + ".xic";
-
-    const estado = document.createElement("div");
-
-    estado.className = "file-status";
-
-    estado.textContent = "[ RECUPERADO ]";
-
-    enlace.appendChild(numero);
-
-    enlace.appendChild(titulo);
-
-    enlace.appendChild(estado);
-
-    archiveGrid.appendChild(enlace);
-
-  });
+  return new Promise(resolve => setTimeout(resolve, ms));
 
 }
 
-// ONDA DE SEÑAL ANIMADA
+async function iniciarDescifrado() {
+
+  systemLog.classList.add("visible");
+
+  log.textContent = "";
+
+  const mensajes = [
+
+    "> SEÑAL BIOLÓGICA CONFIRMADA",
+
+    "> INTERCEPTANDO TRANSMISIÓN...",
+
+    "> ANALIZANDO PATRONES DE AVES...",
+
+    "> RECUPERANDO MEMORIA TERRITORIAL...",
+
+    "> DESCIFRANDO ARCHIVOS TEMPORALES...",
+
+    "> 09 REGISTROS ENCONTRADOS",
+
+    "> ACCESO AUTORIZADO"
+
+  ];
+
+  for (const mensaje of mensajes) {
+
+    log.textContent += mensaje + "\n";
+
+    await esperar(550);
+
+  }
+
+  await esperar(450);
+
+  access.classList.add("visible");
+
+}
+
+// ====================================
+
+// CONTROL DE SONIDO
+
+// ====================================
+
+audioButton.addEventListener("click", () => {
+
+  sonidoActivado = !sonidoActivado;
+
+  audioButton.textContent = sonidoActivado
+
+    ? "SONIDO: ACTIVADO"
+
+    : "SONIDO: DESACTIVADO";
+
+  if (sonidoActivado) {
+
+    activarAudio();
+
+  }
+
+});
+
+// ====================================
+
+// ONDA ANIMADA
+
+// ====================================
 
 const canvas = document.getElementById("wave");
 
@@ -883,6 +1061,14 @@ const ctx = canvas.getContext("2d");
 let tiempo = 0;
 
 function dibujarOnda() {
+
+  if (!interfazAbierta) {
+
+    requestAnimationFrame(dibujarOnda);
+
+    return;
+
+  }
 
   const rect = canvas.getBoundingClientRect();
 
@@ -1002,13 +1188,15 @@ function dibujarOnda() {
 
 }
 
-// EVENTOS
+// ====================================
 
-startButton.addEventListener("click", iniciarSistema);
+// INICIAR
+
+// ====================================
 
 frequency.addEventListener("input", actualizarFrecuencia);
 
-// INICIAR INTERFAZ
+renderizarTitulo();
 
 escribirTitulo();
 
