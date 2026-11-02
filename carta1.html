@@ -34,6 +34,52 @@ html, body {
 
 }
 
+/* FLECHA PARA REGRESAR AL ARCHIVO */
+
+.volver {
+
+  position: fixed;
+
+  top: 16px;
+
+  left: 16px;
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 44px;
+
+  height: 40px;
+
+  border: 1px solid #00ff66;
+
+  background: #000000;
+
+  color: #00ff66;
+
+  font-family: monospace;
+
+  font-size: 24px;
+
+  text-decoration: none;
+
+}
+
+.volver:hover,
+
+.volver:focus-visible {
+
+  background: #003319;
+
+}
+
+/* TERMINAL */
+
 #terminal {
 
   width: 100%;
@@ -42,7 +88,7 @@ html, body {
 
   height: 100dvh;
 
-  padding: 24px;
+  padding: 76px 24px 24px;
 
   overflow-y: auto;
 
@@ -52,13 +98,15 @@ html, body {
 
   overflow-wrap: anywhere;
 
-  font-size: 24px;
+  font-size: 22px;
 
   line-height: 1.45;
 
   overscroll-behavior: contain;
 
 }
+
+/* CURSOR */
 
 .cursor {
 
@@ -75,6 +123,8 @@ html, body {
   }
 
 }
+
+/* NAVEGACIÓN FINAL */
 
 #nav {
 
@@ -106,7 +156,7 @@ html, body {
 
   padding: 10px 14px;
 
-  font-size: 20px;
+  font-size: 18px;
 
 }
 
@@ -118,19 +168,43 @@ html, body {
 
 }
 
+/* PANTALLAS PEQUEÑAS */
+
 @media (max-width: 640px) {
+
+  .volver {
+
+    top: 10px;
+
+    left: 10px;
+
+    width: 38px;
+
+    height: 36px;
+
+    font-size: 22px;
+
+  }
 
   #terminal {
 
-    padding: 16px;
+    padding: 62px 16px 16px;
 
-    font-size: 20px;
+    font-size: 18px;
+
+  }
+
+  #nav {
+
+    gap: 12px;
 
   }
 
   #nav a {
 
-    font-size: 16px;
+    font-size: 14px;
+
+    padding: 8px 10px;
 
   }
 
@@ -141,6 +215,20 @@ html, body {
 </head>
 
 <body>
+
+<!-- REGRESAR A LOS NUEVE ARCHIVOS -->
+
+<a
+
+  class="volver"
+
+  href="cartas.html"
+
+  aria-label="Regresar al repositorio de cartas"
+
+  title="Regresar a los archivos"
+
+>←</a>
 
 <main id="terminal">
 
@@ -164,8 +252,6 @@ const encabezado = `ARCHIVO INTERCEPTADO
  fecha de emisión: 19.07.2019
  ubicación aproximada: 20°08´30.06´´N / 99°17´10.74´´O
  estado de señal: estable
-
-
 
 `;
 
