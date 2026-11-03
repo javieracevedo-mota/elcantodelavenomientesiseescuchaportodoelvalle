@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html lang="es">
@@ -161,6 +163,58 @@ body::before {
   color: var(--fg);
 
   text-shadow: 0 1px 3px #000;
+
+}
+
+/* AUDIO DEL PAISAJE NOCTURNO */
+
+.audio-container {
+
+  margin-top: -14px;
+
+}
+
+.audio-control {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 28px;
+
+  height: 28px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--fg);
+
+  cursor: pointer;
+
+  align-self: flex-start;
+
+}
+
+.audio-control svg {
+
+  display: block;
+
+  width: 25px;
+
+  height: 25px;
+
+}
+
+.audio-control:hover,
+
+.audio-control:focus-visible {
+
+  color: #80ffad;
 
 }
 
@@ -492,6 +546,28 @@ body::before {
 
   }
 
+  .audio-container {
+
+    margin-top: 2px;
+
+  }
+
+  .audio-control {
+
+    width: 25px;
+
+    height: 25px;
+
+  }
+
+  .audio-control svg {
+
+    width: 23px;
+
+    height: 23px;
+
+  }
+
   .status-block {
 
     right: 10px;
@@ -561,6 +637,70 @@ body::before {
     <div>sector xicuca</div>
 
     <div>09 señales detectadas</div>
+
+  </div>
+
+  <!-- AUDIO DEL PAISAJE NOCTURNO -->
+
+  <div class="audio-container">
+
+    <audio
+
+      id="audioPaisaje"
+
+      src="paisaje-nocturno.wav"
+
+      loop
+
+      preload="auto"
+
+    ></audio>
+
+    <button
+
+      id="audioControl"
+
+      class="audio-control"
+
+      type="button"
+
+      aria-label="Activar sonido"
+
+      aria-pressed="false"
+
+      title="Activar sonido"
+
+    >
+
+      <svg
+
+        viewBox="0 0 24 24"
+
+        fill="none"
+
+        stroke="currentColor"
+
+        stroke-width="1.8"
+
+        stroke-linecap="round"
+
+        stroke-linejoin="round"
+
+        aria-hidden="true"
+
+      >
+
+        <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+
+        <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
+
+        <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
+
+        <path id="audioTachado" d="m16 9 5 6"/>
+
+      </svg>
+
+    </button>
 
   </div>
 
@@ -1078,13 +1218,139 @@ registros.forEach(registro => {
 
   });
 
-  // No se intercepta el clic.
-
-  // Un solo toque abre directamente la carta.
+  // Un solo toque abre directamente la carta
 
   points.appendChild(enlace);
 
 });
+
+// =====================================
+
+// AUDIO DEL PAISAJE NOCTURNO
+
+// =====================================
+
+const audioPaisaje = document.getElementById("audioPaisaje");
+
+const audioControl = document.getElementById("audioControl");
+
+const onda1 = document.getElementById("onda1");
+
+const onda2 = document.getElementById("onda2");
+
+const audioTachado = document.getElementById("audioTachado");
+
+// VOLUMEN Y REPETICIÓN INFINITA
+
+audioPaisaje.volume = 0.6;
+
+audioPaisaje.loop = true;
+
+// ACTUALIZAR ICONO
+
+function actualizarIconoAudio() {
+
+  const encendido =
+
+    !audioPaisaje.paused && !audioPaisaje.muted;
+
+  onda1.style.display = encendido ? "" : "none";
+
+  onda2.style.display = encendido ? "" : "none";
+
+  audioTachado.style.display = encendido ? "none" : "";
+
+  const etiqueta = encendido
+
+    ? "Apagar sonido"
+
+    : "Activar sonido";
+
+  audioControl.setAttribute("aria-label", etiqueta);
+
+  audioControl.setAttribute("aria-pressed", String(encendido));
+
+  audioControl.title = etiqueta;
+
+}
+
+// ACTIVAR AUDIO
+
+async function activarAudio() {
+
+  try {
+
+    audioPaisaje.muted = false;
+
+    await audioPaisaje.play();
+
+  } catch (error) {
+
+    console.warn(
+
+      "No se pudo reproducir el audio:",
+
+      error
+
+    );
+
+  }
+
+  actualizarIconoAudio();
+
+}
+
+// BOTÓN DE ENCENDIDO Y APAGADO
+
+audioControl.addEventListener("click", async () => {
+
+  if (!audioPaisaje.paused && !audioPaisaje.muted) {
+
+    audioPaisaje.pause();
+
+    actualizarIconoAudio();
+
+  } else {
+
+    await activarAudio();
+
+  }
+
+});
+
+// SINCRONIZAR ICONO
+
+audioPaisaje.addEventListener("play", actualizarIconoAudio);
+
+audioPaisaje.addEventListener("pause", actualizarIconoAudio);
+
+audioPaisaje.addEventListener("volumechange", actualizarIconoAudio);
+
+audioPaisaje.addEventListener("error", () => {
+
+  console.warn(
+
+    "Error al cargar el audio:",
+
+    audioPaisaje.currentSrc
+
+  );
+
+});
+
+// DETENER AUDIO AL ABANDONAR LA PÁGINA
+
+window.addEventListener("pagehide", () => {
+
+  audioPaisaje.pause();
+
+});
+
+// INTENTAR REPRODUCCIÓN AUTOMÁTICA
+
+actualizarIconoAudio();
+
+activarAudio();
 
 </script>
 
