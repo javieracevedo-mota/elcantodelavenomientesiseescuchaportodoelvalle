@@ -34,6 +34,8 @@ html, body {
 
 }
 
+/* TERMINAL */
+
 #terminal {
 
   width: 100%;
@@ -42,23 +44,125 @@ html, body {
 
   height: 100dvh;
 
-  padding: 24px;
+  padding: 12px 24px 24px;
 
   overflow-y: auto;
 
   overflow-x: hidden;
 
-  white-space: pre-wrap;
-
   overflow-wrap: anywhere;
 
-  font-size: 24px;
+  font-size: 22px;
 
   line-height: 1.45;
+
+  text-align: left;
 
   overscroll-behavior: contain;
 
 }
+
+/* BARRA SUPERIOR */
+
+.barra-superior {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  height: 28px;
+
+  margin-bottom: 0;
+
+}
+
+/* FLECHA DE REGRESO */
+
+.volver {
+
+  display: flex;
+
+  align-items: center;
+
+  height: 28px;
+
+  color: #00ff66;
+
+  font-family: monospace;
+
+  font-size: 24px;
+
+  text-decoration: none;
+
+}
+
+.volver:hover,
+
+.volver:focus-visible {
+
+  color: #80ffad;
+
+}
+
+/* CONTROL DE AUDIO */
+
+.audio-control {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 28px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #00ff66;
+
+  cursor: pointer;
+
+}
+
+.audio-control svg {
+
+  display: block;
+
+  width: 25px;
+
+  height: 25px;
+
+}
+
+.audio-control:hover,
+
+.audio-control:focus-visible {
+
+  color: #80ffad;
+
+}
+
+/* TEXTO */
+
+#output {
+
+  display: inline;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+
+  text-align: left;
+
+}
+
+/* CURSOR */
 
 .cursor {
 
@@ -76,6 +180,8 @@ html, body {
 
 }
 
+/* NAVEGACIÓN FINAL */
+
 #nav {
 
   display: none;
@@ -85,8 +191,6 @@ html, body {
   justify-content: space-between;
 
   margin: 38px 0 20px;
-
-  white-space: normal;
 
 }
 
@@ -106,7 +210,7 @@ html, body {
 
   padding: 10px 14px;
 
-  font-size: 20px;
+  font-size: 18px;
 
 }
 
@@ -118,19 +222,57 @@ html, body {
 
 }
 
+/* PANTALLAS PEQUEÑAS */
+
 @media (max-width: 640px) {
 
   #terminal {
 
-    padding: 16px;
+    padding: 8px 16px 16px;
 
-    font-size: 20px;
+    font-size: 18px;
+
+  }
+
+  .barra-superior {
+
+    height: 26px;
+
+  }
+
+  .volver {
+
+    height: 26px;
+
+    font-size: 22px;
+
+  }
+
+  .audio-control {
+
+    height: 26px;
+
+  }
+
+  .audio-control svg {
+
+    width: 23px;
+
+    height: 23px;
+
+  }
+
+  #nav {
+
+    gap: 12px;
 
   }
 
   #nav a {
 
-    font-size: 16px;
+    font-size: 14px;
+
+    padding: 8px 10px;
 
   }
 
@@ -142,17 +284,87 @@ html, body {
 
 <body>
 
-<main id="terminal">
+<!-- AUDIO AMBIENTAL DE LA CARTA 5 -->
 
-  <span id="output"></span><span id="cursor" class="cursor">█</span>
+<audio
 
-  <nav id="nav">
+  id="audioCarta"
 
-    <a href="carta4.html">← REGISTRO 04</a>
+  src="experimento-biotecnologico-territorial.wav"
 
-    <a href="carta6.html">REGISTRO 06 →</a>
+  loop
 
-  </nav>
+  preload="auto"
+
+></audio>
+
+<!-- TERMINAL -->
+
+<main id="terminal"><div class="barra-superior"><a
+
+  class="volver"
+
+  href="cartas.html"
+
+  aria-label="Regresar a todas las cartas"
+
+  title="Regresar a los archivos"
+
+>←</a><button
+
+  id="audioControl"
+
+  class="audio-control"
+
+  type="button"
+
+  aria-label="Activar sonido"
+
+  aria-pressed="false"
+
+  title="Activar sonido"
+
+>
+
+  <svg
+
+    viewBox="0 0 24 24"
+
+    fill="none"
+
+    stroke="currentColor"
+
+    stroke-width="1.8"
+
+    stroke-linecap="round"
+
+    stroke-linejoin="round"
+
+    aria-hidden="true"
+
+  >
+
+    <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+
+    <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
+
+    <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
+
+    <path id="audioTachado" d="m16 9 5 6"/>
+
+  </svg>
+
+</button></div><span id="output"></span><span id="cursor" class="cursor">█</span>
+
+<!-- NAVEGACIÓN FINAL -->
+
+<nav id="nav">
+
+  <a href="cartas.html">← ARCHIVOS</a>
+
+  <a href="carta6.html">REGISTRO 06 →</a>
+
+</nav>
 
 </main>
 
@@ -164,7 +376,6 @@ const encabezado =`ARCHIVO INTERCEPTADO
  fecha estimada: 11 de julio, 2098
  ubicación aproximada: 19° 57´55.67´´N / 99°17´33.80´´O
  estado de señal: degradado
-
 
  
 `;
@@ -390,7 +601,7 @@ colifl0r_
 estado de señal: inestable
 registro archivado`;
 
-// ELEMENTOS DE LA PÁGINA
+// ELEMENTOS
 
 const output = document.getElementById("output");
 
@@ -398,7 +609,7 @@ const cursor = document.getElementById("cursor");
 
 const nav = document.getElementById("nav");
 
-// CONFIGURACIÓN
+// CONFIGURACIÓN DE ESCRITURA
 
 const VELOCIDAD = 30;
 
@@ -442,7 +653,7 @@ let salida = "";
 
 let intervaloDescifrado = null;
 
-// GENERAR UN CARÁCTER ALEATORIO
+// GENERAR CARACTERES ALEATORIOS
 
 function caracterAleatorio() {
 
@@ -456,7 +667,7 @@ function caracterAleatorio() {
 
 }
 
-// ALTERAR LAS LETRAS DEL ENCABEZADO
+// ALTERAR ENCABEZADO
 
 function generarEncabezadoAlterado() {
 
@@ -474,7 +685,7 @@ function generarEncabezadoAlterado() {
 
 }
 
-// DESCIFRAR EL ENCABEZADO DURANTE 3 SEGUNDOS
+// DESCIFRADO INICIAL
 
 function iniciarDescifrado() {
 
@@ -504,17 +715,11 @@ function iniciarDescifrado() {
 
 }
 
-// CORRUPCIÓN OCASIONAL DEL MENSAJE
+// CORRUPCIÓN OCASIONAL
 
 function corromper(caracter) {
 
-  if (
-
-    cambios[caracter] &&
-
-    Math.random() < 0.04
-
-  ) {
+  if (cambios[caracter] && Math.random() < 0.04) {
 
     return cambios[caracter];
 
@@ -524,7 +729,7 @@ function corromper(caracter) {
 
 }
 
-// ESCRITURA PROGRESIVA DE LA CARTA
+// ESCRITURA PROGRESIVA
 
 function escribir() {
 
@@ -588,9 +793,113 @@ function escribir() {
 
 }
 
-// INICIAR EL SISTEMA
+// INICIAR ESCRITURA
 
 iniciarDescifrado();
+
+// CONTROL DE AUDIO
+
+const audioCarta = document.getElementById("audioCarta");
+
+const audioControl = document.getElementById("audioControl");
+
+const onda1 = document.getElementById("onda1");
+
+const onda2 = document.getElementById("onda2");
+
+const audioTachado = document.getElementById("audioTachado");
+
+audioCarta.volume = 0.6;
+
+// ACTUALIZAR ICONO
+
+function actualizarIconoAudio() {
+
+  const encendido =
+
+    !audioCarta.paused && !audioCarta.muted;
+
+  onda1.style.display = encendido ? "" : "none";
+
+  onda2.style.display = encendido ? "" : "none";
+
+  audioTachado.style.display = encendido ? "none" : "";
+
+  const etiqueta = encendido
+
+    ? "Apagar sonido"
+
+    : "Activar sonido";
+
+  audioControl.setAttribute("aria-label", etiqueta);
+
+  audioControl.setAttribute("aria-pressed", String(encendido));
+
+  audioControl.title = etiqueta;
+
+}
+
+// ACTIVAR AUDIO
+
+async function activarAudio() {
+
+  try {
+
+    audioCarta.muted = false;
+
+    await audioCarta.play();
+
+  } catch (error) {
+
+    console.warn("No se pudo reproducir el audio:", error);
+
+  }
+
+  actualizarIconoAudio();
+
+}
+
+// BOTÓN DE AUDIO
+
+audioControl.addEventListener("click", async () => {
+
+  if (!audioCarta.paused && !audioCarta.muted) {
+
+    audioCarta.pause();
+
+    actualizarIconoAudio();
+
+  } else {
+
+    await activarAudio();
+
+  }
+
+});
+
+audioCarta.addEventListener("play", actualizarIconoAudio);
+
+audioCarta.addEventListener("pause", actualizarIconoAudio);
+
+audioCarta.addEventListener("volumechange", actualizarIconoAudio);
+
+audioCarta.addEventListener("error", () => {
+
+  console.warn(
+
+    "Error al cargar el archivo:",
+
+    audioCarta.currentSrc
+
+  );
+
+});
+
+// INTENTO DE REPRODUCCIÓN AUTOMÁTICA
+
+actualizarIconoAudio();
+
+activarAudio();
 
 </script>
 
