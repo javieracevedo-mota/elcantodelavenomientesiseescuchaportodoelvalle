@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html lang="es">
@@ -11,6 +13,8 @@
 <title>El canto del ave no miente si se escucha por todo el valle</title>
 
 <style>
+
+/* CONFIGURACIÓN GENERAL */
 
 * {
 
@@ -50,6 +54,8 @@ body {
 
 }
 
+/* EFECTO CRT */
+
 body::before {
 
   content: "";
@@ -75,6 +81,8 @@ body::before {
   );
 
 }
+
+/* TERMINAL */
 
 .terminal {
 
@@ -116,6 +124,8 @@ body::before {
 
 }
 
+/* TÍTULO */
+
 .title {
 
   margin: 0;
@@ -135,6 +145,8 @@ body::before {
   text-decoration: none;
 
 }
+
+/* CURSOR PARPADEANTE */
 
 .cursor {
 
@@ -168,6 +180,8 @@ body::before {
 
 }
 
+/* INDICACIÓN PARA ACCEDER */
+
 .hint {
 
   margin-top: 32px;
@@ -196,7 +210,7 @@ body::before {
 
 }
 
-/* TRANSICIONES */
+/* TRANSICIÓN AL ACCEDER */
 
 .intro.exit {
 
@@ -216,259 +230,7 @@ body::before {
 
 }
 
-.interface {
-
-  display: none;
-
-  animation: appear 0.6s ease forwards;
-
-}
-
-.interface.visible {
-
-  display: block;
-
-}
-
-@keyframes appear {
-
-  from {
-
-    opacity: 0;
-
-    transform: translateY(12px);
-
-  }
-
-  to {
-
-    opacity: 1;
-
-    transform: translateY(0);
-
-  }
-
-}
-
-/* SINTONIZADOR */
-
-.screen {
-
-  border: 1px solid var(--verde-oscuro);
-
-  padding: 22px;
-
-  margin-bottom: 22px;
-
-}
-
-#wave {
-
-  display: block;
-
-  width: 100%;
-
-  height: 150px;
-
-}
-
-.signal-label {
-
-  margin-top: 14px;
-
-  font-size: 12px;
-
-  text-align: center;
-
-  letter-spacing: 0.08em;
-
-  color: var(--verde-suave);
-
-}
-
-.tuner {
-
-  margin-top: 32px;
-
-}
-
-.tuner-title {
-
-  font-size: 15px;
-
-  margin-bottom: 18px;
-
-}
-
-.tuner-row {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 16px;
-
-}
-
-input[type="range"] {
-
-  width: 100%;
-
-  accent-color: var(--verde);
-
-  cursor: pointer;
-
-  touch-action: pan-x;
-
-}
-
-input[type="range"]:disabled {
-
-  opacity: 0.65;
-
-}
-
-.frequency {
-
-  min-width: 65px;
-
-  font-size: 18px;
-
-  text-align: right;
-
-}
-
-.tuner-status {
-
-  min-height: 40px;
-
-  margin-top: 18px;
-
-  color: var(--verde-suave);
-
-  font-size: 13px;
-
-  line-height: 1.6;
-
-}
-
-/* SONIDO */
-
-.audio-control {
-
-  display: flex;
-
-  justify-content: flex-end;
-
-  margin-top: 16px;
-
-}
-
-.audio-control button {
-
-  border: 1px solid var(--verde-oscuro);
-
-  color: var(--verde-suave);
-
-  background: transparent;
-
-  padding: 10px 12px;
-
-  font: inherit;
-
-  font-size: 12px;
-
-  cursor: pointer;
-
-}
-
-.audio-control button:hover,
-
-.audio-control button:focus-visible {
-
-  border-color: var(--verde);
-
-}
-
-/* REGISTRO DEL SISTEMA */
-
-.system-log {
-
-  display: none;
-
-  border: 1px solid var(--verde-oscuro);
-
-  padding: 22px;
-
-}
-
-.system-log.visible {
-
-  display: block;
-
-}
-
-.screen-heading {
-
-  margin: 0 0 20px;
-
-  font-size: 14px;
-
-  font-weight: normal;
-
-}
-
-.log {
-
-  min-height: 80px;
-
-  white-space: pre-wrap;
-
-  font-size: 14px;
-
-  line-height: 1.8;
-
-}
-
-.access {
-
-  display: none;
-
-  margin-top: 24px;
-
-}
-
-.access.visible {
-
-  display: block;
-
-}
-
-.access a {
-
-  display: block;
-
-  border: 1px solid var(--verde);
-
-  color: var(--verde);
-
-  text-decoration: none;
-
-  padding: 15px 18px;
-
-  font-size: 16px;
-
-  text-align: center;
-
-}
-
-.access a:hover,
-
-.access a:focus-visible {
-
-  background: #003319;
-
-}
+/* PANTALLAS PEQUEÑAS */
 
 @media (max-width: 640px) {
 
@@ -484,41 +246,13 @@ input[type="range"]:disabled {
 
   }
 
-  .screen,
-
-  .system-log {
-
-    padding: 15px;
-
-  }
-
-  #wave {
-
-    height: 120px;
-
-  }
-
-  .tuner-title {
-
-    font-size: 13px;
-
-  }
-
-  .frequency {
-
-    min-width: 55px;
-
-    font-size: 16px;
-
-  }
-
 }
+
+/* ACCESIBILIDAD */
 
 @media (prefers-reduced-motion: reduce) {
 
-  .intro.exit,
-
-  .interface.visible {
+  .intro.exit {
 
     animation-duration: 0.01ms;
 
@@ -534,7 +268,7 @@ input[type="range"]:disabled {
 
 <main class="terminal">
 
-  <!-- PANTALLA 1: TÍTULO -->
+  <!-- PANTALLA INICIAL: TÍTULO -->
 
   <div
 
@@ -546,7 +280,7 @@ input[type="range"]:disabled {
 
     tabindex="0"
 
-    aria-label="Acceder al sistema"
+    aria-label="Acceder a los archivos"
 
   >
 
@@ -560,125 +294,13 @@ input[type="range"]:disabled {
 
   </div>
 
-  <!-- PANTALLA 2: SINTONIZADOR -->
-
-  <div class="interface" id="interface">
-
-    <section class="screen">
-
-      <canvas
-
-        id="wave"
-
-        aria-label="Visualización de señal"
-
-        role="img"
-
-      ></canvas>
-
-      <div class="signal-label" id="signalLabel">
-
-        FRECUENCIA NO IDENTIFICADA
-
-      </div>
-
-      <div class="tuner">
-
-        <div class="tuner-title">
-
-          [ SINTONIZAR FRECUENCIA ]
-
-        </div>
-
-        <div class="tuner-row">
-
-          <input
-
-            id="frequency"
-
-            type="range"
-
-            min="0"
-
-            max="100"
-
-            value="12"
-
-            step="1"
-
-            aria-label="Sintonizar frecuencia"
-
-          >
-
-          <span class="frequency" id="frequencyValue">
-
-            12.0
-
-          </span>
-
-        </div>
-
-        <div class="tuner-status" id="tunerStatus">
-
-          &gt; BUSCANDO TRANSMISIÓN...
-
-        </div>
-
-        <div class="audio-control">
-
-          <button
-
-            id="audioButton"
-
-            type="button"
-
-            aria-pressed="true"
-
-          >
-
-            SONIDO: ACTIVADO
-
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- DESCIFRADO -->
-
-    <section class="system-log" id="systemLog">
-
-      <h2 class="screen-heading">
-
-        [ REGISTRO DEL SISTEMA ]
-
-      </h2>
-
-      <div class="log" id="log" aria-live="polite"></div>
-
-      <div class="access" id="access">
-
-        <a href="cartas.html">
-
-          [ ACCEDER A LOS ARCHIVOS → ]
-
-        </a>
-
-      </div>
-
-    </section>
-
-  </div>
-
 </main>
 
 <script>
 
 // =====================================
 
-// CONFIGURACIÓN
+// CONFIGURACIÓN DEL TÍTULO
 
 // =====================================
 
@@ -696,53 +318,19 @@ const TITULO = [
 
 ].join("\n");
 
-const FRECUENCIA_SECRETA = 95;
-
 const intro = document.getElementById("intro");
 
 const title = document.getElementById("title");
 
 const hint = document.getElementById("hint");
 
-const interfaz = document.getElementById("interface");
-
-const frequency = document.getElementById("frequency");
-
-const frequencyValue = document.getElementById("frequencyValue");
-
-const tunerStatus = document.getElementById("tunerStatus");
-
-const signalLabel = document.getElementById("signalLabel");
-
-const systemLog = document.getElementById("systemLog");
-
-const log = document.getElementById("log");
-
-const access = document.getElementById("access");
-
-const audioButton = document.getElementById("audioButton");
-
 let escrituraTerminada = false;
 
 let transicionIniciada = false;
 
-let interfazAbierta = false;
-
-let senalEncontrada = false;
-
-let signalStrength = 0.12;
-
-let sonidoActivado = true;
-
-let ultimoCanto = 0;
-
-let temporizadorAves = null;
-
-let temporizadorMovimiento = null;
-
 // =====================================
 
-// ESCRITURA DEL TÍTULO
+// ESCRITURA PROGRESIVA DEL TÍTULO
 
 // =====================================
 
@@ -786,633 +374,11 @@ function escribirTitulo() {
 
 // =====================================
 
-// AUDIO WAV
+// ACCESO DIRECTO A LAS NUEVE CARTAS
 
 // =====================================
 
-const SAMPLE_RATE = 22050;
-
-function escribirTexto(view, offset, texto) {
-
-  for (let i = 0; i < texto.length; i++) {
-
-    view.setUint8(
-
-      offset + i,
-
-      texto.charCodeAt(i)
-
-    );
-
-  }
-
-}
-
-function crearWAV(muestras) {
-
-  const cantidad = muestras.length;
-
-  const buffer = new ArrayBuffer(
-
-    44 + cantidad * 2
-
-  );
-
-  const view = new DataView(buffer);
-
-  escribirTexto(view, 0, "RIFF");
-
-  view.setUint32(4, 36 + cantidad * 2, true);
-
-  escribirTexto(view, 8, "WAVE");
-
-  escribirTexto(view, 12, "fmt ");
-
-  view.setUint32(16, 16, true);
-
-  view.setUint16(20, 1, true);
-
-  view.setUint16(22, 1, true);
-
-  view.setUint32(24, SAMPLE_RATE, true);
-
-  view.setUint32(28, SAMPLE_RATE * 2, true);
-
-  view.setUint16(32, 2, true);
-
-  view.setUint16(34, 16, true);
-
-  escribirTexto(view, 36, "data");
-
-  view.setUint32(40, cantidad * 2, true);
-
-  for (let i = 0; i < cantidad; i++) {
-
-    const muestra = Math.max(
-
-      -1,
-
-      Math.min(1, muestras[i])
-
-    );
-
-    view.setInt16(
-
-      44 + i * 2,
-
-      Math.round(muestra * 32767),
-
-      true
-
-    );
-
-  }
-
-  return new Blob(
-
-    [buffer],
-
-    { type: "audio/wav" }
-
-  );
-
-}
-
-// =====================================
-
-// CANTOS DIGITALES
-
-// =====================================
-
-// El tono aumenta de izquierda a derecha.
-
-// Se mantiene dentro de frecuencias audibles.
-
-function crearCantoAve(intensidad = 0.5) {
-
-  const duracion = 0.55;
-
-  const cantidad = Math.floor(
-
-    SAMPLE_RATE * duracion
-
-  );
-
-  const muestras = new Float32Array(cantidad);
-
-  const base = 350 + intensidad * 1250;
-
-  const notas = [
-
-    {
-
-      inicio: 0.02,
-
-      fin: 0.15,
-
-      f1: 1.0,
-
-      f2: 1.45
-
-    },
-
-    {
-
-      inicio: 0.18,
-
-      fin: 0.32,
-
-      f1: 1.25,
-
-      f2: 0.9
-
-    },
-
-    {
-
-      inicio: 0.35,
-
-      fin: 0.52,
-
-      f1: 1.05,
-
-      f2: 1.6
-
-    }
-
-  ];
-
-  for (const nota of notas) {
-
-    const inicio = Math.floor(
-
-      nota.inicio * SAMPLE_RATE
-
-    );
-
-    const fin = Math.floor(
-
-      nota.fin * SAMPLE_RATE
-
-    );
-
-    let fase = 0;
-
-    for (let i = inicio; i < fin; i++) {
-
-      const progreso =
-
-        (i - inicio) / (fin - inicio);
-
-      const frecuencia =
-
-        base *
-
-        (
-
-          nota.f1 +
-
-          (nota.f2 - nota.f1) *
-
-          progreso
-
-        );
-
-      fase +=
-
-        2 * Math.PI *
-
-        frecuencia / SAMPLE_RATE;
-
-      const envolvente = Math.pow(
-
-        Math.sin(Math.PI * progreso),
-
-        1.2
-
-      );
-
-      muestras[i] +=
-
-        Math.sin(fase) *
-
-        envolvente *
-
-        0.45;
-
-    }
-
-  }
-
-  return crearWAV(muestras);
-
-}
-
-// Canto especial al desbloquear archivos
-
-function crearCantoFinal() {
-
-  const duracion = 2.3;
-
-  const cantidad = Math.floor(
-
-    SAMPLE_RATE * duracion
-
-  );
-
-  const muestras = new Float32Array(cantidad);
-
-  const notas = [
-
-    [0.05, 0.28, 950, 1450],
-
-    [0.36, 0.56, 1250, 1900],
-
-    [0.67, 0.91, 1100, 1700],
-
-    [1.02, 1.27, 1450, 2250],
-
-    [1.40, 1.65, 1300, 1950],
-
-    [1.80, 2.17, 1650, 2600]
-
-  ];
-
-  for (const nota of notas) {
-
-    const [inicio, fin, f1, f2] = nota;
-
-    const iInicio = Math.floor(
-
-      inicio * SAMPLE_RATE
-
-    );
-
-    const iFin = Math.floor(
-
-      fin * SAMPLE_RATE
-
-    );
-
-    let fase = 0;
-
-    for (let i = iInicio; i < iFin; i++) {
-
-      const progreso =
-
-        (i - iInicio) / (iFin - iInicio);
-
-      const frecuencia =
-
-        f1 + (f2 - f1) * progreso;
-
-      fase +=
-
-        2 * Math.PI *
-
-        frecuencia / SAMPLE_RATE;
-
-      const envolvente = Math.sin(
-
-        Math.PI * progreso
-
-      );
-
-      muestras[i] +=
-
-        Math.sin(fase) *
-
-        envolvente *
-
-        0.4;
-
-    }
-
-  }
-
-  return crearWAV(muestras);
-
-}
-
-// =====================================
-
-// REPRODUCTOR HTML
-
-// =====================================
-
-const reproductor = document.createElement("audio");
-
-reproductor.preload = "auto";
-
-reproductor.playsInline = true;
-
-reproductor.setAttribute("playsinline", "");
-
-let urlAudioActual = null;
-
-let generacionAudio = 0;
-
-function detenerAudio() {
-
-  generacionAudio++;
-
-  reproductor.pause();
-
-  if (urlAudioActual) {
-
-    URL.revokeObjectURL(urlAudioActual);
-
-    urlAudioActual = null;
-
-  }
-
-  reproductor.removeAttribute("src");
-
-  reproductor.load();
-
-}
-
-function reproducirWAV(blob, volumen = 0.5) {
-
-  if (!sonidoActivado) return;
-
-  const generacion = ++generacionAudio;
-
-  reproductor.pause();
-
-  if (urlAudioActual) {
-
-    URL.revokeObjectURL(urlAudioActual);
-
-  }
-
-  urlAudioActual = URL.createObjectURL(blob);
-
-  reproductor.src = urlAudioActual;
-
-  // En iOS el volumen del elemento HTML
-
-  // puede depender del volumen físico.
-
-  // También se regula dentro del propio WAV.
-
-  try {
-
-    reproductor.volume = Math.max(
-
-      0,
-
-      Math.min(1, volumen)
-
-    );
-
-  } catch (error) {
-
-    // Algunos dispositivos no permiten
-
-    // controlar el volumen por JavaScript.
-
-  }
-
-  const resultado = reproductor.play();
-
-  if (
-
-    resultado &&
-
-    typeof resultado.catch === "function"
-
-  ) {
-
-    resultado.catch(error => {
-
-      if (generacion !== generacionAudio) {
-
-        return;
-
-      }
-
-      console.warn(
-
-        "No se pudo reproducir el canto:",
-
-        error
-
-      );
-
-      audioButton.textContent =
-
-        "TOCAR PARA ACTIVAR SONIDO";
-
-    });
-
-  }
-
-}
-
-// =====================================
-
-// CONTROL DE INTENSIDAD
-
-// =====================================
-
-// El volumen se aplica directamente
-
-// a las muestras WAV, para que también
-
-// funcione en dispositivos iOS.
-
-function ajustarVolumenWAV(blob, intensidad) {
-
-  // Los cantos se generan con el volumen
-
-  // adecuado antes de reproducirse.
-
-  return blob;
-
-}
-
-function crearCantoConVolumen(intensidad) {
-
-  const duracion = 0.55;
-
-  const cantidad = Math.floor(
-
-    SAMPLE_RATE * duracion
-
-  );
-
-  const muestras = new Float32Array(cantidad);
-
-  const base = 350 + intensidad * 1250;
-
-  // Volumen progresivo:
-
-  // 0 = muy bajo
-
-  // 1 = alto
-
-  const volumen =
-
-    0.025 + Math.pow(intensidad, 1.5) * 0.50;
-
-  const notas = [
-
-    [0.02, 0.15, 1.0, 1.45],
-
-    [0.18, 0.32, 1.25, 0.9],
-
-    [0.35, 0.52, 1.05, 1.6]
-
-  ];
-
-  for (const nota of notas) {
-
-    const [inicio, fin, f1, f2] = nota;
-
-    const iInicio = Math.floor(
-
-      inicio * SAMPLE_RATE
-
-    );
-
-    const iFin = Math.floor(
-
-      fin * SAMPLE_RATE
-
-    );
-
-    let fase = 0;
-
-    for (let i = iInicio; i < iFin; i++) {
-
-      const progreso =
-
-        (i - iInicio) / (iFin - iInicio);
-
-      const frecuencia =
-
-        base * (f1 + (f2 - f1) * progreso);
-
-      fase +=
-
-        2 * Math.PI *
-
-        frecuencia / SAMPLE_RATE;
-
-      const envolvente = Math.sin(
-
-        Math.PI * progreso
-
-      );
-
-      muestras[i] +=
-
-        Math.sin(fase) *
-
-        envolvente *
-
-        volumen;
-
-    }
-
-  }
-
-  return crearWAV(muestras);
-
-}
-
-const cantoDescifrado = crearCantoFinal();
-
-function cantarAve(intensidad = 0.5) {
-
-  if (!sonidoActivado || senalEncontrada) {
-
-    return;
-
-  }
-
-  const nivel = Math.max(
-
-    0,
-
-    Math.min(1, intensidad)
-
-  );
-
-  const canto = crearCantoConVolumen(nivel);
-
-  reproducirWAV(canto, 1);
-
-}
-
-function cantoFinal() {
-
-  if (!sonidoActivado) return;
-
-  reproducirWAV(cantoDescifrado, 1);
-
-}
-
-// =====================================
-
-// AMBIENTE SONORO
-
-// =====================================
-
-function iniciarAmbienteSonoro() {
-
-  if (temporizadorAves) return;
-
-  temporizadorAves = setInterval(() => {
-
-    if (
-
-      !interfazAbierta ||
-
-      !sonidoActivado ||
-
-      senalEncontrada
-
-    ) {
-
-      return;
-
-    }
-
-    if (
-
-      !reproductor.paused &&
-
-      !reproductor.ended
-
-    ) {
-
-      return;
-
-    }
-
-    const probabilidad =
-
-      0.3 + signalStrength * 0.6;
-
-    if (Math.random() < probabilidad) {
-
-      cantarAve(signalStrength);
-
-    }
-
-  }, 1200);
-
-}
-
-// =====================================
-
-// TRANSICIÓN
-
-// =====================================
-
-function abrirInterfaz() {
+function accederArchivos() {
 
   if (
 
@@ -1428,31 +394,37 @@ function abrirInterfaz() {
 
   transicionIniciada = true;
 
-  // El primer sonido se reproduce
-
-  // directamente desde el toque.
-
-  cantarAve(0.35);
+  // Ocultar indicación
 
   hint.hidden = true;
 
+  // Desvanecer el título
+
   intro.classList.add("exit");
+
+  // Abrir página de archivos
 
   setTimeout(() => {
 
-    intro.hidden = true;
-
-    interfaz.classList.add("visible");
-
-    interfazAbierta = true;
-
-    iniciarAmbienteSonoro();
+    window.location.href = "cartas.html";
 
   }, 450);
 
 }
 
-intro.addEventListener("click", abrirInterfaz);
+// =====================================
+
+// INTERACCIÓN TÁCTIL Y CON RATÓN
+
+// =====================================
+
+intro.addEventListener("click", accederArchivos);
+
+// =====================================
+
+// ACCESIBILIDAD CON TECLADO
+
+// =====================================
 
 intro.addEventListener("keydown", event => {
 
@@ -1466,7 +438,7 @@ intro.addEventListener("keydown", event => {
 
     event.preventDefault();
 
-    abrirInterfaz();
+    accederArchivos();
 
   }
 
@@ -1474,385 +446,13 @@ intro.addEventListener("keydown", event => {
 
 // =====================================
 
-// BOTÓN DE SONIDO
+// INICIAR SISTEMA
 
 // =====================================
-
-audioButton.addEventListener("click", () => {
-
-  if (sonidoActivado) {
-
-    sonidoActivado = false;
-
-    detenerAudio();
-
-    audioButton.textContent =
-
-      "SONIDO: DESACTIVADO";
-
-    audioButton.setAttribute(
-
-      "aria-pressed",
-
-      "false"
-
-    );
-
-  } else {
-
-    sonidoActivado = true;
-
-    audioButton.textContent =
-
-      "SONIDO: ACTIVADO";
-
-    audioButton.setAttribute(
-
-      "aria-pressed",
-
-      "true"
-
-    );
-
-    if (senalEncontrada) {
-
-      cantoFinal();
-
-    } else {
-
-      cantarAve(signalStrength);
-
-    }
-
-  }
-
-});
-
-// =====================================
-
-// SINTONIZADOR
-
-// =====================================
-
-function actualizarFrecuencia() {
-
-  if (senalEncontrada) return;
-
-  const valor = Number(frequency.value);
-
-  frequencyValue.textContent =
-
-    valor.toFixed(1);
-
-  // Intensidad proporcional al control:
-
-  // izquierda = bajo
-
-  // derecha = alto
-
-  signalStrength = valor / 100;
-
-  // Se reproduce un nuevo canto al mover
-
-  // el sintonizador. Se limita la frecuencia
-
-  // para evitar saturar el navegador.
-
-  const ahora = performance.now();
-
-  if (
-
-    sonidoActivado &&
-
-    ahora - ultimoCanto > 180
-
-  ) {
-
-    ultimoCanto = ahora;
-
-    cantarAve(signalStrength);
-
-  }
-
-  // DESBLOQUEO EXACTAMENTE EN 95
-
-  if (valor >= FRECUENCIA_SECRETA) {
-
-    signalStrength = 1;
-
-    senalEncontrada = true;
-
-    frequency.disabled = true;
-
-    tunerStatus.textContent =
-
-      "> SEÑAL ESTABLE / TRANSMISIÓN IDENTIFICADA";
-
-    signalLabel.textContent =
-
-      "CANTO DE AVE DETECTADO";
-
-    if (temporizadorAves) {
-
-      clearInterval(temporizadorAves);
-
-      temporizadorAves = null;
-
-    }
-
-    cantoFinal();
-
-    iniciarDescifrado();
-
-  } else if (valor >= 80) {
-
-    tunerStatus.textContent =
-
-      "> SEÑAL PARCIAL / INTERFERENCIA REDUCIDA";
-
-    signalLabel.textContent =
-
-      "TRANSMISIÓN FRAGMENTADA";
-
-  } else {
-
-    tunerStatus.textContent =
-
-      "> INTERFERENCIA / BUSCANDO TRANSMISIÓN";
-
-    signalLabel.textContent =
-
-      "FRECUENCIA NO IDENTIFICADA";
-
-  }
-
-}
-
-// =====================================
-
-// REGISTRO DEL SISTEMA
-
-// =====================================
-
-function esperar(ms) {
-
-  return new Promise(resolve => setTimeout(resolve, ms));
-
-}
-
-async function iniciarDescifrado() {
-
-  systemLog.classList.add("visible");
-
-  log.textContent = "";
-
-  const mensajes = [
-
-    "> SEÑAL BIOLÓGICA CONFIRMADA",
-
-    "> INTERCEPTANDO TRANSMISIÓN...",
-
-    "> ANALIZANDO PATRONES DE AVES...",
-
-    "> RECUPERANDO MEMORIA TERRITORIAL...",
-
-    "> DESCIFRANDO ARCHIVOS TEMPORALES...",
-
-    "> 09 REGISTROS ENCONTRADOS",
-
-    "> ACCESO AUTORIZADO"
-
-  ];
-
-  for (const mensaje of mensajes) {
-
-    log.textContent += mensaje + "\n";
-
-    await esperar(550);
-
-  }
-
-  await esperar(450);
-
-  access.classList.add("visible");
-
-}
-
-// =====================================
-
-// ONDA ANIMADA
-
-// =====================================
-
-const canvas = document.getElementById("wave");
-
-const ctx = canvas.getContext("2d");
-
-let tiempo = 0;
-
-function dibujarOnda() {
-
-  if (!interfazAbierta) {
-
-    requestAnimationFrame(dibujarOnda);
-
-    return;
-
-  }
-
-  const rect = canvas.getBoundingClientRect();
-
-  const dpr = Math.min(
-
-    window.devicePixelRatio || 1,
-
-    2
-
-  );
-
-  const ancho = Math.max(1, rect.width);
-
-  const alto = Math.max(1, rect.height);
-
-  const pixelWidth = Math.round(ancho * dpr);
-
-  const pixelHeight = Math.round(alto * dpr);
-
-  if (
-
-    canvas.width !== pixelWidth ||
-
-    canvas.height !== pixelHeight
-
-  ) {
-
-    canvas.width = pixelWidth;
-
-    canvas.height = pixelHeight;
-
-  }
-
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  ctx.clearRect(0, 0, ancho, alto);
-
-  // CUADRÍCULA
-
-  ctx.strokeStyle = "#164b29";
-
-  ctx.lineWidth = 0.5;
-
-  for (let x = 0; x < ancho; x += 35) {
-
-    ctx.beginPath();
-
-    ctx.moveTo(x, 0);
-
-    ctx.lineTo(x, alto);
-
-    ctx.stroke();
-
-  }
-
-  for (let y = 0; y < alto; y += 25) {
-
-    ctx.beginPath();
-
-    ctx.moveTo(0, y);
-
-    ctx.lineTo(ancho, y);
-
-    ctx.stroke();
-
-  }
-
-  // ONDA
-
-  ctx.beginPath();
-
-  ctx.strokeStyle = "#00ff66";
-
-  ctx.lineWidth = 1.8;
-
-  for (let x = 0; x < ancho; x++) {
-
-    const centro = alto / 2;
-
-    const amplitud =
-
-      3 + signalStrength * 40;
-
-    const onda1 = Math.sin(
-
-      x * 0.08 + tiempo
-
-    );
-
-    const onda2 = Math.sin(
-
-      x * 0.21 - tiempo * 1.5
-
-    );
-
-    const envolvente =
-
-      0.35 + 0.65 * Math.pow(
-
-        Math.sin(x * 0.017),
-
-        2
-
-      );
-
-    const y =
-
-      centro +
-
-      (onda1 * 0.7 + onda2 * 0.3) *
-
-      amplitud *
-
-      envolvente;
-
-    if (x === 0) {
-
-      ctx.moveTo(x, y);
-
-    } else {
-
-      ctx.lineTo(x, y);
-
-    }
-
-  }
-
-  ctx.stroke();
-
-  tiempo += 0.035;
-
-  requestAnimationFrame(dibujarOnda);
-
-}
-
-// =====================================
-
-// INICIAR
-
-// =====================================
-
-frequency.addEventListener(
-
-  "input",
-
-  actualizarFrecuencia
-
-);
 
 renderizarTitulo();
 
 escribirTitulo();
-
-dibujarOnda();
 
 </script>
 
