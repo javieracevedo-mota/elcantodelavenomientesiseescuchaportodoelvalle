@@ -26,7 +26,7 @@ html, body {
 
   min-height: 100%;
 
-  background: #000000;
+  background: #000;
 
   color: #00ff66;
 
@@ -38,15 +38,13 @@ html, body {
 
 #terminal {
 
-  position: relative;
-
   width: 100%;
 
   height: 100vh;
 
   height: 100dvh;
 
-  padding: 40px 24px 24px;
+  padding: 12px 24px 24px;
 
   overflow-y: auto;
 
@@ -64,27 +62,31 @@ html, body {
 
 }
 
-/* FLECHA DE REGRESO */
+/* BARRA SUPERIOR: FLECHA Y AUDIO */
 
-.volver {
-
-  position: relative;
+.barra-superior {
 
   display: flex;
 
   align-items: center;
 
-  justify-content: flex-start;
+  justify-content: space-between;
 
-  width: fit-content;
+  height: 28px;
 
-  height: 40px;
+  margin-bottom: 0;
 
-  margin-bottom: 16px;
+  white-space: normal;
 
-  border: none;
+}
 
-  background: transparent;
+.volver {
+
+  display: flex;
+
+  align-items: center;
+
+  height: 28px;
 
   color: #00ff66;
 
@@ -93,8 +95,6 @@ html, body {
   font-size: 24px;
 
   text-decoration: none;
-
-  white-space: normal;
 
 }
 
@@ -110,13 +110,13 @@ html, body {
 
 .audio-control {
 
-  position: absolute;
+  display: flex;
 
-  top: 16px;
+  align-items: center;
 
-  right: 24px;
+  justify-content: center;
 
-  z-index: 100;
+  height: 28px;
 
   padding: 0;
 
@@ -127,8 +127,6 @@ html, body {
   color: #00ff66;
 
   cursor: pointer;
-
-  line-height: 1;
 
 }
 
@@ -160,11 +158,7 @@ html, body {
 
 @keyframes blink {
 
-  50% {
-
-    opacity: 0;
-
-  }
+  50% { opacity: 0; }
 
 }
 
@@ -218,17 +212,21 @@ html, body {
 
   #terminal {
 
-    padding: 32px 16px 16px;
+    padding: 8px 16px 16px;
 
     font-size: 18px;
 
   }
 
+  .barra-superior {
+
+    height: 26px;
+
+  }
+
   .volver {
 
-    height: 36px;
-
-    margin-bottom: 12px;
+    height: 26px;
 
     font-size: 22px;
 
@@ -236,9 +234,15 @@ html, body {
 
   .audio-control {
 
-    top: 12px;
+    height: 26px;
 
-    right: 16px;
+  }
+
+  .audio-control svg {
+
+    width: 23px;
+
+    height: 23px;
 
   }
 
@@ -278,21 +282,17 @@ html, body {
 
 ></audio>
 
-<main id="terminal"><a
+<main id="terminal"><div class="barra-superior"><a
 
   class="volver"
 
   href="cartas.html"
 
-  aria-label="Regresar al repositorio de cartas"
+  aria-label="Regresar a los archivos"
 
   title="Regresar a los archivos"
 
->←</a>
-
-<!-- ICONO DE AUDIO -->
-
-<button
+>←</a><button
 
   id="audioControl"
 
@@ -336,9 +336,7 @@ html, body {
 
   </svg>
 
-</button>
-
-<span id="output"></span><span id="cursor" class="cursor">█</span>
+</button></div><span id="output"></span><span id="cursor" class="cursor">█</span>
 
 <nav id="nav">
 
@@ -351,35 +349,38 @@ html, body {
 </main>
 
 <script>
+
 // ENCABEZADO DEL ARCHIVO
+
+
 const encabezado = `ARCHIVO INTERCEPTADO
- registro: 01
- asunto: la noche del tsuru blanco
- fecha de emisión: 19.07.2019
- ubicación aproximada: 20°08´30.06´´N / 99°17´10.74´´O
- estado de señal: estable
+registro: 01
+asunto: la noche del tsuru blanco
+fecha de emisión: 19.07.2019
+ubicación aproximada: 20°08´30.06´´N / 99°17´10.74´´O
+estado de señal: estable
+
 
 `;
-
 // CONTENIDO DE LA CARTA
 
 const mensaje = `[INICIO DEL MENSAJE]
 
 Me dijiste que pienso mucho en el futuro.
-En varias ocasiones 
-me pediste que dejara 
+En varias ocasiones
+me pediste que dejara
 de pensar en eso.
 
 Posiblemente alguno de los dos no llegará al final.
 
-Vivimos en un lugar 
-donde la nostalgia 
+Vivimos en un lugar
+donde la nostalgia
 de los errores
-cometidos 
+cometidos
 en el pasado
 borra todo rastro de curiosidad
-por cambiar 
-el rumbo de 
+por cambiar
+el rumbo de
 las cosas.
 
 Pero a mí me intriga
@@ -388,19 +389,19 @@ Sé que debo explicaciones
 y espero algún día dártelas
 en persona.
 
-Descifré el mensaje 
+Descifré el mensaje
 que estaba en el coche
-en las milpas cerca del Xicuco, 
+en las milpas cerca del Xicuco,
 ¿recuerdas?
 
-Aquella noche que escuchamos 
+Aquella noche que escuchamos
 la explosión
-mientras mirábamos 
+mientras mirábamos
 el cielo anaranjado
 iluminado por la llama constante
 de la refinería de Tula.
 
-Estábamos sobre el cofre 
+Estábamos sobre el cofre
 de tu camioneta.
 
 Nos vestimos más rápido
@@ -411,68 +412,68 @@ porque pensamos que habían picado mal otra toma de huachicol.
 Pero nos topamos con el Tsuru blanco.
 
 Aunque no querías que bajara de tu camioneta
-la luz azul me hipnotizó 
-como 
-a 
-un 
+la luz azul me hipnotizó
+como
+a
+un
 mosquito.
 
 Eran unas coordenadas
-indicaban un cerro 
-en 
+indicaban un cerro
+en
 Huichapan
 
 Decidí buscarlo.
 
-Quiero ver si existe 
+Quiero ver si existe
 tal cosa
 y saber por qué
-a nosotros 
+a nosotros
 se nos apareció.
 
-Sabes que el presente 
+Sabes que el presente
 no está bien.
 
-Debemos escondernos 
-en 
-la oscuridad 
-para poder 
-estar 
+Debemos escondernos
+en
+la oscuridad
+para poder
+estar
 juntos.
 
 De noche,
 como vampiros.
 
-Donde aprendimos a mirar 
+Donde aprendimos a mirar
 el valle
-sin que nadie 
+sin que nadie
 nos viera.
 
 Las balaceras que están ocurriendo
-entre bandas 
+entre bandas
 huachicoleras
 refuerzan el rumor
-de que se están disputando 
-el territorio 
+de que se están disputando
+el territorio
 por la gasolina.
 
-Pero sabes 
-que también 
+Pero sabes
+que también
 es por el agua.
 
-Incluso por el 
+Incluso por el
 agua negra.
 
-Por eso 
-quiero 
-ir a buscar 
+Por eso
+quiero
+ir a buscar
 el garambullo.
 
 Tal vez sea un mensaje del futuro.
-Tal vez me ayude a descubrir 
-otro lugar 
-donde podamos 
-estar 
+Tal vez me ayude a descubrir
+otro lugar
+donde podamos
+estar
 .
 .
 .
@@ -482,14 +483,14 @@ o tal vez pueda detener
 los problemas que se aproximan.
 
 ¿Qué haremos si vuelve a explotar
-una fábrica del parque industrial 
+una fábrica del parque industrial
 de Atitalaquia
 y nos cubren sus venenos?
 
 ¿Qué haremos sin agua?
 ¿Dónde nadaremos?
 
-Si el control por la gasolina 
+Si el control por la gasolina
 genera más balas
 ¿a dónde escaparemos?
 
@@ -508,19 +509,19 @@ con nosotros.
 ¿Será el diablo?
 ¿Será dios?
 
-A veces siento 
+A veces siento
 que no pertenezco aquí.
 
-Nunca encajé del todo 
-en lo que esperan 
+Nunca encajé del todo
+en lo que esperan
 de un hombre en este lugar.
 
-Amar a otro hombre 
-hace que automáticamente 
+Amar a otro hombre
+hace que automáticamente
 seas inservible.
 
 Y no sólo eso.
-Hay algo en mí que todavía 
+Hay algo en mí que todavía
 no sé explicar bien.
 
 Algo que no cabe
@@ -531,26 +532,26 @@ Tú también sabes lo que es amar distinto.
 
 Pero a ti
 te cuesta más aceptarlo.
-Lo veo en la forma en que bajas 
-la voz cuando 
+Lo veo en la forma en que bajas
+la voz cuando
 alguien se acerca.
 
-En la manera en que 
-nuestro amor solo 
-puede existir cuando 
+En la manera en que
+nuestro amor solo
+puede existir cuando
 cae la noche.
 
-A veces pienso 
-que 
-yo 
-podría 
-ser un error 
-para 
+A veces pienso
+que
+yo
+podría
+ser un error
+para
 ti.
 
 Algo que algún día quieras borrar
 para que tu vida
-sea más 
+sea más
 sencilla.
 
 Este valle enseña a tener miedo.
@@ -558,32 +559,32 @@ Este valle enseña a tener miedo.
 Quiero encontrar respuestas
 al encuentro fortuito
 que tuvimos
-en nuestro 
+en nuestro
 lugar nocturno.
 
-No te pude 
-decir 
+No te pude
+decir
 adiós.
 
-Pero trataré 
+Pero trataré
 de comunicarme.
 
-Para que cada vez 
-que salga 
+Para que cada vez
+que salga
 la luna
-y se 
-escuchen 
+y se
+escuchen
 las ranas
 sea un indicio
-de que 
-encontré 
+de que
+encontré
 nuevas pistas
-para 
+para
 descifrar
-por qué 
-nos quieren 
+por qué
+nos quieren
 quitar
-la 
+la
 esperanza.
 
 [FIN DE MENSAJE]
@@ -597,7 +598,7 @@ esperanza.
 ..........
 estado de señal: activo`;
 
-// ELEMENTOS DE LA PÁGINA
+// ELEMENTOS
 
 const output = document.getElementById("output");
 
@@ -605,7 +606,7 @@ const cursor = document.getElementById("cursor");
 
 const nav = document.getElementById("nav");
 
-// CONFIGURACIÓN
+// CONFIGURACIÓN DE ESCRITURA
 
 const VELOCIDAD = 30;
 
@@ -649,7 +650,7 @@ let salida = "";
 
 let intervaloDescifrado = null;
 
-// GENERAR UN CARÁCTER ALEATORIO
+// GENERAR CARACTER ALEATORIO
 
 function caracterAleatorio() {
 
@@ -663,7 +664,7 @@ function caracterAleatorio() {
 
 }
 
-// ALTERAR LAS LETRAS DEL ENCABEZADO
+// DESCIFRADO DEL ENCABEZADO
 
 function generarEncabezadoAlterado() {
 
@@ -680,8 +681,6 @@ function generarEncabezadoAlterado() {
   }).join("");
 
 }
-
-// DESCIFRAR EL ENCABEZADO DURANTE 3 SEGUNDOS
 
 function iniciarDescifrado() {
 
@@ -711,17 +710,11 @@ function iniciarDescifrado() {
 
 }
 
-// CORRUPCIÓN OCASIONAL DEL MENSAJE
+// CORRUPCIÓN OCASIONAL
 
 function corromper(caracter) {
 
-  if (
-
-    cambios[caracter] &&
-
-    Math.random() < 0.04
-
-  ) {
+  if (cambios[caracter] && Math.random() < 0.04) {
 
     return cambios[caracter];
 
@@ -731,7 +724,7 @@ function corromper(caracter) {
 
 }
 
-// ESCRITURA PROGRESIVA DE LA CARTA
+// ESCRITURA PROGRESIVA
 
 function escribir() {
 
@@ -746,8 +739,6 @@ function escribir() {
     return;
 
   }
-
-  // INTERFERENCIA AL 75 % DEL MENSAJE
 
   if (
 
@@ -789,17 +780,15 @@ function escribir() {
 
   output.textContent = salida;
 
-  // SIN DESPLAZAMIENTO AUTOMÁTICO
+  // SIN SCROLL AUTOMÁTICO
 
   setTimeout(escribir, VELOCIDAD);
 
 }
 
-// INICIAR EL SISTEMA
-
 iniciarDescifrado();
 
-// AUDIO AMBIENTAL EN BUCLE
+// AUDIO EN LOOP
 
 const audioCarta = document.getElementById("audioCarta");
 
@@ -847,7 +836,7 @@ async function activarAudio() {
 
   } catch (error) {
 
-    // Safari puede requerir un toque del visitante.
+    // Algunos navegadores requieren interacción.
 
   }
 
@@ -877,7 +866,9 @@ audioCarta.addEventListener("pause", actualizarIconoAudio);
 
 audioCarta.addEventListener("volumechange", actualizarIconoAudio);
 
-// INTENTAR INICIAR EL AUDIO AUTOMÁTICAMENTE
+// INTENTO DE REPRODUCCIÓN AUTOMÁTICA
+
+actualizarIconoAudio();
 
 activarAudio();
 
