@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html lang="es">
@@ -34,6 +36,8 @@ html, body {
 
 }
 
+/* TERMINAL */
+
 #terminal {
 
   width: 100%;
@@ -42,23 +46,125 @@ html, body {
 
   height: 100dvh;
 
-  padding: 24px;
+  padding: 12px 24px 24px;
 
   overflow-y: auto;
 
   overflow-x: hidden;
 
-  white-space: pre-wrap;
-
   overflow-wrap: anywhere;
 
-  font-size: 24px;
+  font-size: 22px;
 
   line-height: 1.45;
+
+  text-align: left;
 
   overscroll-behavior: contain;
 
 }
+
+/* BARRA SUPERIOR */
+
+.barra-superior {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  height: 28px;
+
+  margin-bottom: 0;
+
+}
+
+/* FLECHA DE REGRESO */
+
+.volver {
+
+  display: flex;
+
+  align-items: center;
+
+  height: 28px;
+
+  color: #00ff66;
+
+  font-family: monospace;
+
+  font-size: 24px;
+
+  text-decoration: none;
+
+}
+
+.volver:hover,
+
+.volver:focus-visible {
+
+  color: #80ffad;
+
+}
+
+/* CONTROL DE AUDIO */
+
+.audio-control {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 28px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #00ff66;
+
+  cursor: pointer;
+
+}
+
+.audio-control svg {
+
+  display: block;
+
+  width: 25px;
+
+  height: 25px;
+
+}
+
+.audio-control:hover,
+
+.audio-control:focus-visible {
+
+  color: #80ffad;
+
+}
+
+/* TEXTO */
+
+#output {
+
+  display: inline;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+
+  text-align: left;
+
+}
+
+/* CURSOR */
 
 .cursor {
 
@@ -76,6 +182,8 @@ html, body {
 
 }
 
+/* NAVEGACIÓN FINAL */
+
 #nav {
 
   display: none;
@@ -85,8 +193,6 @@ html, body {
   justify-content: space-between;
 
   margin: 38px 0 20px;
-
-  white-space: normal;
 
 }
 
@@ -106,7 +212,7 @@ html, body {
 
   padding: 10px 14px;
 
-  font-size: 20px;
+  font-size: 18px;
 
 }
 
@@ -118,19 +224,57 @@ html, body {
 
 }
 
+/* PANTALLAS PEQUEÑAS */
+
 @media (max-width: 640px) {
 
   #terminal {
 
-    padding: 16px;
+    padding: 8px 16px 16px;
 
-    font-size: 20px;
+    font-size: 18px;
+
+  }
+
+  .barra-superior {
+
+    height: 26px;
+
+  }
+
+  .volver {
+
+    height: 26px;
+
+    font-size: 22px;
+
+  }
+
+  .audio-control {
+
+    height: 26px;
+
+  }
+
+  .audio-control svg {
+
+    width: 23px;
+
+    height: 23px;
+
+  }
+
+  #nav {
+
+    gap: 12px;
 
   }
 
   #nav a {
 
-    font-size: 16px;
+    font-size: 14px;
+
+    padding: 8px 10px;
 
   }
 
@@ -142,28 +286,106 @@ html, body {
 
 <body>
 
+<!-- AUDIO AMBIENTAL DE LA CARTA 9 -->
+
+<audio
+
+  id="audioCarta"
+
+  src="el-canto-de-una-ave.wav"
+
+  loop
+
+  preload="auto"
+
+></audio>
+
+<!-- TERMINAL -->
+
 <main id="terminal">
 
-  <span id="output"></span><span id="cursor" class="cursor">█</span>
+<div class="barra-superior">
 
-  <nav id="nav">
+  <a
 
-    <a href="carta8.html">← REGISTRO 08</a>
+    class="volver"
 
-    <a href="index.html">INICIO →</a>
+    href="cartas.html"
 
-  </nav>
+    aria-label="Regresar a todas las cartas"
+
+    title="Regresar a los archivos"
+
+  >←</a>
+
+  <button
+
+    id="audioControl"
+
+    class="audio-control"
+
+    type="button"
+
+    aria-label="Activar sonido"
+
+    aria-pressed="false"
+
+    title="Activar sonido"
+
+  >
+
+    <svg
+
+      viewBox="0 0 24 24"
+
+      fill="none"
+
+      stroke="currentColor"
+
+      stroke-width="1.8"
+
+      stroke-linecap="round"
+
+      stroke-linejoin="round"
+
+      aria-hidden="true"
+
+    >
+
+      <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+
+      <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
+
+      <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
+
+      <path id="audioTachado" d="m16 9 5 6"/>
+
+    </svg>
+
+  </button>
+
+</div><span id="output"></span><span id="cursor" class="cursor">█</span>
+
+<!-- NAVEGACIÓN FINAL -->
+
+<nav id="nav">
+
+  <a href="cartas.html">← ARCHIVOS</a>
+
+  <a href="index.html">INICIO →</a>
+
+</nav>
 
 </main>
 
 <script>
 // ENCABEZADO DEL ARCHIVO
 const encabezado =`ARCHIVO INTERCEPTADO
-registro: 09
-asunto: canto de las aves
-fecha: indeterminada
-ubicación aproximada: 20°08´30.68´´N / 99°22´06.01´´O
-estado de señal: muy degradado
+ registro: 09
+ asunto: canto de las aves
+ fecha: indeterminada
+ ubicación aproximada: 20°08´30.68´´N / 99°22´06.01´´O
+ estado de señal: muy degradado
 
  
 
@@ -173,17 +395,22 @@ estado de señal: muy degradado
 
 const mensaje = `[INICIO DEL MENSAJE]
 
-No sé si esta carta 
+No sé si esta carta
+
 llegará.
 
-He perdido la cuenta 
+He perdido la cuenta
+
 de los saltos.
 
-Es agotador huir 
+Es agotador huir
+
 de alguien que no recuerdas cómo era.
 
-Despierto varias veces 
-en lugares que no reconozco. 
+Despierto varias veces
+
+en lugares que no reconozco.
+
 En tiempos que juraría
 haber vivido antes.
 
@@ -195,46 +422,56 @@ y a quién he querido.
 
 No sé cuánto llevo sin escribirte.
 A veces creo que apenas unos días.
-Pero algo me dice que han pasado años.
+Pero algo me dice
+que han pasado años.
 .
 .
 .
 He logrado infiltrarme en una empresa de nanotecnología
 llamada HuemaCartix.
-Está construida 
+Está construida
+
 debajo de una zona industrial reconstruida.
 
 Trabajo como cocinero.
 
-Es pesado. 
+Es pesado.
+
 Me recuerda cuando mi abuela cocinaba
 con sus manos resistentes al fuego.
 A veces preparo cosas
 sin recordar cómo aprendí a hacerlas.
 
-Mis manos saben 
+Mis manos saben
+
 cuánto tiempo dejar algo en el fuego.
 Cuánta sal poner.
 Cuándo retirar una olla.
 
-Un hombre me ayudó a entrar a esta empresa. 
+Un hombre me ayudó a entrar a esta empresa.
+
 No sé su nombre real.
 
 Solo sé que pertenece a la
-División de Adaptación Biológica de Ambientes Contaminados (DABAC) 
-de esta empresa 
+División de Adaptación Biológica de Ambientes Contaminados (DABAC)
+
+de esta empresa
+
 y que quiere sabotear algo.
 
 Me deja códigos en servilletas usadas.
 
-Yo le respondo escondiendo mensajes 
+Yo le respondo escondiendo mensajes
+
 en el menú del comedor.
-Sus silencios son los de alguien que sabe demasiado. 
+Sus silencios son los de alguien que sabe demasiado.
+
 Como los tuyos.
 
 Como cuando te preguntaba si me querías.
 
-Fue él quien me mostró 
+Fue él quien me mostró
+
 lo que esconden aquí.
 
 Una bacteria acuática termófila.
@@ -243,13 +480,16 @@ La encontraron en un manantial caliente
 de un balneario del valle.
 
 La extrajeron del fondo mineral
-donde el agua hierve lentamente 
+donde el agua hierve lentamente
+
 entre arenas.
 
 La bacteria puede reparar cuerpos dañados por
-metales pesados 
+metales pesados
+
 venenos agrícolas
-polvos de caliza 
+polvos de caliza
+
 enfermedades crónico degenerativas.
 
 Pero el ejército la mantiene oculta
@@ -262,11 +502,13 @@ Pequeños fragmentos de su plásmido bacteriano.
 Los uso como tratamiento experimental.
 
 Los viajes en el tiempo dejan marcas,
-mis manos tiemblan cuando intento escribir.
+mis manos tiemblan
+cuando intento escribir.
 
 Los músculos a veces olvidan obedecer.
 
-Y la memoria 
+Y la memoria
+
 empieza 
 a
 .
@@ -282,21 +524,25 @@ El tiempo afecta más a unos que a otros.
 Últimamente hay cosas que recuerdo
 y otras que no consigo recuperar.
 
-Recuerdo que nos reíamos 
+Recuerdo que nos reíamos
+
 cuando estábamos juntos.
 Pero no recuerdo de qué.
 
 A veces puedo escuchar tu risa.
-Otras veces 
+Otras veces
+
 no consigo recordar tu voz.
 
-Me preocupa que algún día 
+Me preocupa que algún día
+
 solo recuerde que estuvimos juntos.
 
 Y nada más.
 
 Entre salto y salto he entendido algo.
-El olvido 
+El olvido
+
 no es natural.
 Nos lo sembraron.
 Como se siembra 
@@ -304,22 +550,28 @@ una
 enfermedad.
 
 Hay algo profundamente
-cruel 
-en ver cómo una mente 
+cruel
+
+en ver cómo una mente
+
 se deshace lentamente.
 
 Es una forma de desaparición.
 
-Primero se borran los nombres. 
-Después los rostros. 
+Primero se borran los nombres.
+
+Después los rostros.
+
 Después los lugares.
 Tus caricias.
 
 Al final
-lo único que queda es una sensación vaga 
+lo único que queda es una sensación vaga
+
 de haber amado algo.
 
-Ayer intenté recordar 
+Ayer intenté recordar
+
 el nombre de aquel cerro
 donde nos escondíamos.
 Pensé que era el Xicuco.
@@ -327,7 +579,8 @@ Pensé que era el Xicuco.
 Creo que era otro 
 no lo recuerdo.
 
-Aunque recuerdo noches y atardeceres 
+Aunque recuerdo noches y atardeceres
+
 donde hacíamos el amor.
 
 Tal vez estoy confundiendo
@@ -343,22 +596,28 @@ Eso fue el desmantelamiento silencioso del territorio.
 
 Le arrancaron las neuronas
 a un cerebro sin dueño.
-Una lobotomía hecha con ductos, refinerías y aguas negras.
-Y mientras el valle olvida quién era, 
+Una lobotomía hecha con ductos,
+refinerías y aguas negras.
+Y mientras el valle olvida quién era,
+
 nosotros también nos estamos olvidando.
 
-No sé si todavía tiene sentido 
+No sé si todavía tiene sentido
+
 seguir escribiéndote.
 
 A veces pienso que mis mensajes
-llegaron 
-demasiado 
+llegaron
+
+demasiado
+
 tarde.
 O que todavía no han llegado.
 Quizá ya me olvidaste.
 O quizá
 ya empezaste a olvidarme.
-pero  sigo escribiendo.
+pero 
+sigo escribiendo.
 .
 .
 .
@@ -378,7 +637,8 @@ No sé si las recibiste.
 Ni cuánto tiempo ha pasado para ti
 entre una y otra.
 
-A veces recuerdo 
+A veces recuerdo
+
 cuando buscábamos lugares
 para sentarnos lejos de todos.
 Y cuando imaginábamos
@@ -397,7 +657,8 @@ Pero nunca estuvimos ahí.
 Es extraño.
 
 Hay cosas que nunca sucedieron
-y que ahora recuerdo 
+y que ahora recuerdo
+
 como si las hubiéramos vivido.
 
 Recuerdo los atardeceres que veíamos
@@ -405,15 +666,20 @@ desde la presa Endhó.
 
 Convertida en un campo verde.
 Cubierta de lirio.
-Recuerdo  cuando no querías  que tocara tus pies.
+Recuerdo 
+cuando no querías 
+que tocara tus pies.
 Decías que podía enfermarme.
 
-Que metías los pies  en el agua negra 
+Que metías los pies
+ en el agua negra 
 cuando regabas las milpas.
-Pero aun así  yo quería besarlos.
+Pero aun así 
+yo quería besarlos.
 
 Decías que estaba loco
-que esas aguas  estaban llenas de bacterias.
+que esas aguas
+ estaban llenas de bacterias.
 Tal vez tenías razón.
 Tal vez siempre estuvimos enfermos desde entonces.
 
@@ -426,13 +692,16 @@ duró segundos
 pero escuché
 
 Escuché que 
-Te dijeron  papá.
+Te dijeron 
+papá.
 
 Me da miedo preguntartelo 
 y esperar tu respuesta.
 
-Porque hay preguntas 
-que cuando se responden 
+Porque hay preguntas
+
+que cuando se responden
+
 terminan de romper lo que queda.
 
 La máquina que reparé 
@@ -448,16 +717,20 @@ e intento elegir una fecha.
 
 Pienso en aquella tarde
 cuando nos sentamos frente a la presa.
-O cuando hablábamos de irnos al norte.
+O cuando hablábamos
+de irnos al norte.
 
-Pero ya no sé 
-si quiero regresar a un lugar 
+Pero ya no sé
+
+si quiero regresar a un lugar
+
 o a un momento 
 que 
 solamente 
 imaginamos.
 
-La última vez 
+La última vez
+
 dejé las coordenadas incompletas.
 Pensé que las terminaría 
 al día siguiente.
@@ -473,11 +746,13 @@ Entre archivos,
 códigos
 y bacterias robadas.
 
-Cambio de nombre. 
+Cambio de nombre.
+
 De rostro.
 De ropa.
 
-Algunas noches 
+Algunas noches
+
 llevo una máscara.
 
 Soy travesti de noche
@@ -485,17 +760,21 @@ para besar a mis víctimas
 y sacarles información 
 de la culebra tromenta.
 
-Me muevo entre tiempos 
+Me muevo entre tiempos
+
 sin dejar rastro.
 
 A veces encuentro cosas
 que alguien intentó esconder.
 
 Las guardo.
-No siempre recuerdo 
+No siempre recuerdo
+
 para qué.
 
-Tampoco sé a qué momento de mi vida 
+Tampoco sé
+a qué momento de mi vida
+
 tendría que regresar.
 
 Hay recuerdos que 
@@ -503,7 +782,8 @@ ya no puedo recuperar.
 Otros aparecen
 cuando menos los espero.
 
-He comenzado a pensar 
+He comenzado a pensar
+
 que algún día
 podría 
 olvidar 
@@ -521,7 +801,8 @@ para quién las escribí.
 Ni por qué me importaban tanto.
 
 Por eso
-escondí todos mis mensajes 
+escondí todos mis mensajes
+
 en los patrones
 de las aves.
 
@@ -529,18 +810,21 @@ Ellas siempre llegaban
 a tus milpas.
 Sin pedir permiso.
 Se posaban
-sobre la tierra húmeda 
+sobre la tierra húmeda
+
 y cantaban
 aunque nadie las escuchara.
 
-Las máquinas fallan. 
+Las máquinas fallan.
+
 Los archivos se corrompen.
 Las aves no.
 
 Aunque también he visto
 cómo desaparecen.
 Hay lugares donde antes cantaban
-y ahora solamente 
+y ahora solamente
+
 se escucha el ruido 
 de las máquinas.
 
@@ -548,7 +832,8 @@ No sé cuánto tiempo
 seguirán llegando 
 a tus milpas.
 
-Ni si sus crías 
+Ni si sus crías
+
 aprenderán los mismos cantos.
 
 Pero mientras
@@ -556,14 +841,16 @@ alguna siga cantando
 tal vez algo de nosotros
 permanezca en el valle.
 
-Ellas repiten el canto 
+Ellas repiten el canto
+
 temporada 
 tras temporada.
 
 Espero que esos cantos 
 me mantengan 
 en ti.
-Y 
+Y
+
 te mantengan 
 en mí.
 .
@@ -591,7 +878,8 @@ libélulas
 De cerro 
 en cerro
 De mezquite 
-en mezquite 
+en mezquite
+
 De canal 
 en canal
 .
@@ -599,7 +887,8 @@ en canal
 .
 .
 Recuerda
-que 
+que
+
 el canto del ave
 no miente
 si se escucha
@@ -608,26 +897,31 @@ el valle.
 .
 .
 .
-(suena el croar de las ranas)
+(suena el croar
+de las ranas)
 .
 .
 .
 .
 .
 .
-(suena la noche)
+(suena
+la noche)
 .
 .
 .
 (música lejana)
-¿Dónde están? 
+¿Dónde están?
+
 Esas cartas
 Esas flores
 Detalles
 Las llamadas
 Las visitas de noche
-Esos labios que mataban a besos 
-¿Dónde están? 
+Esos labios que mataban a besos
+
+¿Dónde están?
+
 Promesas
 ¿Dónde están?
 .
@@ -652,7 +946,7 @@ en frecuencia desconocida
 .
 .`;
 
-// ELEMENTOS DE LA PÁGINA
+// ELEMENTOS
 
 const output = document.getElementById("output");
 
@@ -660,7 +954,7 @@ const cursor = document.getElementById("cursor");
 
 const nav = document.getElementById("nav");
 
-// CONFIGURACIÓN
+// CONFIGURACIÓN DE ESCRITURA
 
 const VELOCIDAD = 30;
 
@@ -704,7 +998,7 @@ let salida = "";
 
 let intervaloDescifrado = null;
 
-// GENERAR UN CARÁCTER ALEATORIO
+// GENERAR CARACTERES ALEATORIOS
 
 function caracterAleatorio() {
 
@@ -718,7 +1012,7 @@ function caracterAleatorio() {
 
 }
 
-// ALTERAR LAS LETRAS DEL ENCABEZADO
+// ALTERAR ENCABEZADO
 
 function generarEncabezadoAlterado() {
 
@@ -736,7 +1030,7 @@ function generarEncabezadoAlterado() {
 
 }
 
-// DESCIFRAR EL ENCABEZADO DURANTE 3 SEGUNDOS
+// DESCIFRADO INICIAL
 
 function iniciarDescifrado() {
 
@@ -766,17 +1060,11 @@ function iniciarDescifrado() {
 
 }
 
-// CORRUPCIÓN OCASIONAL DEL MENSAJE
+// CORRUPCIÓN OCASIONAL
 
 function corromper(caracter) {
 
-  if (
-
-    cambios[caracter] &&
-
-    Math.random() < 0.04
-
-  ) {
+  if (cambios[caracter] && Math.random() < 0.04) {
 
     return cambios[caracter];
 
@@ -786,7 +1074,7 @@ function corromper(caracter) {
 
 }
 
-// ESCRITURA PROGRESIVA DE LA CARTA
+// ESCRITURA PROGRESIVA
 
 function escribir() {
 
@@ -850,9 +1138,113 @@ function escribir() {
 
 }
 
-// INICIAR EL SISTEMA
+// INICIAR ESCRITURA
 
 iniciarDescifrado();
+
+// CONTROL DE AUDIO
+
+const audioCarta = document.getElementById("audioCarta");
+
+const audioControl = document.getElementById("audioControl");
+
+const onda1 = document.getElementById("onda1");
+
+const onda2 = document.getElementById("onda2");
+
+const audioTachado = document.getElementById("audioTachado");
+
+audioCarta.volume = 0.6;
+
+// ACTUALIZAR ICONO
+
+function actualizarIconoAudio() {
+
+  const encendido =
+
+    !audioCarta.paused && !audioCarta.muted;
+
+  onda1.style.display = encendido ? "" : "none";
+
+  onda2.style.display = encendido ? "" : "none";
+
+  audioTachado.style.display = encendido ? "none" : "";
+
+  const etiqueta = encendido
+
+    ? "Apagar sonido"
+
+    : "Activar sonido";
+
+  audioControl.setAttribute("aria-label", etiqueta);
+
+  audioControl.setAttribute("aria-pressed", String(encendido));
+
+  audioControl.title = etiqueta;
+
+}
+
+// ACTIVAR AUDIO
+
+async function activarAudio() {
+
+  try {
+
+    audioCarta.muted = false;
+
+    await audioCarta.play();
+
+  } catch (error) {
+
+    console.warn("No se pudo reproducir el audio:", error);
+
+  }
+
+  actualizarIconoAudio();
+
+}
+
+// BOTÓN DE AUDIO
+
+audioControl.addEventListener("click", async () => {
+
+  if (!audioCarta.paused && !audioCarta.muted) {
+
+    audioCarta.pause();
+
+    actualizarIconoAudio();
+
+  } else {
+
+    await activarAudio();
+
+  }
+
+});
+
+audioCarta.addEventListener("play", actualizarIconoAudio);
+
+audioCarta.addEventListener("pause", actualizarIconoAudio);
+
+audioCarta.addEventListener("volumechange", actualizarIconoAudio);
+
+audioCarta.addEventListener("error", () => {
+
+  console.warn(
+
+    "Error al cargar el archivo:",
+
+    audioCarta.currentSrc
+
+  );
+
+});
+
+// INTENTO DE REPRODUCCIÓN AUTOMÁTICA
+
+actualizarIconoAudio();
+
+activarAudio();
 
 </script>
 
