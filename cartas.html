@@ -14,6 +14,8 @@
 
 <style>
 
+/* CONFIGURACIÓN GENERAL */
+
 * {
 
   box-sizing: border-box;
@@ -166,11 +168,63 @@ body::before {
 
 }
 
-/* AUDIO DEL PAISAJE NOCTURNO */
+/* PANEL SUPERIOR DERECHO */
+
+.status-block {
+
+  position: fixed;
+
+  top: 16px;
+
+  right: 16px;
+
+  z-index: 50;
+
+  text-align: right;
+
+  font-size: clamp(12px, 1.4vw, 18px);
+
+  line-height: 1.3;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 2px;
+
+  color: var(--fg);
+
+  text-shadow: 0 1px 3px #000;
+
+}
+
+.status-line {
+
+  white-space: nowrap;
+
+}
+
+.radio-bars {
+
+  letter-spacing: 0.08em;
+
+}
+
+/* AUDIO DE PAISAJE NOCTURNO */
+
+/* ALINEADO A LA DERECHA DEBAJO DE LAS SEÑALES */
 
 .audio-container {
 
-  margin-top: -14px;
+  margin-top: 0;
+
+  align-self: flex-end;
+
+  display: flex;
+
+  justify-content: flex-end;
 
 }
 
@@ -196,8 +250,6 @@ body::before {
 
   cursor: pointer;
 
-  align-self: flex-start;
-
 }
 
 .audio-control svg {
@@ -215,48 +267,6 @@ body::before {
 .audio-control:focus-visible {
 
   color: #80ffad;
-
-}
-
-/* PANEL SUPERIOR DERECHO */
-
-.status-block {
-
-  position: fixed;
-
-  top: 16px;
-
-  right: 16px;
-
-  z-index: 50;
-
-  text-align: right;
-
-  font-size: clamp(12px, 1.4vw, 18px);
-
-  line-height: 1.3;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 2px;
-
-  color: var(--fg);
-
-  text-shadow: 0 1px 3px #000;
-
-}
-
-.status-line {
-
-  white-space: nowrap;
-
-}
-
-.radio-bars {
-
-  letter-spacing: 0.08em;
 
 }
 
@@ -484,17 +494,33 @@ body::before {
 
 @keyframes flapLeft {
 
-  from { transform: rotate(25deg); }
+  from {
 
-  to { transform: rotate(-30deg); }
+    transform: rotate(25deg);
+
+  }
+
+  to {
+
+    transform: rotate(-30deg);
+
+  }
 
 }
 
 @keyframes flapRight {
 
-  from { transform: rotate(-25deg); }
+  from {
 
-  to { transform: rotate(30deg); }
+    transform: rotate(-25deg);
+
+  }
+
+  to {
+
+    transform: rotate(30deg);
+
+  }
 
 }
 
@@ -546,28 +572,6 @@ body::before {
 
   }
 
-  .audio-container {
-
-    margin-top: 2px;
-
-  }
-
-  .audio-control {
-
-    width: 25px;
-
-    height: 25px;
-
-  }
-
-  .audio-control svg {
-
-    width: 23px;
-
-    height: 23px;
-
-  }
-
   .status-block {
 
     right: 10px;
@@ -591,6 +595,30 @@ body::before {
     font-size: 9px;
 
     letter-spacing: 0;
+
+  }
+
+  .audio-container {
+
+    margin-top: 0;
+
+    align-self: flex-end;
+
+  }
+
+  .audio-control {
+
+    width: 25px;
+
+    height: 25px;
+
+  }
+
+  .audio-control svg {
+
+    width: 23px;
+
+    height: 23px;
 
   }
 
@@ -640,7 +668,29 @@ body::before {
 
   </div>
 
-  <!-- AUDIO DEL PAISAJE NOCTURNO -->
+</div>
+
+<!-- COORDENADAS CAMBIANTES Y AUDIO -->
+
+<div class="status-block">
+
+  <div class="status-line" id="signalLine">
+
+    conexión IP 000%
+
+  </div>
+
+  <div class="status-line" id="coordLine">--</div>
+
+  <div class="status-line" id="placeLine">--</div>
+
+  <div class="radio-bars" id="radioLine">
+
+    ▁▂▃▅▇
+
+  </div>
+
+  <!-- AUDIO DE PAISAJE NOCTURNO -->
 
   <div class="audio-container">
 
@@ -701,28 +751,6 @@ body::before {
       </svg>
 
     </button>
-
-  </div>
-
-</div>
-
-<!-- COORDENADAS CAMBIANTES -->
-
-<div class="status-block">
-
-  <div class="status-line" id="signalLine">
-
-    conexión IP 000%
-
-  </div>
-
-  <div class="status-line" id="coordLine">--</div>
-
-  <div class="status-line" id="placeLine">--</div>
-
-  <div class="radio-bars" id="radioLine">
-
-    ▁▂▃▅▇
 
   </div>
 
@@ -1246,7 +1274,7 @@ audioPaisaje.volume = 0.6;
 
 audioPaisaje.loop = true;
 
-// ACTUALIZAR ICONO
+// ACTUALIZAR ICONO DE AUDIO
 
 function actualizarIconoAudio() {
 
@@ -1288,7 +1316,7 @@ async function activarAudio() {
 
     console.warn(
 
-      "No se pudo reproducir el audio:",
+      "El navegador requiere interacción para activar el audio:",
 
       error
 
@@ -1318,7 +1346,7 @@ audioControl.addEventListener("click", async () => {
 
 });
 
-// SINCRONIZAR ICONO
+// SINCRONIZAR EL ICONO
 
 audioPaisaje.addEventListener("play", actualizarIconoAudio);
 
