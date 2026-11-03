@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>registro 02 — explosión ATC</title>
+<title>registro 02 — explosión ACT</title>
 
 <style>
 
@@ -55,6 +55,8 @@ html, body {
   font-size: 22px;
 
   line-height: 1.45;
+
+  text-align: left;
 
   overscroll-behavior: contain;
 
@@ -146,13 +148,17 @@ html, body {
 
 }
 
-/* TEXTO DE LA CARTA */
+/* TEXTO */
 
 #output {
+
+  display: inline;
 
   white-space: pre-wrap;
 
   overflow-wrap: anywhere;
+
+  text-align: left;
 
 }
 
@@ -278,13 +284,13 @@ html, body {
 
 <body>
 
-<!-- AUDIO EXCLUSIVO DE LA CARTA 2 -->
+<!-- AUDIO AMBIENTAL -->
 
 <audio
 
   id="audioCarta"
 
-  src="explosión planta agroquímica ACT.wav"
+  src="explosion-planta-agroquimica-ACT.wav"
 
   loop
 
@@ -292,83 +298,75 @@ html, body {
 
 ></audio>
 
-<main id="terminal">
+<main id="terminal"><div class="barra-superior">
 
-  <!-- BARRA SUPERIOR -->
+  <a
 
-  <div class="barra-superior">
+    class="volver"
 
-    <a
+    href="cartas.html"
 
-      class="volver"
+    aria-label="Regresar a todas las cartas"
 
-      href="cartas.html"
+    title="Regresar a los archivos"
 
-      aria-label="Regresar a todas las cartas"
+  >←</a>
 
-      title="Regresar a los archivos"
+  <button
 
-    >←</a>
+    id="audioControl"
 
-    <button
+    class="audio-control"
 
-      id="audioControl"
+    type="button"
 
-      class="audio-control"
+    aria-label="Activar sonido"
 
-      type="button"
+    aria-pressed="false"
 
-      aria-label="Activar sonido"
+    title="Activar sonido"
 
-      aria-pressed="false"
+  >
 
-      title="Activar sonido"
+    <svg
+
+      viewBox="0 0 24 24"
+
+      fill="none"
+
+      stroke="currentColor"
+
+      stroke-width="1.8"
+
+      stroke-linecap="round"
+
+      stroke-linejoin="round"
+
+      aria-hidden="true"
 
     >
 
-      <svg
+      <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
 
-        viewBox="0 0 24 24"
+      <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
 
-        fill="none"
+      <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
 
-        stroke="currentColor"
+      <path id="audioTachado" d="m16 9 5 6"/>
 
-        stroke-width="1.8"
+    </svg>
 
-        stroke-linecap="round"
+  </button>
 
-        stroke-linejoin="round"
+</div><span id="output"></span><span id="cursor" class="cursor">█</span>
 
-        aria-hidden="true"
+<nav id="nav">
 
-      >
+  <a href="cartas.html">← ARCHIVOS</a>
 
-        <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+  <a href="carta3.html">REGISTRO 03 →</a>
 
-        <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
-
-        <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
-
-        <path id="audioTachado" d="m16 9 5 6"/>
-
-      </svg>
-
-    </button>
-
-  </div>
-
-  <span id="output"></span><span id="cursor" class="cursor">█</span>
-
-  <!-- NAVEGACIÓN AL TERMINAR -->
-
-  <nav id="nav">
-
-    <a href="cartas.html">← ARCHIVOS</a>
-
-    <a href="carta3.html">REGISTRO 03 →</a>
-
-  </nav>
+</nav>
 
 </main>
 
@@ -380,6 +378,7 @@ const encabezado =`ARCHIVO INTERCEPTADO
  fecha de emisión: 18.07.2013
  ubicación aproximada: 20°02´03.61´´N / 99°14´29.60´´O
  estado de señal: inestable
+
 `;
 
 // CONTENIDO DE LA CARTA
@@ -524,13 +523,11 @@ Te q(███████████
 .....
 
 .............
-
 estado de señal: degradado
-
 fragmento incompleto
-
 registro archivado`;
-// ELEMENTOS DE LA PÁGINA
+
+// ELEMENTOS
 
 const output = document.getElementById("output");
 
@@ -538,7 +535,7 @@ const cursor = document.getElementById("cursor");
 
 const nav = document.getElementById("nav");
 
-// CONFIGURACIÓN
+// CONFIGURACIÓN DE ESCRITURA
 
 const VELOCIDAD = 30;
 
@@ -582,7 +579,7 @@ let salida = "";
 
 let intervaloDescifrado = null;
 
-// GENERAR CARÁCTER ALEATORIO
+// CARACTERES ALEATORIOS
 
 function caracterAleatorio() {
 
@@ -596,7 +593,7 @@ function caracterAleatorio() {
 
 }
 
-// ALTERAR EL ENCABEZADO
+// ENCABEZADO ALTERADO
 
 function generarEncabezadoAlterado() {
 
@@ -614,7 +611,7 @@ function generarEncabezadoAlterado() {
 
 }
 
-// DESCIFRADO DEL ENCABEZADO
+// DESCIFRADO
 
 function iniciarDescifrado() {
 
@@ -680,8 +677,6 @@ function escribir() {
 
   }
 
-  // INTERFERENCIA AL 75 % DEL MENSAJE
-
   if (
 
     !interferenciaMostrada &&
@@ -722,17 +717,17 @@ function escribir() {
 
   output.textContent = salida;
 
-  // SIN DESPLAZAMIENTO AUTOMÁTICO
+  // SIN SCROLL AUTOMÁTICO
 
   setTimeout(escribir, VELOCIDAD);
 
 }
 
-// INICIAR SISTEMA
+// INICIAR ESCRITURA
 
 iniciarDescifrado();
 
-// AUDIO AMBIENTAL EN LOOP
+// CONTROL DE AUDIO
 
 const audioCarta = document.getElementById("audioCarta");
 
@@ -750,7 +745,9 @@ audioCarta.volume = 0.6;
 
 function actualizarIconoAudio() {
 
-  const encendido = !audioCarta.paused && !audioCarta.muted;
+  const encendido =
+
+    !audioCarta.paused && !audioCarta.muted;
 
   onda1.style.display = encendido ? "" : "none";
 
@@ -772,7 +769,7 @@ function actualizarIconoAudio() {
 
 }
 
-// REPRODUCIR AUDIO
+// ACTIVAR AUDIO
 
 async function activarAudio() {
 
@@ -784,7 +781,7 @@ async function activarAudio() {
 
   } catch (error) {
 
-    // Algunos navegadores requieren interacción.
+    console.warn("No se pudo reproducir el audio:", error);
 
   }
 
@@ -792,7 +789,7 @@ async function activarAudio() {
 
 }
 
-// ACTIVAR / DESACTIVAR AUDIO
+// BOTÓN DE AUDIO
 
 audioControl.addEventListener("click", async () => {
 
@@ -815,6 +812,18 @@ audioCarta.addEventListener("play", actualizarIconoAudio);
 audioCarta.addEventListener("pause", actualizarIconoAudio);
 
 audioCarta.addEventListener("volumechange", actualizarIconoAudio);
+
+audioCarta.addEventListener("error", () => {
+
+  console.warn(
+
+    "Error al cargar el archivo:",
+
+    audioCarta.currentSrc
+
+  );
+
+});
 
 // INTENTO DE REPRODUCCIÓN AUTOMÁTICA
 
