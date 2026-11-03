@@ -300,61 +300,69 @@ html, body {
 
 <!-- TERMINAL -->
 
-<main id="terminal"><div class="barra-superior"><a
+<main id="terminal">
 
-  class="volver"
+<div class="barra-superior">
 
-  href="cartas.html"
+  <a
 
-  aria-label="Regresar a todas las cartas"
+    class="volver"
 
-  title="Regresar a los archivos"
+    href="cartas.html"
 
->←</a><button
+    aria-label="Regresar a todas las cartas"
 
-  id="audioControl"
+    title="Regresar a los archivos"
 
-  class="audio-control"
+  >←</a>
 
-  type="button"
+  <button
 
-  aria-label="Activar sonido"
+    id="audioControl"
 
-  aria-pressed="false"
+    class="audio-control"
 
-  title="Activar sonido"
+    type="button"
 
->
+    aria-label="Activar sonido"
 
-  <svg
+    aria-pressed="false"
 
-    viewBox="0 0 24 24"
-
-    fill="none"
-
-    stroke="currentColor"
-
-    stroke-width="1.8"
-
-    stroke-linecap="round"
-
-    stroke-linejoin="round"
-
-    aria-hidden="true"
+    title="Activar sonido"
 
   >
 
-    <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+    <svg
 
-    <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
+      viewBox="0 0 24 24"
 
-    <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
+      fill="none"
 
-    <path id="audioTachado" d="m16 9 5 6"/>
+      stroke="currentColor"
 
-  </svg>
+      stroke-width="1.8"
 
-</button></div><span id="output"></span><span id="cursor" class="cursor">█</span>
+      stroke-linecap="round"
+
+      stroke-linejoin="round"
+
+      aria-hidden="true"
+
+    >
+
+      <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+
+      <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
+
+      <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
+
+      <path id="audioTachado" d="m16 9 5 6"/>
+
+    </svg>
+
+  </button>
+
+</div><span id="output"></span><span id="cursor" class="cursor">█</span>
 
 <!-- NAVEGACIÓN FINAL -->
 
@@ -371,11 +379,11 @@ html, body {
 <script>
 // ENCABEZADO DEL ARCHIVO
 const encabezado =`ARCHIVO INTERCEPTADO
- registro: 03
- asunto: construcción de la refinería Miguel Hidalgo
- fecha de emisión: 03.1972
- ubicación aproximada: 20°03´15.40´´N / 99°16´39.49´´O
- estado de señal: estable
+registro: 03
+asunto: construcción de la refinería Miguel Hidalgo
+fecha de emisión: 03.1972
+ubicación aproximada: 20°03´15.40´´N / 99°16´39.49´´O
+estado de señal: estable
 
 `;
 
@@ -516,7 +524,7 @@ registro archivado
 .
 .
 .
-.;
+.`;
 
 // ELEMENTOS
 
@@ -636,13 +644,7 @@ function iniciarDescifrado() {
 
 function corromper(caracter) {
 
-  if (
-
-    cambios[caracter] &&
-
-    Math.random() < 0.04
-
-  ) {
+  if (cambios[caracter] && Math.random() < 0.04) {
 
     return cambios[caracter];
 
