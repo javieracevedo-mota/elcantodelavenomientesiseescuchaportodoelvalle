@@ -34,53 +34,11 @@ html, body {
 
 }
 
-/* FLECHA PARA REGRESAR AL ARCHIVO */
-
-.volver {
-
-  position: fixed;
-
-  top: 16px;
-
-  left: 16px;
-
-  z-index: 100;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  width: 44px;
-
-  height: 40px;
-
-  border: 1px solid #00ff66;
-
-  background: #000000;
-
-  color: #00ff66;
-
-  font-family: monospace;
-
-  font-size: 24px;
-
-  text-decoration: none;
-
-}
-
-.volver:hover,
-
-.volver:focus-visible {
-
-  background: #003319;
-
-}
-
 /* TERMINAL */
 
 #terminal {
+
+  position: relative;
 
   width: 100%;
 
@@ -88,7 +46,7 @@ html, body {
 
   height: 100dvh;
 
-  padding: 76px 24px 24px;
+  padding: 40px 24px 24px;
 
   overflow-y: auto;
 
@@ -103,6 +61,92 @@ html, body {
   line-height: 1.45;
 
   overscroll-behavior: contain;
+
+}
+
+/* FLECHA DE REGRESO */
+
+.volver {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-start;
+
+  width: fit-content;
+
+  height: 40px;
+
+  margin-bottom: 16px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #00ff66;
+
+  font-family: monospace;
+
+  font-size: 24px;
+
+  text-decoration: none;
+
+  white-space: normal;
+
+}
+
+.volver:hover,
+
+.volver:focus-visible {
+
+  color: #80ffad;
+
+}
+
+/* CONTROL DE AUDIO */
+
+.audio-control {
+
+  position: absolute;
+
+  top: 16px;
+
+  right: 24px;
+
+  z-index: 100;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #00ff66;
+
+  cursor: pointer;
+
+  line-height: 1;
+
+}
+
+.audio-control svg {
+
+  display: block;
+
+  width: 25px;
+
+  height: 25px;
+
+}
+
+.audio-control:hover,
+
+.audio-control:focus-visible {
+
+  color: #80ffad;
 
 }
 
@@ -172,25 +216,29 @@ html, body {
 
 @media (max-width: 640px) {
 
+  #terminal {
+
+    padding: 32px 16px 16px;
+
+    font-size: 18px;
+
+  }
+
   .volver {
 
-    top: 10px;
-
-    left: 10px;
-
-    width: 38px;
-
     height: 36px;
+
+    margin-bottom: 12px;
 
     font-size: 22px;
 
   }
 
-  #terminal {
+  .audio-control {
 
-    padding: 62px 16px 16px;
+    top: 12px;
 
-    font-size: 18px;
+    right: 16px;
 
   }
 
@@ -216,9 +264,21 @@ html, body {
 
 <body>
 
-<!-- REGRESAR A LOS NUEVE ARCHIVOS -->
+<!-- AUDIO AMBIENTAL -->
 
-<a
+<audio
+
+  id="audioCarta"
+
+  src="la-noche-del-tsuru-blanco.wav"
+
+  loop
+
+  preload="auto"
+
+></audio>
+
+<main id="terminal"><a
 
   class="volver"
 
@@ -230,17 +290,63 @@ html, body {
 
 >←</a>
 
-<main id="terminal">
+<!-- ICONO DE AUDIO -->
 
-  <span id="output"></span><span id="cursor" class="cursor">█</span>
+<button
 
-  <nav id="nav">
+  id="audioControl"
 
-    <a href="cartas.html">← ARCHIVOS</a>
+  class="audio-control"
 
-    <a href="carta2.html">REGISTRO 02 →</a>
+  type="button"
 
-  </nav>
+  aria-label="Activar sonido"
+
+  aria-pressed="false"
+
+  title="Activar sonido"
+
+>
+
+  <svg
+
+    viewBox="0 0 24 24"
+
+    fill="none"
+
+    stroke="currentColor"
+
+    stroke-width="1.8"
+
+    stroke-linecap="round"
+
+    stroke-linejoin="round"
+
+    aria-hidden="true"
+
+  >
+
+    <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+
+    <path id="onda1" d="M15 9a5 5 0 0 1 0 6"/>
+
+    <path id="onda2" d="M18 6a9 9 0 0 1 0 12"/>
+
+    <path id="audioTachado" d="m16 9 5 6"/>
+
+  </svg>
+
+</button>
+
+<span id="output"></span><span id="cursor" class="cursor">█</span>
+
+<nav id="nav">
+
+  <a href="cartas.html">← ARCHIVOS</a>
+
+  <a href="carta2.html">REGISTRO 02 →</a>
+
+</nav>
 
 </main>
 
@@ -692,6 +798,88 @@ function escribir() {
 // INICIAR EL SISTEMA
 
 iniciarDescifrado();
+
+// AUDIO AMBIENTAL EN BUCLE
+
+const audioCarta = document.getElementById("audioCarta");
+
+const audioControl = document.getElementById("audioControl");
+
+const onda1 = document.getElementById("onda1");
+
+const onda2 = document.getElementById("onda2");
+
+const audioTachado = document.getElementById("audioTachado");
+
+audioCarta.volume = 0.6;
+
+function actualizarIconoAudio() {
+
+  const encendido = !audioCarta.paused && !audioCarta.muted;
+
+  onda1.style.display = encendido ? "" : "none";
+
+  onda2.style.display = encendido ? "" : "none";
+
+  audioTachado.style.display = encendido ? "none" : "";
+
+  const etiqueta = encendido
+
+    ? "Apagar sonido"
+
+    : "Activar sonido";
+
+  audioControl.setAttribute("aria-label", etiqueta);
+
+  audioControl.setAttribute("aria-pressed", String(encendido));
+
+  audioControl.title = etiqueta;
+
+}
+
+async function activarAudio() {
+
+  try {
+
+    audioCarta.muted = false;
+
+    await audioCarta.play();
+
+  } catch (error) {
+
+    // Safari puede requerir un toque del visitante.
+
+  }
+
+  actualizarIconoAudio();
+
+}
+
+audioControl.addEventListener("click", async () => {
+
+  if (!audioCarta.paused && !audioCarta.muted) {
+
+    audioCarta.pause();
+
+    actualizarIconoAudio();
+
+  } else {
+
+    await activarAudio();
+
+  }
+
+});
+
+audioCarta.addEventListener("play", actualizarIconoAudio);
+
+audioCarta.addEventListener("pause", actualizarIconoAudio);
+
+audioCarta.addEventListener("volumechange", actualizarIconoAudio);
+
+// INTENTAR INICIAR EL AUDIO AUTOMÁTICAMENTE
+
+activarAudio();
 
 </script>
 
